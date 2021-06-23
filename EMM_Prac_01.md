@@ -5,6 +5,7 @@ Prac 1 - Introduction to Google Earth Engine and JavaScript
 ### Acknowledgments 
 - Google Earth Engine Team
 - Earth Engine Beginning Curriculum
+- Shaun R Levick
 
 ------
 
@@ -19,8 +20,7 @@ Once registered you can access the Earth Engine environment here: https://code.e
 
 ### Objective
 ---------
-The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript.  
-
+The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices. 
 
 ## 1. Signup for the GEE account
 1. On google chrome, navigate to https://code.earthengine.google.com/signup/(https://code.earthengine.google.com/signup/)
@@ -31,17 +31,17 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 
 
 ## 2. Navigate through the GEE environment interface.
-1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: https://code.earthengine.google.com(https://code.earthengine.google.com). You should see the GEE landing page as below
+1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: https://code.earthengine.google.com(https://code.earthengine.google.com). You should see the GEE landing page as below.
 
 ![Figure 1. The Google Earth Engine environment](Prac01/LandingPage.PNG)
 
 2. Notice GEE environment is divided up into four panels: 
-- The top-left panel with tabs for Scripts, Docs and Assets  
+- The top-left panel has tabs for Scripts, Documentation and Assets  
 - The editor (top-centre) panel is for writing and running JavaScript commands  
-- The top-right panel with tabs for the console, inspector and tasks  
-- The bottom panel is Map interface with geometry features 
+- The top-right panel has tabs for the console, inspector and tasks  
+- The bottom panel is Map interface with geometry features and google map like feel. 
 
-3. Navigate through the four panels and try to understand what each panel does. Take the feature tour.
+3. Navigate through the four panels and try to understand what each panel does. I recommend you take the feature tour.
 
 ![Figure 1. The Google Earth Engine environment](Prac01/FeatureTour.PNG)   
 
@@ -55,11 +55,11 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 print("Hello World!");
 ```
 
-2. The line above is a JavaScript statement. In JavaScript, statements end in a semicolon. Earth Engine programs are made up of a set of statements like this one. You can think of these statements as a set of tasks you want the earth engine to perform.
+2. The line above is a JavaScript statement. JavaScript statements end in a semicolon. Earth Engine programs are made up of a set of statements like this one. You can think of these statements as a set of tasks you want the earth engine to perform. Using the "print" command, you can print any text you want. Note that JavaScript and any other programming are quite restrictive in their syntax. The barebore structure "print("")" cannot be changed. Any text that is placed within the quotation gets printed.
 
 Self assessment question: Modify the above script to print your name in the console.
 
-3.When writing a rather long JavaScript program, it is a good practice to put lots of comments in your code, to describe what you're trying to do. Commenting will improve code readability. To comment, use "//" befor the comment. for example: 
+3.When writing a rather long JavaScript program, it is a good practice to put lots of comments in your code- the comments are not executed but describes what you're trying to do. To comment, use "//" befor the comment. for example: 
 
 ```JavaScript
 // Printing hello world to the console
@@ -68,7 +68,7 @@ print("Hello World!");
 
 4. In the above script, the content after "//" are ignored by the Earth Engine. These comments are for us to understand whats happening in the script. 
 
-5. Using variables to store objects and primitives helps code readability. For example, a variable that stores a string object is defined by single ' or double " quotes but don't mix them. In below script, first we make a new string and store it in a variable called toPrint. Second, we print the variable toPrint which actually is 'Ahoy there!' . So, if you run the script, it will print 'Ahoy there!'
+5. Using variables to store objects helps code readability. For example, a variable that stores a string object is defined by single ' or double " quotes but don't mix them. In below script, first we make a new string and store it in a variable called toPrint. Second, we print the variable toPrint which actually is 'Ahoy there!' . So, if you run the script, it will print 'Ahoy there!'
 
 ```JavaScript
 // Use single (or double) quotes to make a string.
@@ -77,183 +77,189 @@ var toPrint = 'Ahoy there!';
 print(toPrint);
 ```
  
-6. You may have noticed that we used a keyword "var" at the begining of the script. "var" is always used when defining a variable. The name "toPrint" that we gave to the variable can be anything we want. Try changing the name of the variable and run the script. Try modifying the script to print something else. 
+6. You may have noticed that we used a keyword "var" at the begining of the script. "var" is always used when defining a variable. The name "toPrint" that we gave to the variable can be anything we want - but be consistent throughout a JavaScript program. Try changing the name of the variable and run the script. Try modifying the script to print something else. 
 
-7. Variables can also store numbers. We define the number variables using the same way we just dont need to put numbers in quotes. 
+7. Variables can also store numbers. We define the number variables using the same way as string variables -  we just dont need to put the numbers in quotes. 
 
 ```JavaScript
 // Store a number in a variable.
 var height = 165;
-print('I am ', height, 'cm tall');
+print('My height is:', height);
 ```
+8. Notice how within the print command, string is placed in quotation while the variable is not in quotation. 
 
-8. Try modifying the the variable name "height" as well as the variable value to print your height.
+9. Try modifying the the variable name "height" as well as the variable value to print your height.
 
 Self assessment question: Write a script that prints a persons age. Use two variables to store the persons name and the age. 
 
+10. Best way to learn Scripting is to modify the script and make mistakes - many many mistakes. If you are new to scripting and JavaScript, try to change and run aforelearnt script and see what happens.
+
 ---------
+## 4. Searching and importing remote sensing images 
 
-## 4. Getting started with Sentinel-2 satellite 
+Now you are ready to get started with images and remote sensing. In this exercise we will work with Sentinel-2 satellite data. 
 
-Now you are ready to get started with images and remote sensing. 
-1. 
-1. Navigate to Darwin and zoom in using the mouse wheel.
+About Sentinel-2: Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission supporting Copernicus Land Monitoring studies, including the monitoring of vegetation, soil and water cover, as well as observation of inland waterways and coastal areas. Sentinel-2 was developed and operated by the European Space Agency, and has been sending data back to Earth since 23 June 2015. The Sentinel-2 data contain 13 spectral bands representing TOA reflectance scaled by 10000.
 
-![Figure 2. Zoom to Darwin](Prac1/navigate2darwin.png)
-
-
-2. If the script area is not clear, clear the script workspace by selecting "Clear script" from the Reset button dropdown menu.
-
-![Figure 3. Clear script](Prac1/clearscript.png)
-
-3. Search for "elevation" or "SRTM" and click on the "NASA SRTM Digital Elevation 30m" result to show the dataset description.
-
-![Figure 4. Search for elevation data](Prac1/searchelevation.png)
-
-4. View the information on the dataset - look under "description" and "bands". Once you are happy, click on "Import", which moves the variable to the Imports section at the top of your script.
-
-![Figure 4. View elevation datasource and import](Prac1/viewinfo.png)
-
-Question: How many bands do this data have and whats the spatial resolution?
-
-5. Rename the default variable name "image" to anything you like. Here we will rename it to "theSRTM".
-
-![Figure 5. Rename image](Prac1/rename.png)
-
-6. Print/add the image object to the console by copying the script below into the code editor, and click "run" :
-
-```JavaScript
-print(theSRTM);
-```
-![Figure 6. Print SRTM](Prac1/printrun.png)
+Lets load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine to see what it looks like. Follow the commands below step-by-step - if you get stuck or can’t follow from these instructions alone, then watch the accompanying video.
 
 
-7. Browse through the information that was printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this same information is automatically available for all variables in the Imports section.
+1. Just above the Coding panel is search bar. Search for ‘Darwin’ in this GEE search bar, and click the result to pan and zoom the map to Darwin (Figure 2). In this exercise we will work on and around Darwin region. 
 
-![Figure 7. SRTM in console](Prac1/browseprint.png)
+![Figure 2. Navigate to Darwin ](Prac1/navigate2darwin.PNG)
 
-## 3. Adjusting visualisation parameters
 
-1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
+2. Use the geometry tools to make a point on Casuarina campus of Charles Darwin University (located in the suburb of Brinkin, north of Rapid Creek). Once you create the geometry point, you will see it added to your Coding panel as a variable (var) under the Imports heading.
+
+![Figure 3. Clear script](Prac1/geometry.PNG)
+
+3. Rename the resulting point ‘campus’ by clicking the import name (which is called ‘geometry’ by default).
+
+![Figure 3. Clear script](Prac1/rename.PNG)
+
+## 5. Query the archive for Sentinel-2 imagery
+1. Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
+
+![Figure 4. Sentinel-2](Prac1/Sentinel2.png)
+
+2. Briefly read the information of Sentinel-2 within the description tab and about bands in the bands tab.
+
+Self assessment question: How many bands do this data have and whats the spatial resolution?
+
+3. Click on the “Import” button to import the data to our computing environment.
+
+4. After clicking import, Sentinel-2 will be added to our Imports in the Coding panel as a variable with the default name "imageCollection". Let's rename this to “sent2” by clicking on imageCollection and typing "sent2".
+
+![Figure 4. TODO](Prac1/Sentinel2.png)
+
+## 6. Filtering through the image collection for a cloud-free image
+It is important to understand that we have now added access to the full Sentinel-2 image collection (i.e. every image that has been collected to date) to our script. For this exercise we don't want to load all these images - we want a single cloud free image over Charles Darwin University. As such, we can now filter the image collection with a few criteria, such as time of acquisition, spatial location and cloud cover.
+
+1. Copy or type the below code to the GEE and hit the run button. This piece of code will search the full Sentinel-2 archive, find images that are located over Darwin, sort them according to percentage cloud cover, and then return the most recent cloud-free image for us. 
 
 ```JavaScript
-Map.addLayer(theSRTM);
+// this is our first line of code. Let us define the image collection we are working with by writing this command
+var anImage = ee.Image(sent2
+
+// we will then include a filter to get only images in the date range we are interested in
+.filterDate("2015-07-01", "2017-09-30")
+
+// Next we include a geographic filter to narrow the search to images at the location of our point
+.filterBounds(campus)
+
+// Next we will also sort the collection by a metadata property, in our case cloud cover is a very useful one
+.sort("CLOUD_COVERAGE_ASSESSMENT")
+
+// Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
+.first());
+
 ```
 
-The displayed map will look pretty flat grey because the default visualization parameters map the full 16­bit range of the data onto the black–white range, but the elevation range is much smaller than that in any particular location. We’ll fix it in a moment.
-
-![Figure 8. Map SRTM](Prac1/flatgrey.png)
-
-2. Select the Inspector tab. Then click on several points on the map to get a feel for the elevation range in this area.
-
-![Figure 8. Inspect SRTM](Prac1/inspector.png)
-
-3. Now you can set some more appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
+2. At this point the image filtering has happened in the GEE memory, we can print the information relating to the filtered image to the console using "print" command as below. 
 
 ```JavaScript
-Map.addLayer(theSRTM, {min: 0, max: 300});
+// and let's print the image to the console.
+print("A Sentinel-2 scene:", anImage);
 ```
-![Figure 9. Visualise SRTM](Prac1/minmax.png)
 
-4. You will now be able to see the variation in elevation range with low values in black and highest points in white. Layers added to the map will have default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name, by adding a title with the syntax in the following code. Don't forget to click run.
+3. Explore the printed information to find out the name of scene, the date it was collected, and the band names. 
+
+TODO FIGURE
+
+Have a think about the following questions. Try to answer them yourself and discuss with classmates.  
+Q1: What does the dates within the filterDate() represent? 
+Q2: Think about what would happen if you removed or commented out the filterDate command?
+Q3: Modify the above script to get an image from last month.
+Q4: What does filterBounds represent? 
+Q5: What will happen if you remove or comment out the filterBounds() command. 
+Q6: Where can you get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.
+Q7: What will happen if you remove the ".first()" command?
+
+## 6. Adding images to the map view
+4. So far, we have filtered the image, and printed the information, but we dont know what the image looks like. To actually display the image, we need to use "Map.addLayer" command. Append the below script to display the image to the mapping layer. 
 
 ```JavaScript
-Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
-```
-![Figure 10. Rename title](Prac1/layername.png)
-
-## 4. Commenting and saving your scripts
-
-1. Now the code has started to look a little bit messy. Imagine you coming back to this code after a year. Would you still be able to tell which line is doing what task? Hence, it is a good idea to always put comments to your code reminding you of what you did and why. We add comments with two forward slashes // :
-
-```Javascript
-// Print data details to console
-print(theSRTM);
-
-// Add the SRTM data to the interactive map
-Map.addLayer(theSRTM);
-
-// Add the data again, but with restricted value ranges for better visualisation
-Map.addLayer(theSRTM, {min: 0, max: 300});
-
-// Add the data again, with value ranges, and a useful title for the Layer tab
-Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
-```
-![Figure 11. Comment script](Prac1/commenting.png)
-
-2. Also remember to save the code by clicking "Save". It will be saved in your private repository, and will be accessible the next time you log in to Earth Engine.
-
-![Figure 12. Comment script](Prac1/save.png)
-
-3. If you would like to experiment with different colour combinations, you can play with colour palettes as per the example below:
-
-```Javascript
-// Adding color scale to the elevation data
-Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
+// Add the image to the map, using the visualization parameters.
+Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
 ```
 
-![Figure 13. Colour scale elevation](Prac1/colorelevation.png)
+5. After the image appears in the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
 
-## 5. Hillshading and slope
+6. Move your mouse over the "Layers" button in the top right-hand corner of the mapping panel - this panel shows you the available image layers, and lets you enable/disable the layer and adjust the opacity.
 
-1. For better visualisation we can create a hillshade view of the elevation data. Remember you can use the Layer transparency options to create draped images for colourised hillshades.
+7. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. 
+8. Click over different landcovers "sports field", "beach", "ocean" , "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
+
+## 7. Exploring the band combination 
+
+1. In the above display of image, we have utilised 3 bands "red", "green", and "blue" to create a true-color composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different combination composite are useful to highlight different features in landscape. 
+
+2. Run the script below to display a false-color infrared composite. The band combination for the false-colour composite is NIR, Red, and Green. Paste the following lines below the ones you’ve already added, and click "Run".You will also see that "false-colour composite" has been added to the Layers tab in the map view.
 
 ```JavaScript
-// Create hillshade and map it
-var hillshade = ee.Terrain.hillshade(theSRTM);
-Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
+// add the false color composite image to the mapping layer.
+Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
+
 ```
+TODO FIGURE
 
-![Figure 14. Hillshade view](Prac1/hillsrtm.png)
+3. False-colour composites plugs in the near infra-red band to the red channel of computer screen, red band to the green channel, and green band to the blue channel. Cholorophyll content in green leaves have a strong response in the near-infrared band. Hence, the vegetation that appears dark green in true colour, appears bright red in the false-colour. Note the variations in red that can be seen in the vegetation bordering Rapid Creek. 
 
+4. Other band combinations for you to play with. Try them all so you learn how to modify the script.
+- Natural colour: 4 3 2
+- False-colour infrared: 8 4 3
+- False-colour urban: 12 11 4
+- Agriculture: 11 8 2
+- Atmospheric penetration: 12 11 8A
+- Healthy vegetation: 8 11 2
+- Land/Water: 8 11 4
+- Natural colours with atmospheric removal: 12 8 3
+- Shortwave infrared: 12 8 4
+- Vegetation analysis: 11 8 4
 
-2. Slope works in a similar way:
+## 6. Computing spectral/vegetation indices
+A spectral index is a mathematical equation that is applied on the various spectral bands of an image per pixel. Vegetation index uses two or more bands designed to enhance the contribution of vegetation properties and allow reliable mapping of photosynthetic activity and canopy structural variations.
 
-```javascript
-// Create terrain slope and map it
-var slope = ee.Terrain.slope(theSRTM);
-Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
-```
+NDVI is calculated from the visible and near-infrared light reflected by vegetation using the formula NDVI = (NIR — VIS)/(NIR + VIS). Healthy vegetation absorbs most of the visible light that hits it, and reflects a large portion of the near-infrared light = larger NDVI value. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light = lower NDVI value.
 
-![Figure 15. Slope map](Prac1/slope.png)
+1. Let's calculate the normalised-difference vegetation index (NDVI) for this image. NDVI is an index calculated from the RED and NIR bands, according to this equation:
+NDVI = (NIR - RED)/(NIR + RED)
 
-3. Don't forget to save your script before closing the Chrome tab.
+2. Append the following lines to your script to compute the NDVI. 
 
-## 6. Complete script
 ```JavaScript
-// The SRTM dataset
-var theSRTM = ee.Image("USGS/SRTMGL1_003");
+// Define variable NDVI from equation
+var NDVI = anImage.expression(
+    "(NIR - RED) / (NIR + RED)",   // NDVI formaula
+    {
+      RED: anImage.select("B4"),    //  RED band is B4
+      NIR: anImage.select("B8"),    // NIR band is B8
+    });
+```
+2. To visualise the NDVI map, we need to use Map.addLayer command as before. Add the below lines and run your script. 
 
-// Print data details to console
-print(theSRTM);
+```JavaScript
+// Add NDVI map to the mapping layer.
+Map.addLayer(NDVI, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 
-// Add the SRTM data to the interactive map
-Map.addLayer(theSRTM);
+```
+3. Adapting the above script, you can modify the equation and compute 100s of indices from the Sentinel-2 images. Have a look at the indices that can be computed using the sentinel-2 satellite data here: (https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/indexdb/). You don’t need to know them, but a useful place to search for other indices that might be of interest.
 
-// Add the data again, but with restricted value ranges for better visualisation
-Map.addLayer(theSRTM, {min: 0, max: 300});
+## Exercise
+Locate a cloud free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
 
-// Add the data again, with value ranges, and a useful title for teh Layer tab
-Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
+## The complete script
 
-// Adding color scale to the elevation data
-Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
+```JavaScript
 
-// Create hillshade and map it
-var hillshade = ee.Terrain.hillshade(theSRTM);
-Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
-
-// Create terrain slope and map it
-var slope = ee.Terrain.slope(theSRTM);
-Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 ```
 
 -------
 ### Thank you
 
-I hope you found that useful. A recorded video of this tutorial can be found on my YouTube Channel's [Introduction to Remote Sensing of the Environment Playlist](https://www.youtube.com/playlist?list=PLf6lu3bePWHDi3-lrSqiyInMGQXM34TSV).
+I hope you found this prac useful. A recorded video of this prac can be found on your learnline .
 
-#### Kind regards, Shaun R Levick (edit Deepak Gautam)
+#### Kind regards, Deepak Gautam
 ------
 
 
