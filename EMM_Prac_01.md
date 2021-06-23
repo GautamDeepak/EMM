@@ -4,7 +4,7 @@ Prac 1 - Introduction to Google Earth Engine and JavaScript
 ### Acknowledgments 
 - Google Earth Engine Team
 - Earth Engine Beginning Curriculum
-- Shaun R Levick
+- [GEARS Lab](https://www.gears-lab.com/emm_lab_1/)
 
 ### Prerequisites
 - Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
