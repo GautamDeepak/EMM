@@ -7,24 +7,24 @@ Prac 1 - Introduction to Google Earth Engine and JavaScript
 - Shaun R Levick
 
 ### Prerequisites
-Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
+- Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
 
-Once registered you can access the Earth Engine environment here: https://code.earthengine.google.com
+- Once registered you can access the Earth Engine environment at [https://code.earthengine.google.com](https://code.earthengine.google.com)
 
 ### Objective
 The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices.
  
 ---------------------------------------------------
 ## 1. Signup for the GEE account
-1. On google chrome, navigate to https://code.earthengine.google.com/signup/(https://code.earthengine.google.com/signup/)
+1. If you have not done so already, sign up [here](https://code.earthengine.google.com/signup/)
 2. Follow the signup and activation process.
 
 ## 2. Introduction to the GEE environment interface
-Google Earth Engine uses the JavaScript programming language. We will cover the very basics of this language during this course. Read the introduction provided here for more detail: https://developers.google.com/earth-engine/tutorials/tutorial_js_01(https://developers.google.com/earth-engine/tutorials/tutorial_js_01)
+Google Earth Engine uses the JavaScript programming language. We will cover the very basics of this language during this course. Read the introduction provided in the GEE developers forum [here](https://developers.google.com/earth-engine/tutorials/tutorial_js_01)
 
 
 ## 2. Navigate through the GEE environment interface.
-1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: https://code.earthengine.google.com(https://code.earthengine.google.com). You should see the GEE landing page as below.
+1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: [https://code.earthengine.google.com](https://code.earthengine.google.com). You should see the GEE landing page as below.
 
 ![Figure 1. The Google Earth Engine environment](Prac01/LandingPage.PNG)
 
