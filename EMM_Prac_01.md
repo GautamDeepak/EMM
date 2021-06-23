@@ -33,7 +33,7 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 ## 2. Navigate through the GEE environment interface.
 1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: https://code.earthengine.google.com(https://code.earthengine.google.com). You should see the GEE landing page as below
 
-![Figure 1. The Google Earth Engine environment](Prac01/LandingPage.png)
+![Figure 1. The Google Earth Engine environment](Prac01/LandingPage.PNG)
 
 2. Notice GEE environment is divided up into four panels: 
 - The top-left panel with tabs for Scripts, Docs and Assets  
@@ -43,7 +43,7 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 
 3. Navigate through the four panels and try to understand what each panel does. Take the feature tour.
 
-![Figure 1. The Google Earth Engine environment](Prac01/FeatureTour.png)   
+![Figure 1. The Google Earth Engine environment](Prac01/FeatureTour.PNG)   
 
 4. Check out all the buttons that are available to you and try to understand them. 
 
