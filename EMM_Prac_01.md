@@ -1,27 +1,20 @@
 # Environmental Monitoring and Modelling (ENV306/506)
 Prac 1 - Introduction to Google Earth Engine and JavaScript
---------------
 
 ### Acknowledgments 
 - Google Earth Engine Team
 - Earth Engine Beginning Curriculum
 - Shaun R Levick
 
-------
-
 ### Prerequisites
--------------
-
 Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
 
 Once registered you can access the Earth Engine environment here: https://code.earthengine.google.com
 
-------------------------------------------------------------------------
-
 ### Objective
----------
-The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices. 
 
+The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices. 
+-------------
 ## 1. Signup for the GEE account
 1. On google chrome, navigate to https://code.earthengine.google.com/signup/(https://code.earthengine.google.com/signup/)
 2. Follow the signup and activation process.
