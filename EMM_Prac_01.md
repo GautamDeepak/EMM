@@ -12,9 +12,9 @@ Completion of this Prac exercise requires the use of the Google Chrome browser a
 Once registered you can access the Earth Engine environment here: https://code.earthengine.google.com
 
 ### Objective
-
-The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices. 
--------------
+The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices.
+ 
+---------------------------------------------------
 ## 1. Signup for the GEE account
 1. On google chrome, navigate to https://code.earthengine.google.com/signup/(https://code.earthengine.google.com/signup/)
 2. Follow the signup and activation process.
