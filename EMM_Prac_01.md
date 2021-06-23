@@ -161,12 +161,12 @@ TODO FIGURE
 
 
 **Self assessment questions: **Have a think about the following questions. Try to answer them yourself and discuss with classmates. 
-- *What does the dates within the filterDate() represent?* 
+- *What does the numbers within the filterDate() represent?* 
 - *Think about what would happen if you removed or commented out the filterDate command?*
 - *Modify the above script to get an image from last - month.*
 - *What does filterBounds represent?*
 - *What will happen if you remove or comment out the filterBounds() command.*
-- *Where can you get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.*
+- *Where did we get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.*
 - *What will happen if you remove the ".first()" command?*
 
 ## 7. Adding images to the map view
@@ -253,8 +253,7 @@ Locate a cloud free image over Darwin City from before and after Cyclone Marcus 
 
 I hope you found this prac useful. A recorded video of this prac can be found on your learnline .
 
-#### Kind regards, Deepak Gautam
-------
-
-
+Kind regards, 
+Deepak Gautam
 ### The end
+_________________________________________
