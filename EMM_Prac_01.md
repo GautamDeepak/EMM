@@ -40,7 +40,7 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 
 4. Check out all the buttons that are available to you and try to understand them. 
 
-##3. Basic introduction to JavaScript
+## 3. Basic introduction to JavaScript
 
 1. Time to write your first JavaScript for Earth Engine! In the editor panel, paste below script and hit run. "Hello World!" will be printed to the console tab. 
  
@@ -50,7 +50,7 @@ print("Hello World!");
 
 2. The line above is a JavaScript statement. JavaScript statements end in a semicolon. Earth Engine programs are made up of a set of statements like this one. You can think of these statements as a set of tasks you want the earth engine to perform. Using the "print" command, you can print any text you want. Note that JavaScript and any other programming are quite restrictive in their syntax. The barebore structure "print("")" cannot be changed. Any text that is placed within the quotation gets printed.
 
-Self assessment question: Modify the above script to print your name in the console.
+- **Self assessment question:** *Modify the above script to print your name in the console.*
 
 3.When writing a rather long JavaScript program, it is a good practice to put lots of comments in your code- the comments are not executed but describes what you're trying to do. To comment, use "//" befor the comment. for example: 
 
@@ -159,31 +159,31 @@ print("A Sentinel-2 scene:", anImage);
 
 TODO FIGURE
 
-Have a think about the following questions. Try to answer them yourself and discuss with classmates.  
-Q1: What does the dates within the filterDate() represent? 
-Q2: Think about what would happen if you removed or commented out the filterDate command?
-Q3: Modify the above script to get an image from last month.
-Q4: What does filterBounds represent? 
-Q5: What will happen if you remove or comment out the filterBounds() command. 
-Q6: Where can you get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.
-Q7: What will happen if you remove the ".first()" command?
+*Have a think about the following questions. Try to answer them yourself and discuss with classmates.*  
+- What does the dates within the filterDate() represent? 
+- Think about what would happen if you removed or commented out the filterDate command?
+- Modify the above script to get an image from last - month.
+- What does filterBounds represent? 
+- What will happen if you remove or comment out the filterBounds() command. 
+- Where can you get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.
+- What will happen if you remove the ".first()" command?*
 
-## 6. Adding images to the map view
-4. So far, we have filtered the image, and printed the information, but we dont know what the image looks like. To actually display the image, we need to use "Map.addLayer" command. Append the below script to display the image to the mapping layer. 
+## 7. Adding images to the map view
+1. So far, we have filtered the image, and printed the information, but we dont know what the image looks like. To actually display the image, we need to use "Map.addLayer" command. Append the below script to display the image to the mapping layer. 
 
 ```JavaScript
 // Add the image to the map, using the visualization parameters.
 Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
 ```
 
-5. After the image appears in the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
+2. After the image appears in the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
 
-6. Move your mouse over the "Layers" button in the top right-hand corner of the mapping panel - this panel shows you the available image layers, and lets you enable/disable the layer and adjust the opacity.
+3. Move your mouse over the "Layers" button in the top right-hand corner of the mapping panel - this panel shows you the available image layers, and lets you enable/disable the layer and adjust the opacity.
 
-7. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. 
-8. Click over different landcovers "sports field", "beach", "ocean" , "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
+4. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. 
+5. Click over different landcovers "sports field", "beach", "ocean" , "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
 
-## 7. Exploring the band combination 
+## 8. Exploring the band combination 
 
 1. In the above display of image, we have utilised 3 bands "red", "green", and "blue" to create a true-color composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different combination composite are useful to highlight different features in landscape. 
 
@@ -210,7 +210,7 @@ TODO FIGURE
 - Shortwave infrared: 12 8 4
 - Vegetation analysis: 11 8 4
 
-## 6. Computing spectral/vegetation indices
+## 9. Computing spectral/vegetation indices
 A spectral index is a mathematical equation that is applied on the various spectral bands of an image per pixel. Vegetation index uses two or more bands designed to enhance the contribution of vegetation properties and allow reliable mapping of photosynthetic activity and canopy structural variations.
 
 NDVI is calculated from the visible and near-infrared light reflected by vegetation using the formula NDVI = (NIR — VIS)/(NIR + VIS). Healthy vegetation absorbs most of the visible light that hits it, and reflects a large portion of the near-infrared light = larger NDVI value. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light = lower NDVI value.
@@ -229,14 +229,14 @@ var NDVI = anImage.expression(
       NIR: anImage.select("B8"),    // NIR band is B8
     });
 ```
-2. To visualise the NDVI map, we need to use Map.addLayer command as before. Add the below lines and run your script. 
+3. To visualise the NDVI map, we need to use Map.addLayer command as before. Add the below lines and run your script. 
 
 ```JavaScript
 // Add NDVI map to the mapping layer.
 Map.addLayer(NDVI, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 
 ```
-3. Adapting the above script, you can modify the equation and compute 100s of indices from the Sentinel-2 images. Have a look at the indices that can be computed using the sentinel-2 satellite data here: (https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/indexdb/). You don’t need to know them, but a useful place to search for other indices that might be of interest.
+4. Adapting the above script, you can modify the equation and compute 100s of indices from the Sentinel-2 images. Have a look at the indices that can be computed using the sentinel-2 satellite data here: (https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/indexdb/). You don’t need to know them, but a useful place to search for other indices that might be of interest.
 
 ## Exercise
 Locate a cloud free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
