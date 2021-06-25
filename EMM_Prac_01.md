@@ -1,5 +1,5 @@
 # Environmental Monitoring and Modelling (ENV306/506)
-Prac 1 - Introduction to Google Earth Engine and JavaScript
+## Prac 1 - Introduction to Google Earth Engine and JavaScript
 
 ### Acknowledgments 
 - Google Earth Engine Team
