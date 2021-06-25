@@ -3,7 +3,7 @@ Prac 1 - Introduction to Google Earth Engine and JavaScript
 
 ### Acknowledgments 
 - Google Earth Engine Team
-- [Google Earth Engine guide] (https://developers.google.com/earth-engine/guides)
+- [Google Earth Engine guide](https://developers.google.com/earth-engine/guides)
 - [GEARS Lab](https://www.gears-lab.com/emm_lab_1/)
 
 ### Prerequisites
