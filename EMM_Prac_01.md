@@ -113,11 +113,11 @@ Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine 
 
 4. Now that we have decided the region where we want our remote sensing data from, Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
 
-![Figure 5. Sentinel-2](Prac01/Sentinel2.PNG)
+![Figure 5. Sentinel-2](Prac01/sentinel2.PNG)
 
 5. Briefly read the information of Sentinel-2 within the description tab and about bands in the bands tab.
 
-![Figure 6. Band description](Prac01/description.png)
+![Figure 6. Band description](Prac01/description.PNG)
 
 Self-assessment question: How many bands do this data have and whats the spatial resolution?
 
