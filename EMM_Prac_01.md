@@ -256,20 +256,7 @@ Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']},
 
 ![Figure 15. NDVI map](Prac01/save.PNG)
 
-## Useful script learnt today
-Below are the useful script we learnt today. It is recommended that you carefully comprehend the script.  
-
-### Filtering through imageCollection
-![Figure 16. NDVI map](Prac01/filtering.PNG)
-
-### Adding images to mapping layer
-![Figure 17. NDVI map](Prac01/addlayer.PNG)
-
-## Exercise
-Locate a cloud-free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
-
-
-## The complete script
+## 10. The complete script used in this Prac
 
 ```JavaScript
 // this is our first line of code. Let us define the image collection we are working with by writing this command
@@ -307,6 +294,19 @@ var NDVIimage = anImage.expression(
 // Add NDVI map to the mapping layer.
 Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
+
+## 11. Review
+Below are the useful script we learnt today. It is recommended that you carefully comprehend the script.  
+
+### Filtering through imageCollection
+![Figure 16. NDVI map](Prac01/filtering.PNG)
+
+### Adding images to mapping layer
+![Figure 17. NDVI map](Prac01/addlayer.PNG)
+
+## 12. Exercise
+Locate a cloud-free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
+
 
 -------
 ### Thank you
