@@ -256,13 +256,56 @@ Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']},
 
 ![Figure 15. NDVI map](Prac01/save.PNG)
 
+## Useful script learnt today
+Below are the useful script we learnt today. It is recommended that you carefully comprehend the script.  
+
+- Filtering through imageCollection
+![Figure 16. NDVI map](Prac01/filtering.PNG)
+
+- Adding images to mapping layer
+![Figure 17. NDVI map](Prac01/addlayer.PNG)
+
 ## Exercise
 Locate a cloud-free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
+
 
 ## The complete script
 
 ```JavaScript
+// this is our first line of code. Let us define the image collection we are working with by writing this command
+var anImage = ee.Image(sent2
 
+// we will then include a filter to get only images in the date range we are interested in
+.filterDate("2020-06-01", "2021-06-01")
+
+// Next we include a geographic filter to narrow the search to images at the location of our point
+.filterBounds(campus)
+
+// Next we will also sort the collection by a metadata property, in our case cloud cover is a very useful one
+.sort("CLOUD_COVERAGE_ASSESSMENT")
+
+// Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
+.first());
+
+// and let's print the image to the console.
+print("A Sentinel-2 scene:", anImage);
+
+// Add the image to the map, using the visualization parameters.
+Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
+
+// add the false color composite image to the mapping layer.
+Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
+
+// Define variable NDVI from equation
+var NDVIimage = anImage.expression(
+    "(NIR - RED) / (NIR + RED)",   // NDVI formaula
+    {
+      RED: anImage.select("B4"),    //  RED band is B4
+      NIR: anImage.select("B8"),    // NIR band is B8
+    });
+    
+// Add NDVI map to the mapping layer.
+Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
 
 -------
