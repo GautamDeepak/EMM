@@ -298,11 +298,11 @@ Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']},
 ## 11. Review
 Below are the useful script we learnt today. It is recommended that you carefully comprehend the script.  
 
-### Filtering through imageCollection
+### - Filtering through imageCollection
 
 ![Figure 16. NDVI map](Prac01/filtering.PNG)
 
-### Adding images to mapping layer
+### - Adding images to mapping layer
 
 ![Figure 17. NDVI map](Prac01/addlayer.PNG)
 
