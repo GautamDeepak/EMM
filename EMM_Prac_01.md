@@ -104,30 +104,30 @@ Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine 
 
 2. Use the geometry tools to make a point on the Casuarina campus of Charles Darwin University (located in the suburb of Brinkin, north of Rapid Creek). Once you create the geometry point, you will see it added to your Coding panel as a variable (var) under the Imports heading.
 
-![Figure 3. Clear script](Prac1/geometry.PNG)
+![Figure 3. Draw Geometry](Prac1/geometry.PNG)
 
-3. Rename the resulting point ‘campus’ by clicking the import name (which is called ‘geometry’ by default).
+3. Rename the resulting point to ‘campus’ by clicking the import name (which is called ‘geometry’ by default).
 
-![Figure 3. Clear script](Prac1/rename.PNG)
+![Figure 4. Rename Geometry](Prac1/rename.PNG)
 
-## 5. Query the archive for Sentinel-2 imagery
-1. Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
 
-![Figure 4. Sentinel-2](Prac1/Sentinel2.png)
+4. Now that we have decided the region where we want our remote sensing data from, Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
 
-2. Briefly read the information of Sentinel-2 within the description tab and about bands in the bands tab.
+![Figure 5. Sentinel-2](Prac1/Sentinel2.png)
 
-![Figure 4. Sentinel-2](Prac1/description.png)
+5. Briefly read the information of Sentinel-2 within the description tab and about bands in the bands tab.
+
+![Figure 6. Band description](Prac1/description.png)
 
 Self-assessment question: How many bands do this data have and whats the spatial resolution?
 
-3. Click on the “Import” button to import the data to our computing environment. Sentinel-2 will be added to our Imports in the Coding panel as a variable with the default name "imageCollection".
+6. Click on the “Import” button to import the data to our computing environment. Sentinel-2 will be added to our Imports in the Coding panel as a variable with the default name "imageCollection".
 
-![Figure 4. Sentinel-2](Prac1/import.png)
+![Figure 7. Sentinel-2](Prac1/import.png)
 
-4. Let's rename this to “sent2” by clicking on imageCollection and typing "sent2".
+7. Let's rename this to “sent2” by clicking on imageCollection and typing "sent2".
 
-![Figure 4. TODO](Prac1/rename2.png)
+![Figure 8. Rename Sentinel](Prac1/rename2.png)
 
 ## 6. Filtering through the image collection for a cloud-free image
 It is important to understand that we have now added access to the full Sentinel-2 image collection (i.e. every image that has been collected to date) to our script. For this exercise we don't want to load all these images - we want a single cloud-free image over Charles Darwin University. As such, we can now filter the image collection with a few criteria, such as time of acquisition, spatial location and cloud cover.
@@ -161,7 +161,7 @@ print("A Sentinel-2 scene:", anImage);
 
 3. Explore the printed information to find out the name of the scene, the date it was collected, and the band names. 
 
-![Figure 4. TODO](Prac1/printconsole.png)
+![Figure 9. Print console](Prac1/printconsole.png)
 
 
 ** Self-assessment questions: **Have a think about the following questions. Try to answer them yourself and discuss them with classmates. 
@@ -181,25 +181,23 @@ print("A Sentinel-2 scene:", anImage);
 Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
 ```
 
-![Figure 4. TODO](Prac1/truecolor.png)
+![Figure 10. True color](Prac1/truecolor.png)
 
 2. After the image appears on the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
 
 3. Move your mouse over the "Layers" button in the top right-hand corner of the mapping panel - this panel shows you the available image layers and lets you enable/disable the layer and adjust the opacity.
 
-![Figure 4. TODO](Prac1/layer.png)
+![Figure 11. Layer](Prac1/layer.png)
 
-4. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. 
+4. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. Below is a screen capture of band values from sports field. 
 
-![Figure 4. TODO](Prac1/inspector.png)
+![Figure 12. inspector](Prac1/inspector.png)
 
-5. Click over different landcover such as "sports field", "beach", "ocean", "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
+5. Now try click over different landcover such as "sports field", "beach", "ocean", "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
 
 ## 8. Exploring the band combination 
 
-1. In the above display of the image, we have utilised 3 bands "red", "green", and "blue" to create a true-colour composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different band combination can be used to create a unique composite that could better highlight different features in the landscape. 
-
-Figure TODO: 
+1. In the above display of the image, we have utilised 3 bands "red", "green", and "blue" to create a true-colour composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different band combination can be used to create a unique composite that could better highlight different features in the landscape.  
 
 2. Run the script below to display a false-colour infrared composite. The band combination for the false-colour composite is NIR, Red, and Green. Paste the following lines below the ones you’ve already added, and click "Run".You will also see that "false-colour composite" has been added to the Layers tab in the map view.
 
@@ -208,7 +206,7 @@ Figure TODO:
 Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
 
 ```
-![Figure 4. TODO](Prac1/falsecolor.png)
+![Figure 13. false color](Prac1/falsecolor.png)
 
 3. False-colour composites plugs in the near infra-red band to the red channel of the computer screen, red band to the green channel, and green band to the blue channel. Chlorophyll content in green leaves has a strong response in the near-infrared band. Hence, the vegetation that appears dark green in true colour, appears bright red in the false-colour composite. Note the variations in red that can be seen in the vegetation bordering Rapid Creek. 
 
@@ -250,9 +248,13 @@ var NDVIimage = anImage.expression(
 Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
 
-![Figure 4. TODO](Prac1/ndvimap.png)
+![Figure 14. NDVI map](Prac1/ndvimap.png)
 
 4. Adapting the above script, you can modify the equation and compute 100s of indices from the Sentinel-2 images. Have a look at the indices that can be computed using the sentinel-2 satellite data here: (https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/indexdb/). You don’t need to know them, but a useful place to search for other indices that might be of interest.
+
+5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script. 
+
+![Figure 15. NDVI map](Prac1/save.png)
 
 ## Exercise
 Locate a cloud-free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
@@ -271,3 +273,4 @@ I hope you found this prac useful. A recorded video of this prac can be found on
 #### Kind regards, Deepak Gautam
 ------
 ### The end
+
