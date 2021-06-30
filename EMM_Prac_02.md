@@ -26,22 +26,22 @@ In Prac 1 we learnt how to search an archive for a single cloud-free image, disp
 
 *Question:* How many bands do this data have and what is the spatial resolution?
 
-5. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
+4. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
 ![Figure 5. Rename image](Prac1/rename.png)
 
-6. Print the image object to the console by copying the script below into the code editor, and click "run" :
+5. Print the image object to the console by copying the script below into the code editor, and click "run" :
 
 ```JavaScript
 print(theSRTM);
 ```
 ![Figure 6. Print SRTM](Prac1/printrun.png)
 
-7. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
+6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
 ![Figure 7. SRTM in console](Prac1/browseprint.png)
 
-## 3. Adjusting visualisation parameters
+## 2. Adjusting visualisation parameters
 
 1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
 
@@ -58,21 +58,21 @@ Map.addLayer(theSRTM);
 
 ![Figure 8. Inspect SRTM](Prac1/inspector.png)
 
-3. Now that you know the approximate min and max elevation values for your scene, you can set some the appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
+4. Now that you know the approximate min and max elevation values for your scene, you can set some the appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
 
 ```JavaScript
 Map.addLayer(theSRTM, {min: 0, max: 300});
 ```
 ![Figure 9. Visualise SRTM](Prac1/minmax.png)
 
-4. You will now be able to see the variation in the elevation range with min values in black and max points in white. The image added to the mapping layers has default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name in the following code. Don't forget to click run.
+5. You will now be able to see the variation in the elevation range with min values in black and max points in white. The image added to the mapping layers has default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name in the following code. Don't forget to click run.
 
 ```JavaScript
 Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 ```
 ![Figure 10. Rename title](Prac1/layername.png)
 
-## 4. Commenting and saving your scripts
+## 3. Commenting and saving your scripts
 
 1. Now the code has started to look a little bit messy. Imagine you coming back to this code after a year. Would you still be able to tell which line is doing what task? Hence, it is a good idea to always put comments to your code reminding you of what you did and why. We add comments with two forward slashes // :
 
@@ -104,7 +104,7 @@ Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'E
 
 ![Figure 13. Colour scale elevation](Prac1/colorelevation.png)
 
-## 5. Hillshade and slope
+## 4. Hillshade and slope
 
 1. For better visualisation we can create a hillshade view of the elevation data. 
 
@@ -122,7 +122,7 @@ Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
 
 3. Pan over to the Kakadu National Park region, where there are some nice elevation differences. Play with the transparency of hillshade and slopes. Flick around with hillshade and/or slope on top of the coloured palette for optimal display.
 
-2. You can also similarly compute the slope of the terrain.
+4. You can also similarly compute the slope of the terrain.
 
 ```javascript
 // Create terrain slope and map it
@@ -131,9 +131,9 @@ Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 ```
 
 ![Figure 15. Slope map](Prac1/slope.png)
-4. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
+5. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
 
-## 6. Applying a computation to an image
+## 5. Applying a computation to an image
 1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
 
 ```javascript
@@ -152,7 +152,7 @@ FIGURE TO DO
 var DEMover200 = srtm.updateMask(high);
 Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']}, 'DEM>200');
 ```
-## 7. Applying a spatial reducer
+## 6. Applying a spatial reducer
 Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used the inspector tool to extract data from one pixel, think of a spatial reducer as a way to extract data from a polygon rather than a single pixel. 
 
 Figure TODO spatial reducer
@@ -176,11 +176,11 @@ print('Mean elevation', meanElevation.get('elevation'));
 
 3. Try modifying the above script to extract min and max elevation instead of mean.
 
-5. DO NOT forget to save your script. Click on the Save button and follow the prompt to save the script.
+4. DO NOT forget to save your script. Click on the Save button and follow the prompt to save the script.
 
 *Note:* There are other digital elevation data available to you on the google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
 
-## 8. Exercise
+## 7. Exercise
 Prac01 taught you how to visualise Sentinel-2 data and compute indices. Prac02 taught you how to visualise elevation data, apply computation, and reducer.  
 
 - Locate a cloud-free Sentinel image over Greater Darwin region from before and after Cyclone Marcus (17 March 2018). 
