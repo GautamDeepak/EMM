@@ -152,6 +152,9 @@ var anImage = ee.Image(sent2
 
 ```
 
+*Take a moment to play with and understand the above filtering script see figure below as a guide*
+![Figure 16. NDVI map](Prac01/filtering.PNG)
+
 2. At this point the image filtering has happened in the GEE memory, we can print the information about the the filtered image to the console using "print" command as below. 
 
 ```JavaScript
@@ -182,6 +185,9 @@ Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-co
 ```
 
 ![Figure 10. True color](Prac01/truecolor.PNG)
+
+* Take a moment to play with and understand the above Map.addLayer script. Use figure below as a guide*
+![Figure 17. NDVI map](Prac01/addlayer.PNG)
 
 2. After the image appears on the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
 
@@ -294,21 +300,6 @@ var NDVIimage = anImage.expression(
 // Add NDVI map to the mapping layer.
 Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
-
-## 11. Review
-Below are the useful script we learnt today. It is recommended that you carefully comprehend the script.  
-
-### - Filtering through imageCollection
-
-![Figure 16. NDVI map](Prac01/filtering.PNG)
-
-### - Adding images to mapping layer
-
-![Figure 17. NDVI map](Prac01/addlayer.PNG)
-
-## 12. Exercise
-Locate a cloud-free image over Darwin City from before and after Cyclone Marcus (17 March 2018). Derive NDVI layers for both images and visually compare the effects of the cyclone.
-
 
 -------
 ### Thank you
