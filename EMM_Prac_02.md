@@ -35,7 +35,7 @@ print(theSRTM);
 
 6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
-![Figure 4. SRTM in console](Prac02/browseprint.png)
+![Figure 4. SRTM in console](Prac02/inspector.png)
 
 ## 2. Adjusting visualisation parameters
 
