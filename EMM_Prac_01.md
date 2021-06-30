@@ -152,7 +152,7 @@ var anImage = ee.Image(sent2
 
 ```
 
-*Take a moment to play with and understand the above filtering script see figure below as a guide*
+**Take a moment** to play with and understand the above filtering script see figure below as a guide
 ![Figure 16. NDVI map](Prac01/filtering.PNG)
 
 2. At this point the image filtering has happened in the GEE memory, we can print the information about the the filtered image to the console using "print" command as below. 
@@ -167,7 +167,7 @@ print("A Sentinel-2 scene:", anImage);
 ![Figure 9. Print console](Prac01/printconsole.PNG)
 
 
-** Self-assessment questions: **Have a think about the following questions. Try to answer them yourself and discuss them with classmates. 
+**Self-assessment questions:** Have a think about the following questions. Try to answer them yourself and discuss them with classmates. 
 - *What do the numbers within the filterDate() represent?* 
 - *Think about what would happen if you removed or commented out the filterDate command?*
 - *Modify the above script to get an image from last - month.*
@@ -186,7 +186,7 @@ Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-co
 
 ![Figure 10. True color](Prac01/truecolor.PNG)
 
-* Take a moment to play with and understand the above Map.addLayer script. Use figure below as a guide*
+**Take a moment** to play with and understand the above Map.addLayer script. Use figure below as a guide
 ![Figure 17. NDVI map](Prac01/addlayer.PNG)
 
 2. After the image appears on the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
