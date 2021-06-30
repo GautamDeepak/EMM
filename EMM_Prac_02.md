@@ -7,28 +7,26 @@
 - [GEARS Lab](https://www.gears-lab.com/emm_lab_2/)
 
 ### Prerequisites
-- Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
-
+- Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
 - Once registered you can access the Earth Engine environment at [https://code.earthengine.google.com](https://code.earthengine.google.com)
-
 ### Objective
-In Prac 1 we learnt how to search for a single image and display it in the map environment. From an environmental monitoring perspective we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. In this Prac we will learn how to access, visualise and query digital elevation data for any study location.
+In Prac 1 we learnt how to search an archive for a single cloud-free image, display it in the map environment, and compute indices. From an environmental monitoring perspective, we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. In this Prac, we will learn how to access, visualise and query digital elevation data for any study location.
  
 ---------------------------------------------------
 ## 1. Getting started with elevation data
-1. Navigate to darwin area - see prac 01 on how to. 
+1. Navigate to the Darwin area - see prac 01 on how to. 
 
 2. Search for "elevation" or "SRTM" and click on the "NASA SRTM Digital Elevation 30m" result to show the dataset description.
 
 ![Figure 4. Search for elevation data](Prac1/searchelevation.png)
 
-3. Read the information on the dataset - look under "description" and "bands". Once done, click on "Import", which will imports the dataset and places it under the Imports section at the top of your script.
+3. Read the information on the dataset - look under "description" and "bands". Once done, click on "Import", which will import the dataset and places it under the Imports section at the top of your script.
 
-![Figure 4. View elevation datasource and import](Prac1/viewinfo.png)
+![Figure 4. View elevation data source and import](Prac1/viewinfo.png)
 
-Question: How many bands do this data have and what is the spatial resolution?
+*Question:* How many bands do this data have and what is the spatial resolution?
 
-5. Rename the default variable name "image" to anything you like. Here we will rename it to "theSRTM".
+5. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
 ![Figure 5. Rename image](Prac1/rename.png)
 
@@ -39,8 +37,7 @@ print(theSRTM);
 ```
 ![Figure 6. Print SRTM](Prac1/printrun.png)
 
-
-7. Browse through the information that was printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this same information is automatically available for all variables in the Imports section.
+7. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
 ![Figure 7. SRTM in console](Prac1/browseprint.png)
 
@@ -53,22 +50,22 @@ Map.addLayer(theSRTM);
 ```
 ![Figure 8. Map SRTM](Prac1/flatgrey.png)
 
-2. The displayed map will look pretty flat grey because the default visualization parameters map the full 16­bit range (0 to 65,635) of the data onto the black–white range, but the elevation range within a landscape is much smaller. We’ll fix it in a moment.
+2. The displayed map will look pretty flat grey because the default visualization parameters maps the full 16­bit range (0 to 65,635) of the data onto the black–white range. However, the elevation range within a landscape is much smaller (e.g. between 0 and 400). We’ll fix it in a moment.
 
 
 
-3. Select the Inspector tab. Then click on several points on the map to get a feel for the elevation range in this area.
+3. Select the Inspector tab and click on several points on the map to get a feel for the elevation range in this area.
 
 ![Figure 8. Inspect SRTM](Prac1/inspector.png)
 
-3. Now you can set some more appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
+3. Now that you know the approximate min and max elevation values for your scene, you can set some the appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
 
 ```JavaScript
 Map.addLayer(theSRTM, {min: 0, max: 300});
 ```
 ![Figure 9. Visualise SRTM](Prac1/minmax.png)
 
-4. You will now be able to see the variation in elevation range with low values in black and highest points in white. Layers added to the has default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name in the following code. Don't forget to click run.
+4. You will now be able to see the variation in the elevation range with min values in black and max points in white. The image added to the mapping layers has default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name in the following code. Don't forget to click run.
 
 ```JavaScript
 Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
@@ -98,10 +95,10 @@ Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 
 ![Figure 12. Comment script](Prac1/save.png)
 
-3. If you would like to experiment with different colour combinations, you can play with colour palettes as per the example below: Experiment with different color combination.
+3. If you would like to experiment with different colour combinations, you can play with colour palettes as per the example below: Experiment with the different colour combinations.
 
 ```Javascript
-// Adding color scale to the elevation data
+// Adding colour scale to the elevation data
 Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
 ```
 
@@ -119,13 +116,13 @@ Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
 
 ![Figure 14. Hillshade view](Prac1/hillsrtm.png)
 
-2. Remember you can use the Layer transparency options to create draped images for colourised hillshades.
+2. Remember you can use the Layer transparency options to create draped images for colourised hillsides.
 
 ![Figure 14. Hillshade view](Prac1/hillsrtm.png) TODO transparency
 
-3. Pan over to the Kakadu National Park region, where there are some nice elevation differences. Play with the transparency of hillshade and slope. Flick around with hillshade and/or slope on top of the coloured palette for optimal display.
+3. Pan over to the Kakadu National Park region, where there are some nice elevation differences. Play with the transparency of hillshade and slopes. Flick around with hillshade and/or slope on top of the coloured palette for optimal display.
 
-2. You can also compute slope of the terrain in a similar way.
+2. You can also similarly compute the slope of the terrain.
 
 ```javascript
 // Create terrain slope and map it
@@ -134,10 +131,10 @@ Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 ```
 
 ![Figure 15. Slope map](Prac1/slope.png)
-
+4. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
 
 ## 6. Applying a computation to an image
-1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. The white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold does not meet.
+1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
 
 ```javascript
 // computation: Terrain that has elevation over 200 m
@@ -148,7 +145,7 @@ FIGURE TO DO
 
 2. Pan over to the rapid creek river and play with the elevation threshold to see if you can approximately create the rapid creek flood extent (the flood plain maps of NT can be found [here](https://denr.nt.gov.au/water/water-resources/flooding-reports-maps/floodplain-maps)) 
 
-3. We will learn more about masking in upcoming labs. But here lets just quickly look into how you can use the binary image “high” to mask out your original DEM. Use the script below which will mask the areas in DEM that are below 200 and display the above 200 data for you in a coloured palette. Explore around Kakadu national park on this “DEM>200” layer
+3. We will learn more about masking in upcoming labs. But here let's just quickly look into how you can use the binary image created above called “high” to mask out your original DEM. Use the script below which will mask the areas in DEM that are below 200 m and display the above 200 m data for you in a coloured palette. Explore around Kakadu national park on this “DEM>200” layer
 
 ```JavaScript
 // Masking out the terrains below 200m from the DEM
@@ -156,11 +153,11 @@ var DEMover200 = srtm.updateMask(high);
 Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']}, 'DEM>200');
 ```
 ## 7. Applying a spatial reducer
-Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used inspector tool to extract data from a pixel, think of spatial reducer to extract data from a polygon rather than pixel. 
+Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used the inspector tool to extract data from one pixel, think of a spatial reducer as a way to extract data from a polygon rather than a single pixel. 
 
 Figure TODO spatial reducer
 
-1. Select the polygon geometry tool and draw a rectangle (or more complex polygon) on the map. Rename the geometry polygon to roi (roi means region of interest).
+1. Select the polygon geometry tool and draw a rectangle (or more complex polygon) on the map. Rename the geometry polygon to roi (roi means the region of interest).
 
 Figure to do
 
@@ -179,16 +176,16 @@ print('Mean elevation', meanElevation.get('elevation'));
 
 3. Try modifying the above script to extract min and max elevation instead of mean.
 
-5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script.
+5. DO NOT forget to save your script. Click on the Save button and follow the prompt to save the script.
 
-*Note:* There are other digital elevation data available to you on google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
+*Note:* There are other digital elevation data available to you on the google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
 
 ## 8. Exercise
 Prac01 taught you how to visualise Sentinel-2 data and compute indices. Prac02 taught you how to visualise elevation data, apply computation, and reducer.  
 
 - Locate a cloud-free Sentinel image over Greater Darwin region from before and after Cyclone Marcus (17 March 2018). 
 - Using the cloud-free Sentinel image, derive NDVI layers for before and after the Cyclone Marcus and visually compare the effects of the cyclone.
-- Overlay the elevation data and visually inspect if the effect of cyclone is more profound in low/high elevation.
+- Overlay the elevation data, apply spatial reducer and compute mean elevation of the areas which had a severe, moderate, and minimal effect by the Cyclone. 
 
 ## The complete script
 
