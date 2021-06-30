@@ -181,7 +181,7 @@ print('Mean elevation', meanElevation.get('elevation'));
 
 5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script.
 
-*Note: * There are other digital elevation data available to you on google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
+*Note:* There are other digital elevation data available to you on google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
 
 ## 8. Exercise
 Prac01 taught you how to visualise Sentinel-2 data and compute indices. Prac02 taught you how to visualise elevation data, apply computation, and reducer.  
@@ -230,7 +230,6 @@ var meanElevation = srtm.reduceRegion({
 });
 // print the mean elevation
 print('Mean elevation', meanElevation.get('elevation'));
-
 ```
 
 -------
