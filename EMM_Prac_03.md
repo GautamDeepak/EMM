@@ -11,10 +11,10 @@ In Labs 1 and 2 we learnt how to search for images (multispectral and elevation)
 ---------------------------------------------------
 ## 1. Load and filter and visualise Landsat image collection
 1. Search for “Landsat 8 TOA”, import and rename the image collection to "l8".
-![Figure 1. Search for L8TOA data](Prac02/l8rename.png)
+![Figure 1. Search for L8TOA data](Prac03/l8rename.png)
 
 2. Draw a polygon geometry in the map by using either rectangle or shape tool. In the Imports section, rename the geometry to "roi".
-![Figure 1. polygon](Prac02/polygon.png)
+![Figure 1. polygon](Prac03/polygon.png)
 
 3. Using the techniques learnt in Lab01, filter out a cloud free image. Note the keyword to sort images based on cloud cover is “CLOUD_COVER” for Landsat.
 
@@ -30,7 +30,7 @@ print(filtered);
 // Get a cloud free image
 var cloudFreeImage = filtered.sort('CLOUD_COVER').first();
 ```
-![Figure 1. Search for elevation data](Prac02/searchelevation.png)
+![Figure 1. Search for elevation data](Prac03/searchelevation.png)
 
 4. Visualise the cloudFreeImage in true colour. Note the visualisation parameters for Landsat are different from that of Sentinel.
 
