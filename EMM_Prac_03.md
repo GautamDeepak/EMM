@@ -1,11 +1,14 @@
 # Environmental Monitoring and Modelling (ENV306/506)
+
 ## Prac03 - Reducing and applying functions to images collection
 
 ### Acknowledgments 
+
 - Google Earth Engine Team
 - [GEARS Lab](https://www.gears-lab.com/emm_lab_3/)
 
 ### Objective
+
 In Prac01 and Prac02 we learnt how to search for images (multispectral and elevation) and display them in the map environment, and we ran some basic computations. Now we will go a step further and learn how to apply the computations over a full collection of images. 
 ---------------------------------------------------
 ## 1. Load and filter and visualise Landsat image collection.
