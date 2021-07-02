@@ -10,6 +10,7 @@
 ### Objective
 
 In Prac01 and Prac02 we learnt how to search for images (multispectral and elevation) and display them in the map environment, and we ran some basic computations. Now we will go a step further and learn how to apply the computations over a full collection of images. 
+
 ---------------------------------------------------
 ## 1. Load and filter and visualise Landsat image collection.
 In this prac, we will work with the Landsat 8 image collection over Mitchell pateau, which is a area in north western Australia. This area is challenging because there is often a lot of cloud in this area. So, quite tricky to get a cloud-free mosaic from this region.
@@ -31,32 +32,32 @@ In this prac, we will work with the Landsat 8 image collection over Mitchell pat
 var filtered = l8.filterDate('2021-01-01', Date.now()).filterBounds(roi);
 ```
 
-4. Now print the filtered image collection to the console. 
+6. Now print the filtered image collection to the console. 
 ```JavaScript
 // print the image collection to the console
 print(filtered);
 ```
-5. Explore the printed information in the console. 
+7. Explore the printed information in the console. 
 ![Figure 5. print console](Prac03/console.png)
 
 *Question:* How many Landsat-8 images were collected from the Northern Australia since the start of this year?
 
-4. Now lets put all the images (I had 1179 images) into the mapping layer using Map.addLayer command. Notice the image tiles have hard boundaries and does not provide a synergetic view. 
+8. Now lets put all the images (I had 1179 images) into the mapping layer using Map.addLayer command. Notice the image tiles have hard boundaries and does not provide a synergetic view. 
 
 ```JavaScript
 // display the filtered image collection into mapping layer
 Map.addLayer(filtered,{min: 0, max: 0.3, bands:['B4', 'B3', 'B2']}, 'filtered');
 ```
 
-![Figure 5. Northern Australia images](Prac03/1179images.png)
+![Figure 6. Northern Australia images](Prac03/1179images.png)
 
-5. Notice subtle differences in the visualisation parameters between the Sentinel-2 and Landsat-8. In Sentinel-2 we had min-max set to 0-3000 whereas in Landsat 8  the appropriate min-max is 0-0.3.
+9. Notice subtle differences in the visualisation parameters between the Sentinel-2 and Landsat-8. In Sentinel-2 we had min-max set to 0-3000 whereas in Landsat 8  the appropriate min-max is 0-0.3.
 
 
 ## 2. Reducing image collections (temporal reducer)
-1. Temporal reducers aggregates data over time. Imaging same Landsat scene being caputred approximately twice a month for 12 months. That means, on a given year, a particlular Landsat-8 image tile, will have about 24 images sitting right underneath captured at different time. Temporal reducers aggregates those images together to produce a composite. A temporal reducer drills down' temporally' thorugh each pixel and return the aggregated data for us.
+1. Temporal reducers aggregates data over time. Imaging same Landsat scene being caputred approximately twice a month for 12 months. That means, on a given year, a particlular Landsat-8 image tile, will have about 24 images sitting right underneath captured at different t ime. Temporal reducers aggregates those images together to produce a composite. A temporal reducer drills down' temporally' thorugh each pixel and return the aggregated data for us.
 
-![Figure 5. Temporal reducer](Prac03/temporalReducer.png)
+![Figure 7. Temporal reducer](Prac03/temporalReducer.png)
 
 
 2. Lets apply the median() temporal reducer, which drills down temporally through each pixel and return the median value over time.
@@ -65,7 +66,7 @@ Map.addLayer(filtered,{min: 0, max: 0.3, bands:['B4', 'B3', 'B2']}, 'filtered');
 // add the median image to the mapping layer
 Map.addLayer(filtered.median(), {min: 0, max: 0.3, bands:['B4', 'B3', 'B2']}, 'median RGB');
 ```
-![Figure 5. median reducer](Prac03/median.png)
+![Figure 8. median reducer](Prac03/median.png)
 
 3. Explore the displayed mapping layer. Most of the clouds is removed and the hard boundaries between the image tiles are minimal the scene looks more blended. Try other reducers here e.g. mean(), min(), max(). Which reducer worked best for you?
 
@@ -76,38 +77,56 @@ Map.addLayer(filtered.median(), {min: 0, max: 0.3, bands:['B4', 'B3', 'B2']}, 'm
 Map.addLayer(filtered.median(), {min: 0, max: 0.3, bands:['B5', 'B4', 'B3']}, 'median false color');
 ```
 
-![Figure 5. median reducer](Prac03/falseColor.png)
+![Figure 9. median reducer](Prac03/falseColor.png)
 
 ## 3. Writing functions e.g. to compute NDVI 
 
-1. What is a function?
+1. Functions are "self contained" modules of code that accomplish a specific task. Functions usually "take in" data, process it, and "return" a result. Once a function is written, it can be used over and over and over again. Here we will write a function to compute NDVI on an image. We will then use the function over and over and over and over to compute the NDVI on all the 1179 images. 
 
-1. In Lab01, we used image.expression() to compute NDVI. Here, let us use ee.Image.normalizedDifference() method to compute the NDVI. Have a read about this method in the docs tab. Compute and add the NDVI to the mapping layer
+2. Before writing codes into function, it is a good practice to develop the code outside the function. Lets do that. In Lab01, we used image.expression() to compute NDVI. Here, let us use ee.Image.normalizedDifference() method to compute the NDVI. Have a read about this method in the docs tab. 
 
 ```JavaScript
-// compute NDVI and add the NDVI image to the mapping area
-var ndvi = cloudFreeImage.normalizedDifference(['B5', 'B4']);
-Map.addLayer(ndvi, {min: 0, max: 1, palette:['brown','yellow','green']}, 'NDVI');
+// Isolate a single cloud free image to test the NDVI computation
+var cloudFreeImage = filtered.sort("CLOUD_COVER").first();
+
+// Compute the  NDVI on the cloud free image 
+var ndviCloudFree = cloudFreeImage.normalizedDifference(['B5', 'B4']);
+
+// Display the NDVI to the mapping layer
+Map.addLayer(ndviCloudFree, {min: 0, max: 1, palette:['brown','yellow','green']}, 'NDVI image');
 ```
-2. Our next goal is to create a new band called NDVI on the Landsat imageCollection. To do so, we first need to refactor our code to use a function, which can later be applied to all images in a collection
 
-3. Start by writing a function that adds a NDVI band to a single image:
+![Figure 9. NDVI image](Prac03/ndviImage.png)
+
+3. Couple of things that you need to note here in the above script
+- In the first line, we sorted the 1179 images based on cloud cover and then picked the least cloudy image. Note the keyword "CLOUD_COVER" is different to the keyword we used in Prac01 "CLOUD_COVERAGE_ASSESSMENT". Why do you think that is? How do we know which keyword to use? Hint: Read under the "Image Properties" tab of the dataset description. 
+- Second line computed NDVI using slightly different approach than that used in Prac01. Look under docs tab and search for the command "normalizedDifference" and have a read at it. Basically, in scripting there usually are more than one way of doing certain things. In this particular command, the input B5 and B4 are plugged into the formula (B5-B4)/(B5+B4). Now since B5 is NIR band and the B4 is Red band, the result is a NDVI.
+
+
+2. Great, now that our NDVI script is working, we are ready to create our function. In following script, we create a function that does two things: First, compute NDVI from the input image and second add an extra band to the input image - the extra band is called NDVI which contains the NDVI image. 
+
 ```JavaScript
-// add a new ndvi band a single l8 image
+// Function to add a new band called "NDVI" to the input image. 
 function addNDVIband(anImage) {
+   // Compute NDVI using same approach as above
   var ndviTemp = anImage.normalizedDifference(['B5', 'B4']);
+  // Return the input image after appending a new band called "NDVI"
   return anImage.addBands(ndviTemp.rename('NDVI'));}
 ```
-4. It is always a good idea to test your functions. We can test this function on the cloudFreeImage that has be created earlier. 
+4. Hit run, however, nothing new will happen. This is because we have created the function, but not used the function. Lets test the functionality of the function on the cloudFreeImage that we isolated earlier.  
 
 ```JavaScript
-// test the function on a single image
+// test the function on a the cloudFreeImage isolated earlier
+print ('Before calling the function', cloudFreeImage);
 var ndviAdded = addNDVIband(cloudFreeImage);
-print ('Before adding NDVI', cloudFreeImage);
-print ('After adding NDVI', ndviAdded);
+print ('After calling the function', ndviAdded);
 ```
 
-5. Now explore the printed information. Expand to see if an extra band called, “NDVI” has been added to the Landsat image.
+5. Now explore the printed information. Before looking at the below image, can you guess what you would expect to be printed before and after?
+
+![Figure 10. NDVI added](Prac03/ndviAdded.png)
+
+6. As programmed, the function has added a new band called "NDVI" to the input image (cloudFreeImage). This concludes the testing of the function. 
 
 
 ## 4. Map the function over the Landsat image collection
