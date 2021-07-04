@@ -131,34 +131,55 @@ print ('After calling the function', ndviAdded);
 
 ## 4. Map the function over the Landsat image collection
 
-1. Now that we have a function that works on a single image, we will 'map' the function across the Landsat 8 collection called “filtered”.
+1. In the context of environmental monitoring, ability to monitor the landscape conditions and changes through both space and time is quite crucial. Now that we have a working function that has been tested on a single image, we will 'map' the function across the Landsat 8 collection called “filtered” which contains 1179 images. 
 
 ```JavaScript
 // map the function to the image collection
 var ndviMapped = filtered.map(addNDVIband);
+
+// print the 1179 images after the mapping of function
 print ('After mapping NDVI', ndviMapped);
 ```
 
-2. Now you have an entire collection of Landsat image with an extra band containing NDVI. You can now treat this NDVI as a regular band and visualise it or apply temporal reducers. 
+2. From the printed information on the console, expand and check on several images if the NDVI band has been added as expected. The new variable "ndviMapped" should contain the collection of Landsat-8 images with an extra band called NDVI. Please verify yourself.
+
+![Figure 11. Explore console](Prac03/console2.png)
+
+3. Now you can now treat this extra band (NDVI) as you would a regular band for visualisation. We will apply the median() temporal reducer to the NDVI band to map the NDVI for the entire Northern Australia. Zoom and explore the ndvi map of Northern Australia. The greener pixels represents the higher concentration of photosynthetically active vegetation.
 
 ```JavaScript
 // apply temporal reducer to the NDVI band that has been added to the image collection. 
-Map.addLayer(ndviMapped.median(), {bands: 'NDVI', min: 0, max: 1, palette:['brown','yellow','green']}, 'median ndvi');
+Map.addLayer(ndviMapped.median(), {bands: 'NDVI', min: 0, max: 1, palette:['brown','yellow','green','darkgreen']}, 'median ndvi');
 ```
+
+![Figure 11. NDVI mapped](Prac03/ndviMapped.png)
+
 ## 5. Charting NDVI over time
-1. Add the following line of script to make a chart of NDVI over time for your area of interest. 
+1. First lets create a polygon to define the area we want to generate chart from. Under Geometry Imports click on "new layer", select the rectangle drawing tool, draw a polygon around Darwin region and rename the polygon to "chartingPolygon".  
+
+![Figure 11. Charting polygon](Prac03/geometry2.png)
+
+2. Add the following line of script to make a chart of NDVI over time for your area of interest.
+
 
 ```JavaScript
-// chart the ndvi over time
+// First we create the chart on the GEE memory
 var ndviChart = ui.Chart.image.series({
-	imageCollection:ndviMapped.select("NDVI"),
-  	region:roi,
-  	reducer:ee.Reducer.median(),
-  	scale:90,
-  	xProperty:'system:time_start'});
+	imageCollection:ndviMapped.select("NDVI"), // define which band to chart
+	region:chartingPolygon,                    // define which area to chart from
+  reducer:ee.Reducer.median(),              // define the reducer to use
+  scale:90,                                 // define the scale for reducer - higher than the  spatial resolution of the data 
+  xProperty:'system:time_start'});
+
+// now print the chart in the colsole
 print(ndviChart);
 ```
-2. Try out the interactivity of the chart by hovering; expand it to full screen, and testing out the SVG/PNG/CSV download buttons.
+
+2. Explore the chart. You can start to see the trends in the NDVI over time. In above chart I can see NDVI droping to almost zero during February - that could be attributed to cloud cover and not actual vegetation condition. 
+
+3. Try moving the polygon "chartingPolygon" to a new area. To move the polygon, left click on the polygon and then left click drag to a different area. Try charting NDVI over Cairns region. Do you see differences in vegetation condition through NDVI?
+
+4. Go back to the Try out the interactivity of the chart by hovering; expand it to full screen, and testing out the SVG/PNG/CSV download buttons.
 
 ## 6. Exporting image
 The source data that you work with can have many different characteristics (single band, multispectral, bit depth, etc.), and the visualization tools in Earth Engine allow you to display the data in a variety of ways. You can also export the data in a variety of ways, such as a multi¬band image. This section will demonstrate how to export a 3¬band (RGB) 8-bit image that can be easily displayed in other tools outside of Earth Engine. In this exercise, we will export the cloud-free image extracted from the collection
