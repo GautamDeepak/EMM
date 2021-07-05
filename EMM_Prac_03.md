@@ -16,13 +16,13 @@ In Prac01 and Prac02 we learnt how to search for images (multispectral and eleva
 1. Open up the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
 2. In this prac, we will work with the Landsat 8 image collection over Northern Australia. Navigate to Northern Australia.
-![Figure 1. Navigate 2 northern Australia](Prac03/navigate.png | width=100)
+![Figure 1. Navigate 2 northern Australia](Prac03/navigate.png)
 
 3. Now search for “Landsat 8 TOA” satellite data. From the list of results, open the “USGS Landsat 8 Collection 1 Tier 1 TOA Reflectance”.
 ![Figure 2. L8 TOA reflectance](Prac03/l8toa.png)
 
 4. Have a read about the dataset description and band information and then click “Import” to import the dataset to your scripting pane. Once imported, rename the imageCollection to "l8".
-![Figure 3. Search for L8TOA rename](Prac03/rename.png  | width=100)
+![Figure 3. Search for L8TOA rename](Prac03/rename.png)
 
 5. Use the rectangle geometry tool to draw a polygon over Northern Australia. Rename the default geometry import to “roi” and untick the “roi” from Geometry Imports
 ![Figure 4. draw geometry](Prac03/geometry.png)
