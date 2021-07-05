@@ -175,31 +175,48 @@ var ndviChart = ui.Chart.image.series({
 print(ndviChart);
 ```
 
+
 2. Explore the chart. You can start to see the trends in the NDVI over time. In above chart I can see NDVI droping to almost zero during February - that could be attributed to cloud cover and not actual vegetation condition. 
 
 3. Try moving the polygon "chartingPolygon" to a new area. To move the polygon, left click on the polygon and then left click drag to a different area. Try charting NDVI over Cairns region. Do you see differences in vegetation condition through NDVI?
 
-4. Go back to the Try out the interactivity of the chart by hovering; expand it to full screen, and testing out the SVG/PNG/CSV download buttons.
+4. Go back to the top of the script and try changing the filterDate range to incorporate all the data i.e. from the start of the Landsat-8 upto now. With this change in the date range, the number of images the code has to deal with increases significantly - resulting a significantly more processing time. Also you will notice some errors associated with the 
+print function, however, that will not affect the overall processing.
+
+![Figure 11. Since 2013](Prac03/fullMapped.png)
+
+
+3. You can expand the figure by clicking on the expand button (see above). This will open the chart in new Chrome window. Here, you have option to download the chart as a SVG/PNG/CSV format.
+
+![Figure 11. Export Chart](Prac03/export.png)
 
 ## 6. Exporting image
-The source data that you work with can have many different characteristics (single band, multispectral, bit depth, etc.), and the visualization tools in Earth Engine allow you to display the data in a variety of ways. You can also export the data in a variety of ways, such as a multi¬band image. This section will demonstrate how to export a 3¬band (RGB) 8-bit image that can be easily displayed in other tools outside of Earth Engine. In this exercise, we will export the cloud-free image extracted from the collection
+For most of the reporting activities, you will find that screenshot of the generated map is sufficient. However, there will be times when you want to export the image data such that you can further your analysis in other softwares e.g. ArcGIS, QGIS. Similar to visualisation, you can export the image data in a variety of ways, such as a multi¬band image. Below, we exprot a 3¬band (RGB) 8-bit image that can be easily displayed in other tools outside of Earth Engine. In this exercise, we will export the cloudFreeImage isolated earlier.
 
 1. Export the image to your Google Drive account. 
 
 ```JavaScript
-// export the cloud-free image to your google drive account
-Export.image.toDrive({
-	image:cloudFreeImage.visualize(rgb_vis), // RGB visualisation parameter
-	description:"Export", // Name of the task
-	folder:"EarthEngine", // folder name on your google drive
-	fileNamePrefix:"ENV306506_Lab03_cloudFreeImage", // file name
-	region:roi, // export from this region
-	scale:30}); // at this spatial resolution
+// visualisation of the image to export
+var rgbExport = cloudFreeImage.visualize({min: 0, max: 0.3, bands:['B4', 'B3', 'B2']});
+
+// add the image to be exported to the mapping layer
+Map.addLayer(rgbExport,{},"rgbExport");
+
+// export the image to the google drive
+Export.image.toDrive({image:rgbExport, // export this visualisation
+  folder: "EarthEngine", // export to this folder in your google drive
+  fileNamePrefix: 'Prac03_Export', // export with this filename
+  scale:100}); // export at this spatial resolution
+
 ```
 
 2. After you run the script, you need to go to the task tab in the right panel and click run to export.
 
-3. Go to your appropriate folder in the google drive to see the exported image
+![Figure 11. Export RGB](Prac03/exportImage.png)
+
+3. Once the export is complete in the task tab of the GEE, go to your appropriate folder in the google drive to see the exported image. At this point you can view or download the file to your local drive.
+
+![Figure 11. Export in Google drive](Prac03/exportDrive.png)
 
 ## The complete script
 
