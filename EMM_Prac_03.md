@@ -14,34 +14,36 @@ In Prac01 and Prac02 we learnt how to search for images (multispectral and eleva
 ---------------------------------------------------
 ## 1. Load and filter and visualise Landsat image collection.
 1. Open up the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
-1. In this prac, we will work with the Landsat 8 image collection over Northern Australia. Navigate to Northern Australia.
+
+2. In this prac, we will work with the Landsat 8 image collection over Northern Australia. Navigate to Northern Australia.
 ![Figure 1. Navigate 2 northern Australia](Prac03/navigate.png)
 
-2. Now search for “Landsat 8 TOA” satellite data. From the list of results, open the “USGS Landsat 8 Collection 1 Tier 1 TOA Reflectance”.
+3. Now search for “Landsat 8 TOA” satellite data. From the list of results, open the “USGS Landsat 8 Collection 1 Tier 1 TOA Reflectance”.
 ![Figure 2. L8 TOA reflectance](Prac03/l8toa.png)
-3. Have a read about the dataset description and band information and then click “Import” to import the dataset to your scripting pane. Once imported, rename the imageCollection to "l8".
+
+4. Have a read about the dataset description and band information and then click “Import” to import the dataset to your scripting pane. Once imported, rename the imageCollection to "l8".
 ![Figure 3. Search for L8TOA rename](Prac03/rename.png)
 
-4. Use the rectangle geometry tool to draw a polygon over Northern Australia. Rename the default geometry import to “roi” and untick the “roi” from Geometry Imports
+5. Use the rectangle geometry tool to draw a polygon over Northern Australia. Rename the default geometry import to “roi” and untick the “roi” from Geometry Imports
 ![Figure 4. draw geometry](Prac03/geometry.png)
 
-5. In Prac01, we learnt an extensive method of filtering image collection. Here we will just use the date range and the roi to return a collection of images, unlike a single image in Prac01. 
+6. In Prac01, we learnt an extensive method of filtering image collection. Here we will just use the date range and the roi to return a collection of images, unlike a single image in Prac01. 
 ```JavaScript
 // filter the data collection to from 2021 up to now.
 var filtered = l8.filterDate('2021-01-01', Date.now()).filterBounds(roi);
 ```
 
-6. Now print the filtered image collection to the console. 
+7. Now print the filtered image collection to the console. 
 ```JavaScript
 // print the image collection to the console
 print(filtered);
 ```
-7. Explore the printed information in the console. 
+8. Explore the printed information in the console. 
 ![Figure 5. print console](Prac03/console.png)
 
 *Question:* How many Landsat-8 images were collected from Northern Australia since the start of this year?
 
-8. Now let's put all the images (I had 1179 images) into the mapping layer using Map.addLayer command. Notice the image tiles have hard boundaries and do not provide a blended view. 
+9. Now let's put all the images (I had 1179 images) into the mapping layer using Map.addLayer command. Notice the image tiles have hard boundaries and do not provide a blended view. 
 
 ```JavaScript
 // display the filtered image collection into mapping layer
@@ -50,7 +52,7 @@ Map.addLayer(filtered,{min: 0, max: 0.3, bands:['B4', 'B3', 'B2']}, 'filtered');
 
 ![Figure 6. Northern Australia images](Prac03/1179images.png)
 
-9. Notice subtle differences in the visualisation parameters between the Sentinel-2 and Landsat-8. In Sentinel-2 we had min-max set to 0-3000 whereas in Landsat 8  the appropriate min-max is 0-0.3.
+10. Notice subtle differences in the visualisation parameters between the Sentinel-2 and Landsat-8. In Sentinel-2 we had min-max set to 0-3000 whereas in Landsat 8  the appropriate min-max is 0-0.3.
 
 
 ## 2. Reducing image collections (temporal reducer)
