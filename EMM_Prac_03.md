@@ -104,7 +104,7 @@ Map.addLayer(ndviCloudFree, {min: 0, max: 1, palette:['brown','yellow','green']}
 - Second-line computed NDVI using a slightly different approach than that used in Prac01. Look under the docs tab and search for the command "normalizedDifference" and have a read at it. Basically, in scripting there usually is more than one way of doing certain things. In this particular command, the input B5 and B4 are plugged into the formula (B5-B4)/(B5+B4). Now since B5 is the NIR band and the B4 is the Red band, the result is an NDVI.
 
 
-2. Great, now that our NDVI script is working, we are ready to create our function. In the following script, we create a function that does two things: First, compute NDVI from the input image and second add an extra band to the input image - the extra band is called NDVI which contains the NDVI image. 
+4. Great, now that our NDVI script is working, we are ready to create our function. In the following script, we create a function that does two things: First, compute NDVI from the input image and second add an extra band to the input image - the extra band is called NDVI which contains the NDVI image. 
 
 ```JavaScript
 // Function to add a new band called "NDVI" to the input image. 
@@ -114,7 +114,7 @@ function addNDVIband(anImage) {
   // Return the input image after appending a new band called "NDVI"
   return anImage.addBands(ndviTemp.rename('NDVI'));}
 ```
-4. Hit run, however, nothing new will happen. This is because we have created the function, but not used the function. Let's test the functionality of the function on the cloudFreeImage that we isolated earlier.  
+5. Hit run, however, nothing new will happen. This is because we have created the function, but not used the function. Let's test the functionality of the function on the cloudFreeImage that we isolated earlier.  
 
 ```JavaScript
 // test the function on a the cloudFreeImage isolated earlier
@@ -123,11 +123,11 @@ var ndviAdded = addNDVIband(cloudFreeImage);
 print ('After calling the function', ndviAdded);
 ```
 
-5. Now explore the printed information. Before looking at the below image, can you guess what you would expect to be printed before and after?
+6. Now explore the printed information. Before looking at the below image, can you guess what you would expect to be printed before and after?
 
 ![Figure 10. NDVI added](Prac03/ndviAdded.png)
 
-6. As programmed, the function has added a new band called "NDVI" to the input image (cloudFreeImage). This concludes the testing of the function. 
+7. As programmed, the function has added a new band called "NDVI" to the input image (cloudFreeImage). This concludes the testing of the function. 
 
 
 ## 4. Map the function over the Landsat image collection
@@ -177,17 +177,17 @@ print(ndviChart);
 ```
 
 
-2. Explore the chart. You can start to see the trends in the NDVI over time. In the above chart, I can see NDVI dropping to almost zero during February - that could be attributed to cloud cover and not actual vegetation condition. 
+3. Explore the chart. You can start to see the trends in the NDVI over time. In the above chart, I can see NDVI dropping to almost zero during February - that could be attributed to cloud cover and not actual vegetation condition. 
 
-3. Try moving the polygon "chartingPolygon" to a new area. To move the polygon, left-click on the polygon and then left click-drag to a different area. Try charting NDVI over the Cairns region. Do you see differences in vegetation conditions through NDVI?
+4. Try moving the polygon "chartingPolygon" to a new area. To move the polygon, left-click on the polygon and then left click-drag to a different area. Try charting NDVI over the Cairns region. Do you see differences in vegetation conditions through NDVI?
 
-4. Go back to the top of the script and try changing the filterDate range to incorporate all the data i.e. from the start of the Landsat-8 mission up to now. With this change in the date range, the number of images the code has to deal with increases significantly - resulting a significantly more processing time. Also, you will notice some errors associated with the 
+5. Go back to the top of the script and try changing the filterDate range to incorporate all the data i.e. from the start of the Landsat-8 mission up to now. With this change in the date range, the number of images the code has to deal with increases significantly - resulting a significantly more processing time. Also, you will notice some errors associated with the 
 print function, however, that will not affect the overall processing.
 
 ![Figure 11. Since 2013](Prac03/fullMapped.png)
 
 
-3. You can expand the figure by clicking on the expand button (see above). This will open the chart in a new Chrome window. Here, you have the option to download the chart in an SVG/PNG/CSV format.
+6. You can expand the figure by clicking on the expand button (see above). This will open the chart in a new Chrome window. Here, you have the option to download the chart in an SVG/PNG/CSV format.
 
 ![Figure 11. Export Chart](Prac03/export.png)
 
@@ -219,7 +219,7 @@ Export.image.toDrive({image:rgbExport, // export this visualisation
 
 ![Figure 11. Export in Google drive](Prac03/exportDrive.png)
 
-## The complete script
+## 7. The complete script
 
 ```JavaScript
 // filter the data collection to from 2021 up to now.
