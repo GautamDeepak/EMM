@@ -219,7 +219,7 @@ Export.image.toDrive({image:rgbExport, // export this visualisation
 
 ![Figure 11. Export in Google drive](Prac03/exportDrive.png)
 
-## 7. The complete script
+## The complete script
 
 ```JavaScript
 // filter the data collection to from 2021 up to now.
