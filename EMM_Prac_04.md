@@ -13,7 +13,7 @@
 In Prac03, we worked with the Landsat-8 image collection. We learnt how to work with the image collection, filtering, and apply computation to the entire image collection. Here we will work further with the Landsat-8 image collection in the context of land water management. Managing water resources requires spatially explicit knowledge of where water is located in landscapes, and how it varies over time. The objective of this prac is to map the presence of surface water from space and calculate the inundation frequency of different water bodies. 
 
 ---------------------------------------------------
-## 1. Mapping water from space.
+## 1. Working with Landsat-8 image collection.
 
 1. Open up the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
@@ -26,7 +26,7 @@ var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
 
 3. We will use the vicinity of Menindee Lakes for this example, located between Broken Hill and Ivanhoe in NSW, Australia. The Menindee Lakes supplies water for domestic use, livestock and irrigation to Broken Hill, the lower Darling and the water users along the Murray River in NSW, VIC, and SA. Seven of the lakes are incorporated in an artificially regulated overflow system providing both for flood mitigation and as storage (you can read detail at [NSW DPI website](https://www.industry.nsw.gov.au/__data/assets/pdf_file/0008/145394/Murray-and-Lower-Darling.pdf)). 
 
-![Figure 2. NSW DPI report](Prac04/nswdpi.png)
+![Figure 1. NSW DPI report](Prac04/nswdpi.png)
 
 4. Navigate to the Menindee Lakes and define a region of interest using the geometry rectangle tool. Rename the geometry to  "roi". 
 
@@ -43,11 +43,11 @@ var endDate = ee.Date(Date.now());
 var l8Images = l8.filterDate(startDate, endDate).filterBounds(roi);
 ```
 
-Question: If you compare the above filtering and the filtering you did in Prac03, you can see some subtle differences. Specifically, here, we did not use the "sort" and ".first()". Can you think why that is and what would the filtered result be here?
+*Question:* If you compare the above filtering and the filtering you did in Prac03, you can see some subtle differences. Specifically, here, we did not use the "sort" and ".first()". Can you think why that is and what would the filtered result be here?
 
 6. I want you to print the filtered image collection and explore the printed information in the console - we have already learnt how to do it. How many images did you have in your collection? I had 684
 
-![Figure 2. print](Prac04/print.png)
+![Figure 3. print](Prac04/print.png)
 
 7. It is important to note here that although we did filtering, we are not after a single image but the series of images collected through time. Also, we haven't excluded the potential cloudy images. The disadvantage of completely removing the cloudy images is that we may end up with much fewer images than that we ideally want to monitor the water bodies through time. So, instead of completely removing the cloudy images, we will just mask out the cloudy section of images. 
 
@@ -75,10 +75,10 @@ function cloudMask (anImage){
 
 2. Please take some time to unpack what happened in the above script – use the image below as a guide. 
 
-![Figure 2. unpack the script](Prac04/unpack.png)
+![Figure 4. unpack the script](Prac04/unpack.png)
 
 
-Question: I purposefully put ".gt" in the above script. Now that you have fathomed the above script, can you make the script produce the same result using ".lt" instead of ".gt"? What else would you need to modify in the script?
+*Question:* I purposefully put ".gt" in the above script. Now that you have fathomed the above script, can you make the script produce the same result using ".lt" instead of ".gt"? What else would you need to modify in the script?
 
 3. Now we can map the cloudMask function over our filtered image collection. 
 ```JavaScript
@@ -94,7 +94,7 @@ Map.addLayer(l8CloudMasked.first(), {min: 0, max: 0.5, bands: ['B5', 'B4', 'B3']
 
 5. The displayed image shows some white portion within the images. These pixels have been masked out - suspected of being the cloud. This clearly shows the masking has occurred. Note this is just one image out of my 684 image collections. can you see any masked pixels in your image? 
 
-![Figure 2. Cloud masked](Prac04/masked.png)
+![Figure 5. Cloud masked](Prac04/masked.png)
 
 6. Now that we have verified the clouds have been masked, let us apply a temporal reducer to map the median true colour composite. 
 
@@ -103,7 +103,7 @@ Map.addLayer(l8CloudMasked.first(), {min: 0, max: 0.5, bands: ['B5', 'B4', 'B3']
 Map.addLayer(l8CloudMasked.median(), {min: 0, max: 0.5, bands: ['B4', 'B3', 'B2']}, 'Median true-color');
 ```
 
-![Figure 2. Median true color](Prac04/mediantrue.png)
+![Figure 6. Median true color](Prac04/mediantrue.png)
 
 7. Great, we have a cloud-free composite from our roi mapped from 2013 to the present. We can go a step further and clip the image median image within our roi boundary. Replace the above "Median true-color" display script with the below script to map just within our roi. Also, make sure you untick the roi for better visualisation. 
 
@@ -112,7 +112,7 @@ Map.addLayer(l8CloudMasked.median(), {min: 0, max: 0.5, bands: ['B4', 'B3', 'B2'
 Map.addLayer(l8CloudMasked.median().clip(roi), {min: 0, max: 0.5, bands: ['B4', 'B3', 'B2']}, 'Median, clipped true-color');
 ```
 
-![Figure 2. Median clipped true color](Prac04/clipped.png)
+![Figure 7. Median clipped true color](Prac04/clipped.png)
 
 ## 3. The normalised difference water index (NDWI)
 1. In Prac 03, we worked with NDVI. The NDVI is used to map the photosynthetically active vegetation. The index that we will work on today is called NDWI (Normalised Difference Water Index). The NDWI is used to map the water bodies in the landscape. The formula for the computation of NDWI is (Green - NIR)/(Green + NIR). Let us write a function that creates an NDWI band imageCollection. Remember we did a similar routine in Prac03 when adding an NDVI band. When working with image collection, it is a common practice to create a function and then maps the function to the image collection.
@@ -123,8 +123,7 @@ function computeNdwiImage(anImage) {
    // Input the bands in the correct order to match the NDWI formula and rename the band name to NDWI
   var ndwiTemp = anImage.normalizedDifference(['B3', 'B5']).rename('NDWI');
   // Clip the NDWI to roi and return the clipped NDWI whilst retaining the timestamp from input image
-  return ndwiTemp.clip(roi).copyProperties(anImage, ['system:time_start']);
-}
+  return ndwiTemp.clip(roi).copyProperties(anImage, ['system:time_start']);}
 ```
 
 2. Now that the function to compute NDWI is ready, map the computeNdwiImage function over the image collection.
@@ -141,9 +140,9 @@ var l8Ndwi = l8CloudMasked.map(computeNdwiImage);
 Map.addLayer(l8Ndwi.max().mask(l8Ndwi.max()),{min: 0, max:1, palette: ['blue','darkblue']}, 'Max extent of water');
 ```
 
-![Figure 2. Maximum ndwi](Prac04/maxndwi.png)
+![Figure 8. Maximum ndwi](Prac04/maxndwi.png)
 
-Question: Can you guess whats the purpose of ".mask(l8Ndwi.max()" in the above script? What would happen if you removed that bit from the above script?
+*Question:* Can you guess whats the purpose of ".mask(l8Ndwi.max()" in the above script? What would happen if you removed that bit from the above script?
 
 4. What you see in the mapping pane is the maximum water extent in each pixel since 2013. It is not accumulative water extent but the maximum in our image collection. The dark blue pixel represents the deeper water bodies while the light blue pixel represents the shallow water bodies. 
 
@@ -161,7 +160,7 @@ Map.addLayer(ndwi2019.max().mask(ndwi2019.max()), {min:0,max:1,palette:['darkblu
 
 ```
 
-![Figure 2. Maximum ndwi 2019](Prac04/maxndwi2019.png)
+![Figure 9. Maximum ndwi 2019](Prac04/maxndwi2019.png)
 
 6. Take a moment to compare the maximum extent of water bodies since 2013 and in 2019. You can see a stark difference in the maximum water bodies in the landscape. Clearly, 2019 looks much much drier - could it be the effect of drought and reduced rain. Think about what the implication could be if the water in Menindee lake were about to run out. 
 
@@ -190,7 +189,7 @@ var frequency = innundationStatus.sum().divide(innundationStatus.count());
 // quickly map the frequency of inundation
 Map.addLayer(frequency)
 ```
-![Figure 2. Maximum ndwi 2019](Prac04/frequency.png)
+![Figure 9. Frequency](Prac04/frequency.png)
 
 4. In the above map, the bright pixels are the ones that consistently had water = more frequent inundation. The dark pixels are the one which had low or no water = less frequent inundation. We can go a step forward and map the inundation status properly - using a colour palette and masking. Replace the above "Map.addLayer(frequency)" script with the below script.
 
@@ -199,7 +198,7 @@ Map.addLayer(frequency)
 Map.addLayer(frequency.mask(frequency),
 {palette: ['white', 'magenta', 'blue','darkblue']}, 'Water inundation frequency');
 ``` 
-![Figure 2. Innundation frequency](Prac04/innun_frequency.png)
+![Figure 10. Innundation frequency](Prac04/innun_frequency.png)
 
 5. Inspect carefully to comprehend the image in the display. The darkblue pixel represents the lake that has not dried out. The blue pixels represent the area of the lake that has sometimes dried out. The magenta pixel represents the region of the lake that has frequently dried out. The transparent (non-coloured) pixel represents the lake/landscape that has stayed mostly dry during the 2013-present time.
 
@@ -210,7 +209,7 @@ Map.addLayer(frequency.mask(frequency),
 1. Move your region of interest (roi) around different parts of Australia and explore how current drought conditions are affecting dam levels in different parts of the country. Can you query the water dam from your region?
 2. Think about how you might go about expanding the time series and going further back in time to look at longer-term inundation trends.
 
-## 7. The complete script
+## 6. The complete script
 
 ```JavaScript
 // import the Landsat- 8 image collection
