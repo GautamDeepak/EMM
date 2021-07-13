@@ -206,10 +206,11 @@ Map.addLayer(frequency.mask(frequency),
 
 ## 5. Ungraded exercise
 
-1. Move your region of interest (roi) around different parts of Australia and explore how current drought conditions are affecting dam levels in different parts of the country. Can you query the water dam from your region?
-2. Think about how you might go about expanding the time series and going further back in time to look at longer-term inundation trends.
+1. Move your region of interest (roi) around different parts of Australia and explore how current drought conditions are affecting dam levels in different parts of the country. Can you query the water dam from your region? Generate the max innundation for each year since 2013.
 
-## 6. The complete script
+2. Think about how you might go about expanding the time series and going further back in time to look at longer-term inundation trends e.g. since the start of this century.
+
+## The complete script
 
 ```JavaScript
 // import the Landsat- 8 image collection
