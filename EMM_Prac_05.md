@@ -108,10 +108,9 @@ var tempTrend = ui.Chart.image.series({
     lineWidth: 1,                 // width of the chart line
     pointSize: 3,                 // size of the point data
     trendlines: {0: {             // include a trend line
-        color: 'CC0000'           // trendline is red in color
-      }},
-     title: 'LST  Time Series',   // se the title of the chart
-     vAxis: {title: 'Celsius'}}); // set the vertical axis label
+        color: 'CC0000'}},        // trendline is red in color
+    title: 'LST  Time Series',   // se the title of the chart
+    vAxis: {title: 'Celsius'}}); // set the vertical axis label
 ```
 
 2. If you run the script, nothing new happens, you cant see the chart - why is that? Every time you generate a chart, you need to print it for visualisation in the console. Use the print command to print the chart to the console.
@@ -187,10 +186,9 @@ var tempTrend = ui.Chart.image.series({
     lineWidth: 1,                 // width of the chart line
     pointSize: 3,                 // size of the point data
     trendlines: {0: {             // include a trend line
-        color: 'CC0000'           // trendline is red in color
-      }},
-     title: 'LST  Time Series',   // se the title of the chart
-     vAxis: {title: 'Celsius'}}); // set the vertical axis label
+        color: 'CC0000'}},        // trendline is red in color
+    title: 'LST  Time Series',   // se the title of the chart
+    vAxis: {title: 'Celsius'}}); // set the vertical axis label
 
 // Print the temperature trend chart
 print(tempTrend);
