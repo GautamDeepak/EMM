@@ -42,7 +42,7 @@ var dateRange = ee.DateRange(startDate, startDate.advance(numberOfYears, 'year')
 var modLSTDay = modis.filterDate(dateRange).select('LST_Day_1km');
 ```
 
-* Self-assessment questions:* a) Is modLSTDay an image or image collection? b) If it is an image collection, how many images does it contain? c) How many bands does the modLSTDay have, and what are they?
+*Self-assessment questions:* a) Is modLSTDay an image or image collection? b) If it is an image collection, how many images does it contain? c) How many bands does the modLSTDay have, and what are they?
 
 6. Note that modLSTDay that we filtered out above, is still an image collection. It contains images from the entire 2015, but we have only retained a single band called 'LST_Day_1km'. We are ready to display the image collection. However, let's go a step forward. The images contain daytime temperature stored in degree Kelvin (not exactly – scaled Kelvin) - how do I know? - read the band description. Let's convert the temperature data to degree C before visualising. 
 
@@ -133,7 +133,7 @@ print(tempTrend);
 
 6. Now try changing the variable called “startDate” to 2000-03-05 and set the “numberOfYears” to 20. Does the trendline reveal a similar pattern? How does the long-term trend compare to the short-term trend?
 
-![Figure 7. Temperature chart](trend/chart.png)
+![Figure 7. Temperature chart](Prac05/trend.png)
 
 7. Think of this trendline in the context of your reading task. Did the scale of observation alter the conclusions?  Or is this particular trendline region-specific? You can move the roi to any other location e.g. Darwin and see how temperature has changed there.
 
