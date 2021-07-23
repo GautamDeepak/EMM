@@ -1,6 +1,6 @@
 # Environmental Monitoring and Modelling (ENV306/506)
 
-## Prac06 - Monitoring vegetation condition in Google Earth Engine
+## Prac08 - Monitoring vegetation condition in Google Earth Engine
 
 ### Acknowledgments 
 
@@ -51,7 +51,7 @@ var meanReference = reference.mean();
 Map.addLayer(meanReference, {min: 0, max: 4000, palette: ['brown','yellow','green']}, 'Reference EVI');
 ```
 
-![Figure 1. Reference EVI Northern Australia](Prac06/ref_evi.png)
+![Figure 1. Reference EVI Northern Australia](Prac08/ref_evi.png)
 
 *Question - do your research:* What does it mean to have low or high EVI value?
 
@@ -72,7 +72,7 @@ var meanRecent = recent.mean();
 Map.addLayer(meanRecent, {min: 0, max: 4000, palette: ['brown','yellow','green']}, 'Recent EVI');
 ```
 
-![Figure 2. Recent EVI Northern Australia](Prac06/recent_evi.png)
+![Figure 2. Recent EVI Northern Australia](Prac08/recent_evi.png)
 
 3. Subtract the recent mean with the reference mean to see the spatial pattern of EVI change in the recent decade as compared to the baseline. The following map highlights the improved EVI in green, reduced EVI in red and yellow colour representing unchanged EVI. This technique highlights the areas where there has been EVI gain/loss highlight the vegetation condition and potential ecosystem stress.
 
@@ -84,7 +84,7 @@ var EVIchange = meanRecent.subtract(meanReference);
 Map.addLayer(EVIchange,{min:-300,max:300,palette: ['brown','yellow','green']},'EVI change');
 ```
 
-![Figure 3. Change EVI Northern Australia](Prac06/change_evi.png)
+![Figure 3. Change EVI Northern Australia](Prac08/change_evi.png)
 
 4. The above figure is simply the difference between the recent and reference vegetation conditions. What we want is some measure of the anomaly through time. Let us create a function that calculates and define anomalies (departure from the long-term average) by subtracting the reference mean from *each of the more recent images*.
 
@@ -107,7 +107,7 @@ var anomalies = recent.map(computeAnomalies);
 //Map the cumulative anomalies spatially
 Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
 ```
-![Figure 4. Cumulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
+![Figure 4. Cumulative EVI anomalies in Northern Australia](Prac08/cum_anamoly.png)
 
 *Note* that the dark red areas where we had negative anomaly where EVI has been decreasing over time and dark green we have a positive anomaly.
 
@@ -150,7 +150,7 @@ var cumulative = ee.ImageCollection(ee.List(anomalies.iterate(accumulate, first)
 1. It is important to note that in the above image collection called "cumulative", we have images of a cumulative anomaly between 2010 and 2020. The anomalies were calculated by subtracting the recent EVI from the baseline EVI. Let's chart the temporal trend of cumulative anomaly. But first, let's create a roi using a rectangular geometry tool. I am going to draw a roi on Tiwi island. 
 
 
-![Figure 5. ROI - Tiwi island](Prac06/roi.png)
+![Figure 5. ROI - Tiwi island](Prac08/roi.png)
 
 2. You can use the script below to make sure that whenever you run the script, the map view is zoomed into the roi.
 ```JavaScript
@@ -180,13 +180,13 @@ var vegStressChart = ui.Chart.image.series ({
 //Print chart to console
 print(vegStressChart);
 ```
-![Figure 6. Chart - tiwi island](Prac06/chart1.png)
+![Figure 6. Chart - tiwi island](Prac08/chart1.png)
 
 5. Inspect the chart. What kind of pattern do you notice in your chart? My chart is coming from the region which looked dark green in the cumulative anomaly map. So, I can see a trend of increasing anomaly. The increasing anomaly here means vegetation getting less stressed over time as compared to the baseline. I can see we have that seasonal cycle of EVI anomaly but the graph shows a clear accumulation of positive anomaly. This gives you a nice tool to investigate the temporal trends and accumulation of stress. The interesting thing is you can see a pattern of change through time. You can see where there is consistent increasing/decreasing change over time. Or sometimes you may see abrupt change at a time point and not much change for the next few years. 
 
 6. You can move the roi to any location you want to investigate the anomalies there. For example, I moved the roi to a region of Point Stuart where I can see a different pattern of EVI anomaly. I can see the EVI anomaly was stable or increasing until late 2012. After that, the EVI anomaly steadily declined up to recent times. 
 
-![Figure 7. Chart - Stuart point](Prac06/chart2.png)
+![Figure 7. Chart - Stuart point](Prac08/chart2.png)
 
 7. Don't forget to save the script before you exit. 
 
