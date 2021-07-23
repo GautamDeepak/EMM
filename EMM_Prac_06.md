@@ -9,7 +9,9 @@
 
 ### Objective
 
-The objective of this tutorial is to develop the skills for assessing change in vegetation condition over time. How do we know if an ecosystem is stressed or has been disturbed? Quantifying changes and attributing causality can be challenging - particularly in ecosystems that have large degrees of intra-annual variability. One approach we have at our disposal is to compare attributes from recent years to those from a baseline period. In this Prac, we will explore anomalies in vegetation condition (measured in terms of EVI) to determine if the vegetation stress is increasing or decreasing over time. Using this technique, you can explore anomalies in any other variables such as rainfall, temperature, vegetation health, and etc. 
+The objective of this tutorial is to develop the skills for assessing change in vegetation condition over time. How do we know if an ecosystem is stressed or has been disturbed? Quantifying changes and attributing causality can be challenging - particularly in ecosystems that have large degrees of intra-annual variability. 
+
+One approach we have at our disposal is to compare attributes from recent years to those from a baseline period. In this Prac, we will explore anomalies in vegetation condition (measured in terms of EVI) to determine if the vegetation stress is increasing or decreasing over time. Using this technique, you can explore anomalies in any other variables such as rainfall, temperature, vegetation health, and etc. 
 
 ---------------------------------------------------
 ## 1. Getting to know MODIS and EVI.
@@ -107,6 +109,7 @@ Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yello
 ```
 ![Figure 3. Cummulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
 
+*Note* that the dark red areas where we had negative anamoly where EVI has been decreasing over time and dark green we have a positive anomaly.
 
 7. Using the anomalies map above, explore the regions in the northern australia where there has been cummulation of eocsystem stress.
 
@@ -118,13 +121,13 @@ Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yello
 var time0 = recent.first().get('system:time_start');
 ```
 
-2. Create a list that contains a single image of zeros, with the time of time0 (i.e. first image in recent). Rename the list to 'EVI' to match the band name of recent EVI image collection.
+2. Create a list that contains a single image of zeros, with the time of time0 (i.e. first image in recent). Effectively this is just a holder of empty images where we can map the values of EVI anomoly into. Rename the list to 'EVI' to match the band name of recent EVI image collection.
 ```JavaScript
 // initialise a list (containing an empty image) to provide a structure into which the EVI anomalies can be mapped
 var first = ee.List([ ee.Image(0).set('system:time_start', time0).rename('EVI')]);
 ```
 
-3. Paste the following code into the code editor. This code is a function that iterates through the subsequent images in recent EVI collection and accumulate the anomalies temporally.
+3. Paste the following code into the code editor. This code is a function that iterates through the subsequent images in recent EVI collection and accumulate the anomalies temporally. Note we are adding anomolies from each subsequent image.
 
 ```JavaScript
 // Write a function to iterate through time and accumulate the anomalies
@@ -139,27 +142,53 @@ function accumulate (anImage, aList) { // this function takes two inputs - image
 ```JavaScript
 //Apply the above created function to the anomalies (the image collection)
 var cumulative = ee.ImageCollection(ee.List(anomalies.iterate(accumulate, first)));
-print (cumulative);
-
 ```
-reveals the ecosystem stress Display the cumulative anomalies spatially using the code below.
-## 3. Calculating temporal change/trend against baseline
-1. 
-3. Calculate and define the anomalies spatially (departure from the long-term average) by subtracting the reference mean from each of the more recent images.
-## 3. Exploring temporal trend against baseline
+
+*Note* the above several steps is really heavy in JavaScript. Bassically what we did is created a timestamp, created an emply list of images, and mapped the cummulative anomalies to the images. 
+
+## 3. Charting the anamoly
+1. It is important to note that in above imagecollection called "cumulative", we have images of cummulative anomaly since between 2010 and 2020. The anomalies were calculated by substracting the recent EVI with the baseline EVI. Lets chart the temporal trend of cummulative anomaly. But first lets create an roi using rectangular geometry tool. I am going to draw an roi in Tiwi island. 
 
 
+![Figure 5. ROI - tiwi island](Prac06/roi.png)
 
+2. You can use the script below to make sure that whenever you run the script, the mapview is zoomed into the roi.
+```JavaScript
+//Centre map on roi and specify zoom level (1-22)
+Map.centerObject(roi, 9);
+```
+   
+3. Make a chart of the mean cumulative anomaly within the roi using the code below. Note that if you want to accumulate multiple regions within one chart, you can just draw additional polygon. i.e. roi can have more than one region.
 
+```JavaScript
+//Create a chart of the  cumulative anomalies
+var vegStressChart = ui.Chart.image.series ({
+  imageCollection: cumulative.select('EVI'), // we are using the image collection called cummulative
+  region: roi, // the region where the data will be charted from
+  reducer: ee.Reducer.mean(), // spatial reducer type mean
+  scale: 500, // scale of the spatial reduction
+  xProperty: 'system:time_start'}) // use image capture timestamp on the x-axis
+.setOptions({
+ title: 'Cumulative vegetation stress over time', // set the title of the chart
+  hAxis: {title: 'Time'}, // x-axis label
+  vAxis: {title: 'Cumulative EVI anomaly'}, //y-axis label
+});
+```
+4. Print the chart to the console
 
+```JavaScript
+//Print chart to console
+print(vegStressChart);
+```
+![Figure 5. Chart - tiwi island](Prac06/chart1.png)
 
+5. Inspect the chart. What kind of pattern do you notice in your chart? My chart is coming from the region which looked darkgreen in the cummulative anomaly map. So, I can see a trend of increasing anomaly. Increasing anomaly here means vegetation getting less stressed over time as compared to the baseline. I can see we have that seasonal cycle of EVI anomaly but the graph shows clear accumulation of posetive anomaly. This gives you a nice tool to investigate the temporal trends and accumulation of stress. Interesting thing is you can see pattern of change through time. You can see where there is consist increasing/decreasing change over time. Or sometimes you may see abruptin change at a timepoint and not much change for next few years. 
 
+6. You can move the roi to any location you want to investigate the anomalies there. For example I moved the roi to a region of Point Sutart where I can see a different pattern of EVI anomaly. I can see the EVI anomaly was stable or increasing until late 2012. After that, the EVI anomaly is in consistent decline upto the recent times. 
 
+![Figure 5. Chart - Stuart point](Prac06/chart2.png)
 
-
-
-
-9. Don't forget to save the script before you exit. 
+7. Don't forget to save the script before you exit. 
 
 ## 5. Ungraded exercise
 
@@ -169,49 +198,81 @@ reveals the ecosystem stress Display the cumulative anomalies spatially using th
 ## The complete script
 
 ```JavaScript
-// Import the MODIS MOD11A2 V6 image collection
-var modis = ee.ImageCollection('MODIS/006/MOD11A2');
+//Import the MODIS image collection MOD13A1 V6
+var modis = ee.ImageCollection('MODIS/006/MOD13A1');
 
-// A start date is defined and the end date is determined by advancing 1 year from the start date.
-var startDate = ee.Date('2015-01-01');
-var numberOfYears = 1;
-var dateRange = ee.DateRange(startDate, startDate.advance(numberOfYears, 'year'));
+// Select the EVI band of the MODIS MOD13A1
+var EVIcollection = modis.select("EVI");
 
-// Filter the LST collection to include only images from time frame and select day time temperature band
-var modLSTDay = modis.filterDate(dateRange).select('LST_Day_1km');
+// choose a reference period from 2000 to 2010 as baseline
+var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01').sort('system:time_start');
 
-// Function to convert MODIS LST band from degree Kelvin to degree Celsius.
-function mod2C(anImage) {
-  var kelvin = anImage.multiply(0.02); // Scale back to degree Kelvin
-  var celsius = kelvin.subtract(273.15); // Convert degree Kelvin to degree Celsius
-  return celsius.copyProperties(anImage, ['system:time_start']);} // retain the image properties.
-  
-// map the function to image collection
-var modC = modLSTDay.map(mod2C);
+//compute the temporal mean of the EVI 
+var meanReference = reference.mean();
 
-//Visualise the temperature 
-//Map.addLayer(modC.mean(), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature');
+// Display the mean of the reference in the mapping panel
+Map.addLayer(meanReference, {min: 0, max: 4000, palette: ['brown','yellow','green']}, 'Reference EVI');
 
-//Visualise the temperature - clipped
-Map.addLayer(modC.mean().clip(roi), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature ACT');
+//Create a collection of images that represent most recent conditions
+var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01').sort('system:time_start');
 
-// generate the temperature  time-series
-var tempTrend = ui.Chart.image.series({
-  imageCollection: modC,    // Name of the image collection that you want to extract data from
-  region: roi,              // Region where you want the data to come from
-  reducer: ee.Reducer.median(), // Spatial reducer that you want to use
-  scale: 1000,                  // Spatial scale of data extraction 
-  xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
-  .setOptions({
-    lineWidth: 1,                 // width of the chart line
-    pointSize: 3,                 // size of the point data
-    trendlines: {0: {             // include a trend line
-        color: 'CC0000'}},        // trendline is red in color
-    title: 'LST  Time Series',   // se the title of the chart
-    vAxis: {title: 'Celsius'}}); // set the vertical axis label
+// calculate recent mean
+var meanRecent = recent.mean();
 
-// Print the temperature trend chart
-print(tempTrend);
+// Map EVI spatially for recent years
+Map.addLayer(meanRecent, {min: 0, max: 4000, palette: ['brown','yellow','green']}, 'Recent EVI');
+
+// compute the difference between recent and reference mean EVI (recent - reference)
+var EVIchange = meanRecent.subtract(meanReference);
+
+// Map EVI change spatially
+Map.addLayer(EVIchange,{min:-300,max:300,palette: ['brown','yellow','green']},'EVI change');
+
+// Function to subtract the meanReference each of the more recent images. 
+function computeAnomalies(anImage) {
+  return anImage.subtract(meanReference)
+.copyProperties(anImage, ['system:time_start']);}
+
+// map the function to the recent image collection to compute anomalies 
+var anomalies = recent.map(computeAnomalies);
+
+//Map the cummulative anomalies spatially
+Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
+
+//Get timestamp of first image in the recent collection
+var time0 = recent.first().get('system:time_start');
+
+// initialise a list (containing an empty image) to provide a structure into which the EVI anomalies can be mapped
+var first = ee.List([ ee.Image(0).set('system:time_start', time0).rename('EVI')]);
+
+
+// Write a function to iterate through time and accumulate the anomalies
+function accumulate (anImage, aList) { // this function takes two inputs - image and list
+  var previous = ee.List(aList).get(-1); // get the last anamolies in the list
+  var cumSum = anImage.add(previous).set('system:time_start',anImage.get('system:time_start')); // add current anomalies with the previous one
+  return ee.List(aList).add(cumSum);} // return the list with one extra item which is a cummulative sum
+
+//Apply the above created function to the anomalies (the image collection)
+var cumulative = ee.ImageCollection(ee.List(anomalies.iterate(accumulate, first)));
+
+//Centre map on roi and specify zoom level (1-22)
+Map.centerObject(roi, 9);
+
+//Create a chart of the  cumulative anomalies
+var vegStressChart = ui.Chart.image.series ({
+  imageCollection: cumulative.select('EVI'), // we are using the image collection called cummulative
+  region: roi, // the region where the data will be charted from
+  reducer: ee.Reducer.mean(), // spatial reducer type mean
+  scale: 500, // scale of the spatial reduction
+  xProperty: 'system:time_start'}) // use image capture timestamp on the x-axis
+.setOptions({
+ title: 'Cumulative vegetation stress over time', // set the title of the chart
+  hAxis: {title: 'Time'}, // x-axis label
+  vAxis: {title: 'Cumulative EVI anomaly'}, //y-axis label
+});
+
+//Print chart to console
+print(vegStressChart);
   
 ```
 
