@@ -1,6 +1,6 @@
 # Environmental Monitoring and Modelling (ENV306/506)
 
-## Prac05 - Exploring land surface temperature trends over time
+## Prac07 - Exploring land surface temperature trends over time
 
 ### Acknowledgments 
 
@@ -24,7 +24,7 @@ var modis = ee.ImageCollection('MODIS/006/MOD11A2');
 
 3. For this lab we will work around the ACT region. I picked this region as ACT has quite a huge fluctuation in temperature in any given year/month/day. Use the geometry tool to draw a polygon and define your region of interest (roi). Remember to rename the 'geometry' to 'roi'.
 
-![Figure 1. ACT roi](Prac05/roi.png)
+![Figure 1. ACT roi](Prac07/roi.png)
 
 4. Specify the dates of interest. We will use a different approach to the date range here - remember these are all different ways of doing things. You can follow any approach to filter the dates. This current approach makes changing the range of interest a lot easier.
 
@@ -72,11 +72,11 @@ var modC = modLSTDay.map(mod2C);
 Map.addLayer(modC.mean(), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature');
 ```
 
-![Figure 2. Temperature map](Prac05/temperature.png)
+![Figure 2. Temperature map](Prac07/temperature.png)
 
 4. Let's do the following to improve the visualisation and our perception: a) untick the roi, b) enable the satellite view, c) adjust the opacity of the temperature layer.
 
-![Figure 3. Temperature map](Prac05/temperature1.png)
+![Figure 3. Temperature map](Prac07/temperature1.png)
 
 5. You can also use the inspector tab to get a feel of the temperature in the region. Click on the inspector tab and click around different landscapes such as mountains, outback, city, coastal area. Also, check out the temperature of the region where you live in.
 
@@ -90,7 +90,7 @@ Map.addLayer(modC.mean().clip(roi), {min: 10, max: 30, palette: ['blue', 'limegr
 ```
 8. There you have it, the spatial temperature pattern around the ACT region for the year 2015.
 
-![Figure 4. Temperature map ACT](Prac05/temperature2.png)
+![Figure 4. Temperature map ACT](Prac07/temperature2.png)
 
 ## 3. Chart the temperature time series
 
@@ -120,11 +120,11 @@ var tempTrend = ui.Chart.image.series({
 print(tempTrend);
 ```
 
-![Figure 5. Temperature chart](Prac05/chart.png)
+![Figure 5. Temperature chart](Prac07/chart.png)
 
 3. At this point you have expanded the chart view. You have a greater detailed view of the chart. You also have the option to export the chart in the desired format. 
 
-![Figure 6. Option to export](Prac05/export.png)
+![Figure 6. Option to export](Prac07/export.png)
 
 4. Inspect the chart, does the trendline indicate global warming? Do you think the scale of observation here is enough to make that conclusion?
 
@@ -132,7 +132,7 @@ print(tempTrend);
 
 6. Now try changing the variable called “startDate” to 2000-03-05 and set the “numberOfYears” to 20. Does the trendline reveal a similar pattern? How does the long-term trend compare to the short-term trend?
 
-![Figure 7. Temperature chart](Prac05/trend.png)
+![Figure 7. Temperature chart](Prac07/trend.png)
 
 7. Think of this trendline in the context of your reading task. Did the scale of observation alter the conclusions?  Or is this particular trendline region-specific? You can move the roi to any other location e.g. Darwin and see how temperature has changed there.
 
