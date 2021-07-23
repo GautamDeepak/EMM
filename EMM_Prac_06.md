@@ -9,9 +9,9 @@
 
 ### Objective
 
-The objective of this tutorial is to develop the skills for assessing change in vegetation condition over time. How do we know if an ecosystem is stressed or has been disturbed? Quantifying changes and attributing causality can be challenging - particularly in ecosystems that have large degrees of intra-annual variability. 
+The objective of this tutorial is to develop the skills for assessing change in vegetation conditions over time. How do we know if an ecosystem is stressed or has been disturbed? Quantifying changes and attributing causality can be challenging - particularly in ecosystems that have large degrees of intra-annual variability. 
 
-One approach we have at our disposal is to compare attributes from recent years to those from a baseline period. In this Prac, we will explore anomalies in vegetation condition (measured in terms of EVI) to determine if the vegetation stress is increasing or decreasing over time. Using this technique, you can explore anomalies in any other variables such as rainfall, temperature, vegetation health, and etc. 
+One approach we have at our disposal is to compare attributes from recent years to those from a baseline period. In this Prac, we will explore anomalies in vegetation conditions (measured in terms of EVI) to determine if the vegetation stress is increasing or decreasing over time. Using this technique, you can explore anomalies in any other variables such as rainfall, temperature, vegetation health, etc. 
 
 ---------------------------------------------------
 ## 1. Getting to know MODIS and EVI.
@@ -44,7 +44,7 @@ var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01').sort('syste
 var meanReference = reference.mean();
 ```
 
-6. You can display the mean of the baseline in the mapping layer. Navigate to the Northern Australia, and use the script below to display the baseline mean EVI. Adjust the min and max values for visualisation purpose.
+6. You can display the mean of the baseline in the mapping layer. Navigate to Northern Australia, and use the script below to display the baseline mean EVI. Adjust the min and max values for visualisation purposes.
 
 ```JavaScript
 // Display the mean of the reference in the mapping panel
@@ -55,15 +55,15 @@ Map.addLayer(meanReference, {min: 0, max: 4000, palette: ['brown','yellow','gree
 
 *Question - do your research:* What does it mean to have low or high EVI value?
 
-## 2. Exploring spatial change/anomalies pattern against baseline
+## 2. Exploring spatial change/anomalies pattern against the baseline
 
-1. Create a new image collection for the period of 2010-2020. This new collection will be used to compare with the baseline reference collection. 
+1. Create a new image collection from 2010 to 2020. This new collection will be used to compare with the baseline reference collection. 
 
 ```JavaScript
 //Create a collection of images that represent most recent conditions
 var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01').sort('system:time_start');
 ```
-2. Similar to the baseline, calculate the mean of the recent EVI time series and display in the mapping layer.
+2. Similar to the baseline, calculate the mean of the recent EVI time series and display it in the mapping layer.
 
 ```JavaScript
 // calculate recent mean
@@ -74,7 +74,7 @@ Map.addLayer(meanRecent, {min: 0, max: 4000, palette: ['brown','yellow','green']
 
 ![Figure 2. Recent EVI Northern Australia](Prac06/recent_evi.png)
 
-3. Subtract the recent mean with the reference mean to see the spatial pattern of EVI change in recent decade as compared to the baseline. The following map highlights the improved EVIs in green, reduced EVIs in red and yellow color representing similar EVI. This technique highlights the areas where there has been EVI gain/loss highlight the vegetation condition and potential ecosystem stress.
+3. Subtract the recent mean with the reference mean to see the spatial pattern of EVI change in the recent decade as compared to the baseline. The following map highlights the improved EVI in green, reduced EVI in red and yellow colour representing unchanged EVI. This technique highlights the areas where there has been EVI gain/loss highlight the vegetation condition and potential ecosystem stress.
 
 ```JavaScript
 // compute the difference between recent and reference mean EVI (recent - reference)
@@ -86,7 +86,7 @@ Map.addLayer(EVIchange,{min:-300,max:300,palette: ['brown','yellow','green']},'E
 
 ![Figure 3. Change EVI Northern Australia](Prac06/change_evi.png)
 
-4. The above figure is simply the difference between the recent and reference vegetation condition. What we really want is some measure of the anomaly through time. Lets create a function that calculate and define anomalies (departure from the long-term average) by subtracting the reference mean from *each of the more recent images*.
+4. The above figure is simply the difference between the recent and reference vegetation conditions. What we want is some measure of the anomaly through time. Let us create a function that calculates and define anomalies (departure from the long-term average) by subtracting the reference mean from *each of the more recent images*.
 
 ```JavaScript
 // Function to subtract the meanReference each of the more recent images. 
@@ -101,17 +101,17 @@ function computeAnomalies(anImage) {
 var anomalies = recent.map(computeAnomalies);
 ```
 
-6. Often in the context of ecosystem, it is the cummulative anamoly, rather than mean of 10 years that we are interested in. Display the cumulative anomalies spatially using the code below.
+6. Often in the context of an ecosystem, it is the cumulative anomaly, rather than the mean of 10 years that we are interested in. Display the cumulative anomalies spatially using the code below.
 
 ```JavaScript
-//Map the cummulative anomalies spatially
+//Map the cumulative anomalies spatially
 Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
 ```
-![Figure 4. Cummulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
+![Figure 4. Cumulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
 
-*Note* that the dark red areas where we had negative anamoly where EVI has been decreasing over time and dark green we have a positive anomaly.
+*Note* that the dark red areas where we had negative anomaly where EVI has been decreasing over time and dark green we have a positive anomaly.
 
-7. Using the anomalies map above, explore the regions in the northern australia where there has been cummulation of eocsystem stress.
+7. Using the anomalies map above, explore the regions in northern Australia where there has been an accumulation of ecosystem stress.
 
 ## 3. Temporally explore anomalies trends against the baseline 
 1. Next, we will chart the change of EVI through time, using the EVI anomalies. We will first create an image collection using the anomalies by using the iterate function. Then we will graph the cumulative anomaly (vertical axis) over time. *Caution: you may find the subsequent script not so intuitive - do not stress*: First we will get the timestamp from the earliest image in the recent collection.
@@ -121,13 +121,13 @@ Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yello
 var time0 = recent.first().get('system:time_start');
 ```
 
-2. Create a list that contains a single image of zeros, with the time of time0 (i.e. first image in recent). Effectively this is just a holder of empty images where we can map the values of EVI anomoly into. Rename the list to 'EVI' to match the band name of recent EVI image collection.
+2. Create a list that contains a single image of zeros, with the time of time0 (i.e. the first image in recent). Effectively this is just a holder of empty images where we can map the values of EVI anomaly into. Rename the list to 'EVI' to match the band name of the recent EVI image collection.
 ```JavaScript
 // initialise a list (containing an empty image) to provide a structure into which the EVI anomalies can be mapped
 var first = ee.List([ ee.Image(0).set('system:time_start', time0).rename('EVI')]);
 ```
 
-3. Paste the following code into the code editor. This code is a function that iterates through the subsequent images in recent EVI collection and accumulate the anomalies temporally. Note we are adding anomolies from each subsequent image.
+3. Paste the following code into the code editor. This code is a function that iterates through the subsequent images in the recent EVI collection and accumulates the anomalies temporally. Note we are adding anomalies from each subsequent image.
 
 ```JavaScript
 // Write a function to iterate through time and accumulate the anomalies
@@ -144,21 +144,21 @@ function accumulate (anImage, aList) { // this function takes two inputs - image
 var cumulative = ee.ImageCollection(ee.List(anomalies.iterate(accumulate, first)));
 ```
 
-*Note* the above several steps is really heavy in JavaScript. Bassically what we did is created a timestamp, created an emply list of images, and mapped the cummulative anomalies to the images. 
+*Note* the above several steps is really heavy in JavaScript. Basically what we did is created a timestamp, created an empty list of images, and then mapped the cumulative anomalies to the images. 
 
-## 4. Charting the anamoly
-1. It is important to note that in above imagecollection called "cumulative", we have images of cummulative anomaly since between 2010 and 2020. The anomalies were calculated by substracting the recent EVI with the baseline EVI. Lets chart the temporal trend of cummulative anomaly. But first lets create an roi using rectangular geometry tool. I am going to draw an roi in Tiwi island. 
+## 4. Charting the anomaly
+1. It is important to note that in the above image collection called "cumulative", we have images of a cumulative anomaly between 2010 and 2020. The anomalies were calculated by subtracting the recent EVI from the baseline EVI. Let's chart the temporal trend of cumulative anomaly. But first, let's create a roi using a rectangular geometry tool. I am going to draw a roi on Tiwi island. 
 
 
-![Figure 5. ROI - tiwi island](Prac06/roi.png)
+![Figure 5. ROI - Tiwi island](Prac06/roi.png)
 
-2. You can use the script below to make sure that whenever you run the script, the mapview is zoomed into the roi.
+2. You can use the script below to make sure that whenever you run the script, the map view is zoomed into the roi.
 ```JavaScript
 //Centre map on roi and specify zoom level (1-22)
 Map.centerObject(roi, 9);
 ```
    
-3. Make a chart of the mean cumulative anomaly within the roi using the code below. Note that if you want to accumulate multiple regions within one chart, you can just draw additional polygon. i.e. roi can have more than one region.
+3. Make a chart of the mean cumulative anomaly within the roi using the code below. Note that if you want to accumulate multiple regions within one chart, you can just draw an additional polygon. i.e. roi can have more than one region.
 
 ```JavaScript
 //Create a chart of the  cumulative anomalies
@@ -182,9 +182,9 @@ print(vegStressChart);
 ```
 ![Figure 6. Chart - tiwi island](Prac06/chart1.png)
 
-5. Inspect the chart. What kind of pattern do you notice in your chart? My chart is coming from the region which looked darkgreen in the cummulative anomaly map. So, I can see a trend of increasing anomaly. Increasing anomaly here means vegetation getting less stressed over time as compared to the baseline. I can see we have that seasonal cycle of EVI anomaly but the graph shows clear accumulation of posetive anomaly. This gives you a nice tool to investigate the temporal trends and accumulation of stress. Interesting thing is you can see pattern of change through time. You can see where there is consist increasing/decreasing change over time. Or sometimes you may see abruptin change at a timepoint and not much change for next few years. 
+5. Inspect the chart. What kind of pattern do you notice in your chart? My chart is coming from the region which looked dark green in the cumulative anomaly map. So, I can see a trend of increasing anomaly. The increasing anomaly here means vegetation getting less stressed over time as compared to the baseline. I can see we have that seasonal cycle of EVI anomaly but the graph shows a clear accumulation of positive anomaly. This gives you a nice tool to investigate the temporal trends and accumulation of stress. The interesting thing is you can see a pattern of change through time. You can see where there is consistent increasing/decreasing change over time. Or sometimes you may see abrupt change at a time point and not much change for the next few years. 
 
-6. You can move the roi to any location you want to investigate the anomalies there. For example I moved the roi to a region of Point Sutart where I can see a different pattern of EVI anomaly. I can see the EVI anomaly was stable or increasing until late 2012. After that, the EVI anomaly is in consistent decline upto the recent times. 
+6. You can move the roi to any location you want to investigate the anomalies there. For example, I moved the roi to a region of Point Stuart where I can see a different pattern of EVI anomaly. I can see the EVI anomaly was stable or increasing until late 2012. After that, the EVI anomaly steadily declined up to recent times. 
 
 ![Figure 7. Chart - Stuart point](Prac06/chart2.png)
 
@@ -192,7 +192,7 @@ print(vegStressChart);
 
 ## 5. Ungraded exercise
 
-1. Explore one of the category 5 cyclone in the Australian region [wikipedia link](https://en.wikipedia.org/wiki/List_of_Category_5_Australian_region_severe_tropical_cyclones). What effect would you expect the cyclone to have on the on the long term EVI trend? For example, I explored the Shoalwater Bay region which was affected by the cyclone Marcia. I saw sharp drop in the EVI anomaly following the cyclone which also seems to have reversed the upward EVI trend in that region. 
+1. Explore one of the category 5 cyclones in the Australian region [wikipedia link](https://en.wikipedia.org/wiki/List_of_Category_5_Australian_region_severe_tropical_cyclones). What effect would you expect the cyclone to have on the long term EVI trend? For example, I explored the Shoalwater Bay region which was affected by the cyclone Marcia. I saw a sharp drop in the EVI anomaly following the cyclone which also seems to have reversed the previous upward trend in the EVI anomaly. 
 2. Think about how you can adapt this approach to other types of data, such as Land Surface Temperature or rainfall for example.
 
 
@@ -237,7 +237,7 @@ function computeAnomalies(anImage) {
 // map the function to the recent image collection to compute anomalies 
 var anomalies = recent.map(computeAnomalies);
 
-//Map the cummulative anomalies spatially
+//Map the cumulative anomalies spatially
 Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
 
 //Get timestamp of first image in the recent collection
