@@ -107,13 +107,13 @@ var anomalies = recent.map(computeAnomalies);
 //Map the cummulative anomalies spatially
 Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
 ```
-![Figure 3. Cummulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
+![Figure 4. Cummulative EVI anomalies in Northern Australia](Prac06/cum_anamoly.png)
 
 *Note* that the dark red areas where we had negative anamoly where EVI has been decreasing over time and dark green we have a positive anomaly.
 
 7. Using the anomalies map above, explore the regions in the northern australia where there has been cummulation of eocsystem stress.
 
-## 4. Temporally explore anomalies trends against the baseline 
+## 3. Temporally explore anomalies trends against the baseline 
 1. Next, we will chart the change of EVI through time, using the EVI anomalies. We will first create an image collection using the anomalies by using the iterate function. Then we will graph the cumulative anomaly (vertical axis) over time. *Caution: you may find the subsequent script not so intuitive - do not stress*: First we will get the timestamp from the earliest image in the recent collection.
 
 ```JavaScript
@@ -146,7 +146,7 @@ var cumulative = ee.ImageCollection(ee.List(anomalies.iterate(accumulate, first)
 
 *Note* the above several steps is really heavy in JavaScript. Bassically what we did is created a timestamp, created an emply list of images, and mapped the cummulative anomalies to the images. 
 
-## 3. Charting the anamoly
+## 4. Charting the anamoly
 1. It is important to note that in above imagecollection called "cumulative", we have images of cummulative anomaly since between 2010 and 2020. The anomalies were calculated by substracting the recent EVI with the baseline EVI. Lets chart the temporal trend of cummulative anomaly. But first lets create an roi using rectangular geometry tool. I am going to draw an roi in Tiwi island. 
 
 
@@ -180,19 +180,20 @@ var vegStressChart = ui.Chart.image.series ({
 //Print chart to console
 print(vegStressChart);
 ```
-![Figure 5. Chart - tiwi island](Prac06/chart1.png)
+![Figure 6. Chart - tiwi island](Prac06/chart1.png)
 
 5. Inspect the chart. What kind of pattern do you notice in your chart? My chart is coming from the region which looked darkgreen in the cummulative anomaly map. So, I can see a trend of increasing anomaly. Increasing anomaly here means vegetation getting less stressed over time as compared to the baseline. I can see we have that seasonal cycle of EVI anomaly but the graph shows clear accumulation of posetive anomaly. This gives you a nice tool to investigate the temporal trends and accumulation of stress. Interesting thing is you can see pattern of change through time. You can see where there is consist increasing/decreasing change over time. Or sometimes you may see abruptin change at a timepoint and not much change for next few years. 
 
 6. You can move the roi to any location you want to investigate the anomalies there. For example I moved the roi to a region of Point Sutart where I can see a different pattern of EVI anomaly. I can see the EVI anomaly was stable or increasing until late 2012. After that, the EVI anomaly is in consistent decline upto the recent times. 
 
-![Figure 5. Chart - Stuart point](Prac06/chart2.png)
+![Figure 7. Chart - Stuart point](Prac06/chart2.png)
 
 7. Don't forget to save the script before you exit. 
 
 ## 5. Ungraded exercise
 
-1. Think about how you can adapt this approach to other types of data, such as Land Surface Temperature or rainfall for example.
+1. Explore one of the category 5 cyclone in the Australian region [wikipedia link](https://en.wikipedia.org/wiki/List_of_Category_5_Australian_region_severe_tropical_cyclones). What effect would you expect the cyclone to have on the on the long term EVI trend? For example, I explored the Shoalwater Bay region which was affected by the cyclone Marcia. I saw sharp drop in the EVI anomaly following the cyclone which also seems to have reversed the upward EVI trend in that region. 
+2. Think about how you can adapt this approach to other types of data, such as Land Surface Temperature or rainfall for example.
 
 
 ## The complete script
