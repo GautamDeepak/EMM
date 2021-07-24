@@ -12,201 +12,186 @@
 The objective of this lab is to broaden our horizons and explore different types of data in the Google Earth Engine Environment. Thus far we have worked with optical satellite data, and have explored vegetation trends over time and space. However merely tracking changes in vegetation properties is not enough to understand what is driving them - we need to be able to link these dynamics with other environmental data. 
 
 ---------------------------------------------------
-## 1. Load the CHIRPS dataset and chart the rainfall trend.
+## 1. Load and study the CHIRPS rainfall dataset.
 1. Open the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
-2. Today we will use Climate Hazards Group InfraRed Precipitation with Station (CHIRPS) dataset.  The CHIRPS data is a 30+ year quasi-global rainfall dataset, since 1981. CHIRPS incorporates 0.05° resolution satellite imagery (from MODIS) with in-situ rainfall weather station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. Load precipitation data from the CHIRPS data archive 
+2. Today we will use the Climate Hazards Group InfraRed Precipitation with Station (CHIRPS) dataset.  The CHIRPS data is a 30+ year quasi-global rainfall dataset, since 1981. CHIRPS incorporates 0.05° resolution satellite imagery (from MODIS) with in-situ rainfall weather station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. Load precipitation data from the CHIRPS data archive 
 
 ```JavaScript
 // Load the rainfall dataset 
 var CHIRPS= ee.ImageCollection('UCSB-CHG/CHIRPS/PENTAD');
 ```
 
-3. Filter the rainfall dataset with your range of dates. Lets use 2015-2020 for this exercise.
+3. Before you start to work on a dataset, it is always a good idea to have a read about the dataset and understand the details. Such as whats the date range of availability of this dataset? What area does this dataset cover? How many bands does it contain? What is the name of the bands? What is stored in each band and their unit? What's the spatial resolution of the bands? , etc. Take your time to find out all the information of this particular CHIRPS dataset. 
+  
+4. Also, always take some time to explore the dataset by printing the dataset onto your console and quickly adding it to your mapping layer. 
+
+```JavaScript
+// print the dataset to console
+print(CHIRPS);
+
+// add the dataset to your mapping layer.
+Map.addLayer(CHIRPS.first());
+```
+
+5. What do you see? How many images did your collection have? I had 2916 images collected since 1981. Can you visually judge if Australia seems to have more or less rainfall compared to the rest of the world? 
+ 
+6. Now that we have read the description of the dataset, played a bit with the dataset, we are ready to work further. Let's filter the rainfall dataset within a range of dates. I will use 2015-2029 (5 years) for this exercise, you can use any range.
 
 ```JavaScript
 //filter the dataset with a date range of interest
-var precip5Y = CHIRPS.filterDate('2015-01-01','2020-12-31');
-```
-4. Using rectangular polygon geometry, draw a poly
-
-Search for and import MODIS data: MOD11A2 product. Alternatively, import the image collection using the below script. MOD11A2 V6 provides an average 8-day land surface temperature (LST) in a 1200 x 1200-kilometre grid. Each pixel value in MOD11A2 is a simple average of all the corresponding MOD11A1 LST pixels collected within those 8 days. In this product, along with both the day- and night-time surface temperature bands and their quality indicator (QC) layers, are also MODIS bands 31 and 32 and eight observation layers. The product is available from 05/03/2000 to the present.
-
-```JavaScript
-// Import the MODIS MOD11A2 V6 image collection
-var modis = ee.ImageCollection('MODIS/006/MOD11A2');
+var precip5Y = CHIRPS.filterDate('2015-01-01','2019-12-31');
 ```
 
-3. For this lab we will work around the ACT region. I picked this region as ACT has quite a huge fluctuation in temperature in any given year/month/day. Use the geometry tool to draw a polygon and define your region of interest (roi). Remember to rename the 'geometry' to 'roi'.
+## 2. Map the rainfall pattern spatially
+1. Let's first define our region of interest. In this exercise, I will define the region of interest covering the entire Northern Territory. Use the rectangular geometry tool to draw a region of interest, rename the default variable "geometry" to "roi".
 
-![Figure 1. ACT roi](Prac05/roi.png)
+![Figure 1. NT roi](Prac05/roi.png)
 
-4. Specify the dates of interest. We will use a different approach to the date range here - remember these are all different ways of doing things. You can follow any approach to filter the dates. This current approach makes changing the range of interest a lot easier.
+2. Using sacthe mean reducer, map the 5-year spatial pattern of the rainfall in NT. Adjust the min and max values yourself by using the inspector tool.
 
 ```JavaScript
-// A start date is defined and the end date is determined by advancing 1 year from the start date.
-var startDate = ee.Date('2015-01-01');
-var numberOfYears = 1;
-var dateRange = ee.DateRange(startDate, startDate.advance(numberOfYears, 'year'));
+// adding mean precipitation of five-year time series to the mapping panel 
+Map.addLayer(precip5Y.mean().clip(roi), {min: 3, max: 25, palette:['lightblue','blue','darkblue']}, '5-year precip');
 ```
+![Figure 2. NT 5 year mean rainfall](Prac05/5yrainfall.png)
 
-5. We will filter the image collection by the above-specified date range and select the daytime temperature band out of all the bands.
+*Question:* Do you remember whats the function of ".mean()" and ".clip(roi)" in the above line of script? 
+
+3. Looking at the above line of script and the resulting map, interpret the map. What does lightblue, blue, and darkblue colour represent?
+
+*Question*: In the above map, the darkest blue colour represents approximately how much rainfall? Why? [15 mm/pentad, 20 mm/pentad, 25 mm/pentad, 30 mm/pentad] - discuss in the discussion board.
+
+4. Now use the mean reducer again but map the 1-year spatial pattern of the rainfall in NT. Adjust the min and max values accordingly.
 
 ```JavaScript
-// Filter the LST collection to include only images from time frame and select day time temperature band
-var modLSTDay = modis.filterDate(dateRange).select('LST_Day_1km');
+//filter the dataset with a date range of interest
+var precip1Y=CHIRPS.filterDate('2020-01-01','2020-12-31');
+// adding precipitation of 1 year to the mapping panel. 
+Map.addLayer(precip1Y.mean().clip(roi), {min: 3, max: 25,palette:['lightblue','blue','darkblue']}, '1-year precip');
 ```
+![Figure 3. NT 1y rainfall](Prac05/1yrainfall.png)
 
-*Self-assessment questions:* a) Is modLSTDay an image or image collection? b) If it is an image collection, how many images does it contain? c) How many bands does the modLSTDay have, and what are they?
+5. Note that to make a visual comparison between the 5 years mean and the recent mean, you need to have the same min and max values on both the display. What differences do you notice between those two mean precipitation? Do you notice an overall improvement in rainfall recently? Are there areas that saw a significant increase/decrease in rainfall?
 
-6. Note that modLSTDay that we filtered out above, is still an image collection. It contains images from the entire 2015, but we have only retained a single band called 'LST_Day_1km'. We are ready to display the image collection. However, let's go a step forward. The images contain daytime temperature stored in degree Kelvin (not exactly – scaled Kelvin) - how do I know? - read the band description. Let's convert the temperature data to degree C before visualising. 
+![Figure 4. NT 1y vs 5y](Prac05/1yvs5y.png)
 
-## 2. Function to convert MODIS LST data to temperature degree C
+## 3. Chart the rainfall trend temporally
 
-1. The band description tells us that the MODIS product temperature estimates are expressed in degrees Kelvin (scaled by a factor of 50). From an ecological/environmental perspective, we are typically more comfortable working in degree Celsius. Use the function below to convert MODIS data to degree Celsius.
-
-```JavaScript
-// Function to convert MODIS LST band from degree Kelvin to degree Celsius.
-function mod2C(anImage) {
-  var kelvin = anImage.multiply(0.02); // Scale back to degree Kelvin
-  var celsius = kelvin.subtract(273.15); // Convert degree Kelvin to degree Celsius
-  return celsius.copyProperties(anImage, ['system:time_start']);} // retain the image properties.
-```
-
-2. As usual, we need to apply the above function to the entire MODIS image collection. 
+1. Create the 5-year temporal trend of precipitation for the roi.
 
 ```JavaScript
-// map the function to image collection
-var modC = modLSTDay.map(mod2C);
-```
-
-3. Use temporal mean reducer to visualise the data. 
-
-```JavaScript
-//Visualise the temperature 
-Map.addLayer(modC.mean(), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature');
-```
-
-![Figure 2. Temperature map](Prac05/temperature.png)
-
-4. Let's do the following to improve the visualisation and our perception: a) untick the roi, b) enable the satellite view, c) adjust the opacity of the temperature layer.
-
-![Figure 3. Temperature map](Prac05/temperature1.png)
-
-5. You can also use the inspector tab to get a feel of the temperature in the region. Click on the inspector tab and click around different landscapes such as mountains, outback, city, coastal area. Also, check out the temperature of the region where you live in.
-
-6. If you zoom out of the current view, you will notice that our current computation generates a temperature map for the entire globe. Feel free to explore a different part of the world. Make sure you adjust the min and max value for better colour contrast. 
-
-7. Now, using the roi that we created earlier, we will clip the temperature image within the boundary or roi. You can even comment out the previous Map.addLayer command line by typing in “//” at the start of the line. 
-
-```JavaScript
-//Visualise the temperature - clipped
-Map.addLayer(modC.mean().clip(roi), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature ACT');
-```
-8. There you have it, the spatial temperature pattern around the ACT region for the year 2015.
-
-![Figure 4. Temperature map ACT](Prac05/temperature2.png)
-
-## 3. Chart the temperature time series
-
-1. Generate the daytime temperature time series from our region of interest using the script below.
-
-```JavaScript
-// generate the temperature  time-series
-var tempTrend = ui.Chart.image.series({
-  imageCollection: modC,    // Name of the image collection that you want to extract data from
-  region: roi,              // Region where you want the data to come from
-  reducer: ee.Reducer.median(), // Spatial reducer that you want to use
-  scale: 1000,                  // Spatial scale of data extraction 
-  xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
-  .setOptions({
-    lineWidth: 1,                 // width of the chart line
-    pointSize: 3,                 // size of the point data
-    trendlines: {0: {             // include a trend line
-        color: 'CC0000'}},        // trendline is red in color
-    title: 'LST  Time Series',   // se the title of the chart
-    vAxis: {title: 'Celsius'}}); // set the vertical axis label
+// Create the five year precipitation chart 
+var TS5 = ui.Chart.image.series({
+	imageCollection: precip5Y, // Name of the image collection that you want to extract data from
+	region: roi, // Region where you want the data to come from
+	reducer: ee.Reducer.mean(), // Spatial reducer that you want to use
+	scale: 10000, // Spatial scale of data extraction
+	xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
+	.setOptions({ 
+	title: 'Precipitation five years',  // set the title of the chart
+	hAxis:{title: 'Time'}, // set the x-axis label
+	vAxis: {title: 'mm/pentad'}});// set the vertical axis label
 ```
 
 2. If you run the script, nothing new happens, you cant see the chart - why is that? Every time you generate a chart, you need to print it for visualisation in the console. Use the print command to print the chart to the console.
-
+ 
 ```JavaScript
-// Print the temperature trend chart
-print(tempTrend);
+// print the chart
+print(TS5);
 ```
 
-![Figure 5. Temperature chart](Prac05/chart.png)
+![Figure 5. y year chart](Prac05/5ychart.png)
 
-3. At this point you have expanded the chart view. You have a greater detailed view of the chart. You also have the option to export the chart in the desired format. 
+3. You can expand the chart for better visualisation. After expanding, you will have the option to download the chart as an image or download the data in CSV. 
 
-![Figure 6. Option to export](Prac05/export.png)
+![Figure 6. expand the chart](Prac05/expand.png)
 
-4. Inspect the chart, does the trendline indicate global warming? Do you think the scale of observation here is enough to make that conclusion?
+4. Similarly let us create and print the 1-year rainfall chart. 
 
-5. Try changing the number of years to 5 and inspect the trendline. To do that, go back to your variable named “numberOfYears” and set it to 5. Do you notice a similar pattern in the temperature change?
+```JavaScript
+// Create the one year precipitation chart 
+var TS1 = ui.Chart.image.series({
+	imageCollection: precip1Y, // Name of the image collection that you want to extract data from
+	region: roi, // Region where you want the data to come from
+	reducer: ee.Reducer.mean(), // Spatial reducer that you want to use
+	scale: 10000, // Spatial scale of data extraction
+	xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
+	.setOptions({ 
+	title: 'Precipitation one years',  // set the title of the chart
+	hAxis:{title: 'Time'}, // set the x-axis label
+	vAxis: {title: 'mm/pentad'}});// set the vertical axis label
+	
+// print the chart
+print(TS1);
+```
 
-6. Now try changing the variable called “startDate” to 2000-03-05 and set the “numberOfYears” to 20. Does the trendline reveal a similar pattern? How does the long-term trend compare to the short-term trend?
+![Figure 7. 1-year chart](Prac05/1ychart.png)
 
-![Figure 7. Temperature chart](Prac05/trend.png)
+5. Similarly, you can modify the script to generate the 40-year rainfall trend. Try yourself. 
 
-7. Think of this trendline in the context of your reading task. Did the scale of observation alter the conclusions?  Or is this particular trendline region-specific? You can move the roi to any other location e.g. Darwin and see how temperature has changed there.
+![Figure 8. 1-year chart](Prac05/40ychart.png)
 
-8. At this point, I want you to take a moment to appreciate the power of GEE and scripting. Once you establish a script, how convenient it is to investigate over a different region and/or at different time range. 
-
-9. Don't forget to save the script before you exit. 
+6. Don't forget to save the script before you exit. 
 
 ## 5. Ungraded exercise
 
-1. In the example above, we used daytime temperature, but the MODIS product also contains night temperatures. Modify the code above to plot charts and maps of night temperature and compare with the day results.
-2. Now try to modify the code further to plot NDVI as a time series and as a map for the same area of interest. Hint: have a look in the Earth Engine catalogue for the MOD13Q1.006 Terra Vegetation Indices 16-Day Global 250m collection.
+In today's prac we worked with 5-year rainfall data and looked into the techniques of mapping the spatial pattern and charting the temporal trend. We used a 5-year window and a 1-year window to look into the rainfall pattern and trend. The 5-year window is a short period in the context of ecological changes. Compare the rainfall pattern of the recent 5 years using pre-2000 as a baseline over the greater Broken Hill region of NSW. Plot the rainfall trend for the past 40 years. Does the rainfall trend reveal drought in the Broken Hill region?
 
 
 ## The complete script
 
 ```JavaScript
-// Import the MODIS MOD11A2 V6 image collection
-var modis = ee.ImageCollection('MODIS/006/MOD11A2');
+// Load the rainfall dataset 
+var CHIRPS= ee.ImageCollection('UCSB-CHG/CHIRPS/PENTAD');
 
-// A start date is defined and the end date is determined by advancing 1 year from the start date.
-var startDate = ee.Date('2015-01-01');
-var numberOfYears = 1;
-var dateRange = ee.DateRange(startDate, startDate.advance(numberOfYears, 'year'));
+// print the dataset to console
+print(CHIRPS);
 
-// Filter the LST collection to include only images from time frame and select day time temperature band
-var modLSTDay = modis.filterDate(dateRange).select('LST_Day_1km');
+// add the dataset to your mapping layer.
+Map.addLayer(CHIRPS.first());
 
-// Function to convert MODIS LST band from degree Kelvin to degree Celsius.
-function mod2C(anImage) {
-  var kelvin = anImage.multiply(0.02); // Scale back to degree Kelvin
-  var celsius = kelvin.subtract(273.15); // Convert degree Kelvin to degree Celsius
-  return celsius.copyProperties(anImage, ['system:time_start']);} // retain the image properties.
-  
-// map the function to image collection
-var modC = modLSTDay.map(mod2C);
+//filter the dataset with a date range of interest
+var precip5Y = CHIRPS.filterDate('2015-01-01','2019-12-31');
 
-//Visualise the temperature 
-//Map.addLayer(modC.mean(), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature');
+// adding mean precipitation of five-year time series to the mapping panel 
+Map.addLayer(precip5Y.mean().clip(roi), {min: 3, max: 25, palette:['lightblue','blue','darkblue']}, '5-year precip');
 
-//Visualise the temperature - clipped
-Map.addLayer(modC.mean().clip(roi), {min: 10, max: 30, palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']}, 'Temperature ACT');
+//filter the dataset with a date range of interest
+var precip1Y=CHIRPS.filterDate('2020-01-01','2020-12-31');
+// adding precipitation of 1 year to the mapping panel. 
+Map.addLayer(precip1Y.mean().clip(roi), {min: 3, max: 25,palette:['lightblue','blue','darkblue']}, '1-year precip');
 
-// generate the temperature  time-series
-var tempTrend = ui.Chart.image.series({
-  imageCollection: modC,    // Name of the image collection that you want to extract data from
-  region: roi,              // Region where you want the data to come from
-  reducer: ee.Reducer.median(), // Spatial reducer that you want to use
-  scale: 1000,                  // Spatial scale of data extraction 
-  xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
-  .setOptions({
-    lineWidth: 1,                 // width of the chart line
-    pointSize: 3,                 // size of the point data
-    trendlines: {0: {             // include a trend line
-        color: 'CC0000'}},        // trendline is red in color
-    title: 'LST  Time Series',   // se the title of the chart
-    vAxis: {title: 'Celsius'}}); // set the vertical axis label
+// Create the five year precipitation chart 
+var TS5 = ui.Chart.image.series({
+	imageCollection: precip5Y, // Name of the image collection that you want to extract data from
+	region: roi, // Region where you want the data to come from
+	reducer: ee.Reducer.mean(), // Spatial reducer that you want to use
+	scale: 10000, // Spatial scale of data extraction
+	xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
+	.setOptions({ 
+	title: 'Precipitation five years',  // set the title of the chart
+	hAxis:{title: 'Time'}, // set the x-axis label
+	vAxis: {title: 'mm/pentad'}});// set the vertical axis label
 
-// Print the temperature trend chart
-print(tempTrend);
+// print the chart
+print(TS5);
+
+// Create the one year precipitation chart 
+var TS1 = ui.Chart.image.series({
+	imageCollection: precip1Y, // Name of the image collection that you want to extract data from
+	region: roi, // Region where you want the data to come from
+	reducer: ee.Reducer.mean(), // Spatial reducer that you want to use
+	scale: 10000, // Spatial scale of data extraction
+	xProperty: 'system:time_start'}) // Put the image acquisiton time as x-axis label
+	.setOptions({ 
+	title: 'Precipitation one years',  // set the title of the chart
+	hAxis:{title: 'Time'}, // set the x-axis label
+	vAxis: {title: 'mm/pentad'}});// set the vertical axis label
+	
+// print the chart
+print(TS1);
+
   
 ```
 
