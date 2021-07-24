@@ -191,8 +191,6 @@ var TS1 = ui.Chart.image.series({
 	
 // print the chart
 print(TS1);
-
-  
 ```
 
 -------
