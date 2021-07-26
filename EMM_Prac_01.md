@@ -107,7 +107,7 @@ Self-assessment question: Write a script that prints a person’s age. Use two v
 
 4. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
-![Figure 4. Rename image](Prac01/rename.png)
+![Figure 4. Rename image](Prac01/rename.PNG)
 
 5. Print the image object to the console by copying the script below into the code editor, and click "run" :
 
@@ -117,7 +117,7 @@ print(theSRTM);
 
 6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
-![Figure 5. SRTM in console](Prac01/inspector.png)
+![Figure 5. SRTM in console](Prac01/printrun.PNG)
 
 ## 6. Adjusting visualisation parameters
 
