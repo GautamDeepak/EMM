@@ -117,7 +117,7 @@ print(theSRTM);
 
 6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
-![Figure 5. SRTM in console](Prac01/printrun.PNG)
+![Figure 5. SRTM in console](Prac01/printrun.png)
 
 ## 6. Adjusting visualisation parameters
 
@@ -134,7 +134,7 @@ Map.addLayer(theSRTM);
 
 3. Select the Inspector tab and click on several points on the map to get a feel for the elevation range in this area.
 
-![Figure 6. Inspect SRTM](Prac01/inspector.png)
+![Figure 6. Inspect SRTM](Prac01/inspector.PNG)
 
 4. Now that you know the approximate min and max elevation values for your scene, you can set some the appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
 
