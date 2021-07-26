@@ -7,6 +7,7 @@
 
 ### Objective
 In Prac 1 we had a brief overview of the GEE, JavaScript and learnt how to work with single-band elevation data. In this prac, we will work with multi-band image taking Sentinel-2 as an example. We will learn to display imagery as true colour and false colour composites, as well as to calculate indices (e.g. NDVI) from multi-spectral imagery. By the end of this exercise you will be able to search, find and visualize a broad range of remotely sensed datasets.
+
 ---------------------------------------------------
 ## 4. Searching and importing remote sensing images 
 
