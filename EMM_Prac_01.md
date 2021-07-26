@@ -87,23 +87,27 @@ Self-assessment question: Write a script that prints a person’s age. Use two v
 
 10. The best way to learn Scripting is to modify the script and make many mistakes - many many mistakes. If you are new to scripting and JavaScript, try to change and run the script and see what happens.
 
----------
-## 1. Getting started with elevation data
-1. Navigate to the Darwin area - see prac 01 on how to. 
+11. Alright, now lets start looking into some remote sensing images. Before that, clear your scripting area by clicking on "Clear script" under the "Reset" button.
 
-2. Search for "elevation" or "SRTM" and click on the "NASA SRTM Digital Elevation 30m" result to show the dataset description.
+## 3. Getting started with elevation data
 
-![Figure 1. Search for elevation data](Prac02/searchelevation.png)
+1. Just above the Coding panel is the search bar. Search for ‘Darwin’ in this GEE search bar, and click the result to pan and zoom the map to Darwin (Figure 2). In this exercise, we will work on and around the Darwin region including Kakadu National Park. 
+
+![Figure 2. Navigate to Darwin ](Prac01/navigate2darwin.PNG)
+
+2. Search for "elevation" or "SRTM" and click on the "NASA SRTM Digital Elevation 30m" result to show the dataset description. In 2000, NASA flew an SRTM mission for 11-days to gather the 3D elevation data of the entire globe. The SRTM used radar interferometry to obtain the most detailed 3D elevation data.
+
+![Figure 2. Search for elevation data](Prac02/searchelevation.png)
 
 3. Read the information on the dataset - look under "description" and "bands". Once done, click on "Import", which will import the dataset and places it under the Imports section at the top of your script.
 
-![Figure 2. View elevation data source and import](Prac02/viewinfo.png)
+![Figure 3. View elevation data source and import](Prac02/viewinfo.png)
 
 *Question:* How many bands do this data have and what is the spatial resolution?
 
 4. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
-![Figure 3. Rename image](Prac02/rename.png)
+![Figure 4. Rename image](Prac02/rename.png)
 
 5. Print the image object to the console by copying the script below into the code editor, and click "run" :
 
@@ -113,9 +117,9 @@ print(theSRTM);
 
 6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
-![Figure 4. SRTM in console](Prac02/inspector.png)
+![Figure 5. SRTM in console](Prac02/inspector.png)
 
-## 2. Adjusting visualisation parameters
+## 4. Adjusting visualisation parameters
 
 1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
 
@@ -146,7 +150,7 @@ Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 ```
 ![Figure 8. Rename title](Prac02/layername.png)
 
-## 3. Commenting and saving your scripts
+## 5. Commenting and saving your scripts
 
 1. Now the code has started to look a little bit messy. Imagine you coming back to this code after a year. Would you still be able to tell which line is doing what task? Hence, it is a good idea to always put comments to your code reminding you of what you did and why. We add comments with two forward slashes // :
 
@@ -177,7 +181,7 @@ Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'E
 
 ![Figure 10. Colour scale elevation](Prac02/colorelevation.png)
 
-## 4. Hillshade and slope
+## 6. Hillshade and slope
 
 1. For better visualisation we can create a hillshade view of the elevation data. 
 
@@ -209,7 +213,7 @@ Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 
 5. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
 
-## 5. Applying a computation to an image
+## 7. Applying a computation to an image
 1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
 
 ```javascript
@@ -231,7 +235,7 @@ Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']
 
 ![Figure 16. masked](Prac02/masked.png)
 
-## 6. Applying a spatial reducer
+## 8. Applying a spatial reducer
 Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used the inspector tool to extract data from one pixel, think of a spatial reducer as a way to extract data from a polygon rather than a single pixel. 
 
 ![Figure 17. reducer](Prac02/reducer.png)
@@ -258,43 +262,49 @@ print('Mean elevation', meanElevation.get('elevation'));
 
 5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script. 
 
-## 10. The complete script used in this Prac
+## 9. The complete script used in this Prac
 
 ```JavaScript
-// this is our first line of code. Let us define the image collection we are working with by writing this command
-var anImage = ee.Image(sent2
+// Print data details to console
+print(theSRTM);
 
-// we will then include a filter to get only images in the date range we are interested in
-.filterDate("2020-06-01", "2021-06-01")
+// Add the SRTM data to the interactive map
+Map.addLayer(theSRTM);
 
-// Next we include a geographic filter to narrow the search to images at the location of our point
-.filterBounds(campus)
+// Add the data again, but with restricted value ranges for better visualisation
+Map.addLayer(theSRTM, {min: 0, max: 300});
 
-// Next we will also sort the collection by a metadata property, in our case cloud cover is a very useful one
-.sort("CLOUD_COVERAGE_ASSESSMENT")
+// Add the data again, with value ranges, and a useful title for the Layer tab
+Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 
-// Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
-.first());
+// Adding colour scale to the elevation data
+Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
 
-// and let's print the image to the console.
-print("A Sentinel-2 scene:", anImage);
+// Create hillshade and map it
+var hillshade = ee.Terrain.hillshade(theSRTM);
+Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
 
-// Add the image to the map, using the visualization parameters.
-Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
+// Create terrain slope and map it
+var slope = ee.Terrain.slope(theSRTM);
+Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 
-// add the false color composite image to the mapping layer.
-Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
+// computation: Terrain that has elevation over 200 m
+var high = theSRTM.gt(200);
+Map.addLayer(high, {}, 'Above 200m');
 
-// Define variable NDVI from equation
-var NDVIimage = anImage.expression(
-    "(NIR - RED) / (NIR + RED)",   // NDVI formaula
-    {
-      RED: anImage.select("B4"),    //  RED band is B4
-      NIR: anImage.select("B8"),    // NIR band is B8
-    });
-    
-// Add NDVI map to the mapping layer.
-Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
+// Masking out the terrains below 200m from the DEM
+var DEMover200 = theSRTM.updateMask(high);
+Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']}, 'DEM>200');
+
+// Apply spatial reducer to compute mean elevation over the roi
+var meanElevation = theSRTM.reduceRegion({
+        reducer: 'mean',
+        geometry: roi,
+        scale: 90
+});
+
+// print the mean elevation
+print('Mean elevation', meanElevation.get('elevation'));
 ```
 
 -------
