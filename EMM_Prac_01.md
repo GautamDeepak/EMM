@@ -88,179 +88,175 @@ Self-assessment question: Write a script that prints a person’s age. Use two v
 10. The best way to learn Scripting is to modify the script and make many mistakes - many many mistakes. If you are new to scripting and JavaScript, try to change and run the script and see what happens.
 
 ---------
-## 4. Searching and importing remote sensing images 
+## 1. Getting started with elevation data
+1. Navigate to the Darwin area - see prac 01 on how to. 
 
-Now you are ready to get started with images and remote sensing. In this exercise, we will work with Sentinel-2 satellite data. 
+2. Search for "elevation" or "SRTM" and click on the "NASA SRTM Digital Elevation 30m" result to show the dataset description.
 
-About Sentinel-2: Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission supporting Copernicus Land Monitoring studies, including the monitoring of vegetation, soil and water cover, as well as observation of inland waterways and coastal areas. Sentinel-2 was developed and operated by the European Space Agency and has been sending data back to Earth since 23 June 2015. The Sentinel-2 data contain 13 spectral bands representing TOA reflectance scaled by 10000.
+![Figure 1. Search for elevation data](Prac02/searchelevation.png)
 
-Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine to see what it looks like. Follow the commands below step-by-step - if you get stuck or can’t follow these instructions alone, then watch the accompanying video.
+3. Read the information on the dataset - look under "description" and "bands". Once done, click on "Import", which will import the dataset and places it under the Imports section at the top of your script.
 
+![Figure 2. View elevation data source and import](Prac02/viewinfo.png)
 
-1. Just above the Coding panel is the search bar. Search for ‘Darwin’ in this GEE search bar, and click the result to pan and zoom the map to Darwin (Figure 2). In this exercise, we will work on and around the Darwin region. 
+*Question:* How many bands do this data have and what is the spatial resolution?
 
-![Figure 2. Navigate to Darwin ](Prac01/navigate2darwin.PNG)
+4. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
+![Figure 3. Rename image](Prac02/rename.png)
 
-2. Use the geometry tools to make a point on the Casuarina campus of Charles Darwin University (located in the suburb of Brinkin, north of Rapid Creek). Once you create the geometry point, you will see it added to your Coding panel as a variable (var) under the Imports heading.
-
-![Figure 3. Draw Geometry](Prac01/geometry.PNG)
-
-3. Rename the resulting point to ‘campus’ by clicking the import name (which is called ‘geometry’ by default).
-
-![Figure 4. Rename Geometry](Prac01/rename.PNG)
-
-
-4. Now that we have decided the region where we want our remote sensing data from, Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
-
-![Figure 5. Sentinel-2](Prac01/sentinel2.PNG)
-
-5. Briefly read the information of Sentinel-2 within the description tab and about bands in the bands tab.
-
-![Figure 6. Band description](Prac01/description.PNG)
-
-Self-assessment question: How many bands do this data have and whats the spatial resolution?
-
-6. Click on the “Import” button to import the data to our computing environment. Sentinel-2 will be added to our Imports in the Coding panel as a variable with the default name "imageCollection".
-
-![Figure 7. Sentinel-2](Prac01/import.PNG)
-
-7. Let's rename this to “sent2” by clicking on imageCollection and typing "sent2".
-
-![Figure 8. Rename Sentinel](Prac01/rename2.PNG)
-
-## 6. Filtering through the image collection for a cloud-free image
-It is important to understand that we have now added access to the full Sentinel-2 image collection (i.e. every image that has been collected to date) to our script. For this exercise we don't want to load all these images - we want a single cloud-free image over Charles Darwin University. As such, we can now filter the image collection with a few criteria, such as time of acquisition, spatial location and cloud cover.
-
-1. Copy or type the below code to the GEE and hit the run button. This piece of code will search the Sentinel-2 archive within defined dates, find images that are located over Darwin, sort them according to percentage cloud cover, and then return the most cloud-free image for us. 
+5. Print the image object to the console by copying the script below into the code editor, and click "run" :
 
 ```JavaScript
-// this is our first line of code. Let us define the image collection we are working with by writing this command
-var anImage = ee.Image(sent2
-
-// we will then include a filter to get only images in the date range we are interested in
-.filterDate("2020-06-01", "2021-06-01")
-
-// Next we include a geographic filter to narrow the search to images at the location of our point
-.filterBounds(campus)
-
-// Next we will also sort the collection by a metadata property, in our case cloud cover is a very useful one
-.sort("CLOUD_COVERAGE_ASSESSMENT")
-
-// Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
-.first());
-
+print(theSRTM);
 ```
 
-**Take a moment** to play with and understand the above filtering script see figure below as a guide
-![Figure 16. NDVI map](Prac01/filtering.PNG)
+6. Browse through the information that is printed to the console window. Open the “bands” section to show the one band named “elevation”. Note that all this information is also available in the Imports section.
 
-2. At this point the image filtering has happened in the GEE memory, we can print the information about the the filtered image to the console using "print" command as below. 
+![Figure 4. SRTM in console](Prac02/inspector.png)
+
+## 2. Adjusting visualisation parameters
+
+1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
 
 ```JavaScript
-// and let's print the image to the console.
-print("A Sentinel-2 scene:", anImage);
+Map.addLayer(theSRTM);
 ```
+![Figure 5. Map SRTM](Prac02/flatgrey.png)
 
-3. Explore the printed information to find out the name of the scene, the date it was collected, and the band names. 
-
-![Figure 9. Print console](Prac01/printconsole.PNG)
+2. The displayed map will look pretty flat grey because the default visualization parameters maps the full 16­bit range (0 to 65,635) of the data onto the black–white range. However, the elevation range within a landscape is much smaller (e.g. between 0 and 400). We’ll fix it in a moment.
 
 
-**Self-assessment questions:** Have a think about the following questions. Try to answer them yourself and discuss them with classmates. 
-- *What do the numbers within the filterDate() represent?* 
-- *Think about what would happen if you removed or commented out the filterDate command?*
-- *Modify the above script to get an image from last - month.*
-- *What does filterBounds represent?*
-- *What will happen if you remove or comment out the filterBounds() command.*
-- *Where did we get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.*
-- *What will happen if you remove the ".first()" command?*
 
-## 7. Adding images to the map view
-1. So far, we have filtered the image, and printed the information, but we don't know what the image looks like. To display the image, we need to use the "Map.addLayer" command. Append the below script to display the image to the mapping layer. 
+3. Select the Inspector tab and click on several points on the map to get a feel for the elevation range in this area.
+
+![Figure 6. Inspect SRTM](Prac02/inspector.png)
+
+4. Now that you know the approximate min and max elevation values for your scene, you can set some the appropriate visualization parameters by adjusting the code as follows (units of the min and max values are in meters above sea level):
 
 ```JavaScript
-// Add the image to the map, using the visualization parameters.
-Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
+Map.addLayer(theSRTM, {min: 0, max: 300});
 ```
+![Figure 7. Visualise SRTM](Prac02/minmax.png)
 
-![Figure 10. True color](Prac01/truecolor.PNG)
-
-**Take a moment** to play with and understand the above Map.addLayer script. Use figure below as a guide
-![Figure 17. NDVI map](Prac01/addlayer.PNG)
-
-2. After the image appears on the map, zoom in and explore Darwin. We can see great detail in the Sentinel-2 image, which is at 10m resolution for the selected bands. Use the (+) and (-) symbols in the upper left corner of the map to zoom in and out (also possible with the mouse scroll wheel/trackpad). Use left click+drag to pan around the image. 
-
-3. Move your mouse over the "Layers" button in the top right-hand corner of the mapping panel - this panel shows you the available image layers and lets you enable/disable the layer and adjust the opacity.
-
-![Figure 11. Layer](Prac01/layer.PNG)
-
-4. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. Below is a screen capture of band values from sports field. 
-
-![Figure 12. inspector](Prac01/inspector.PNG)
-
-5. Now try click over different landcover such as "sports field", "beach", "ocean", "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
-
-## 8. Exploring the band combination 
-
-1. In the above display of the image, we have utilised 3 bands "red", "green", and "blue" to create a true-colour composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different band combination can be used to create a unique composite that could better highlight different features in the landscape.  
-
-2. Run the script below to display a false-colour infrared composite. The band combination for the false-colour composite is NIR, Red, and Green. Paste the following lines below the ones you’ve already added, and click "Run".You will also see that "false-colour composite" has been added to the Layers tab in the map view.
+5. You will now be able to see the variation in the elevation range with min values in black and max points in white. The image added to the mapping layers has default names like "Layer 1", "Layer 2", etc. To improve the readability, we can give each layer a human­-readable name in the following code. Don't forget to click run.
 
 ```JavaScript
-// add the false color composite image to the mapping layer.
-Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
-
+Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 ```
-![Figure 13. false color](Prac01/falsecolor.PNG)
+![Figure 8. Rename title](Prac02/layername.png)
 
-3. False-colour composites plugs in the near infra-red band to the red channel of the computer screen, red band to the green channel, and green band to the blue channel. Chlorophyll content in green leaves has a strong response in the near-infrared band. Hence, the vegetation that appears dark green in true colour, appears bright red in the false-colour composite. Note the variations in red that can be seen in the vegetation bordering Rapid Creek. 
+## 3. Commenting and saving your scripts
 
-4. Other band combinations for you to play with. Try them all so you learn how to modify the script.
-- Natural colour: 4 3 2
-- False-colour infrared: 8 4 3
-- False-colour urban: 12 11 4
-- Agriculture: 11 8 2
-- Atmospheric penetration: 12 11 8A
-- Healthy vegetation: 8 11 2
-- Land/Water: 8 11 4
-- Natural colours with atmospheric removal: 12 8 3
-- Shortwave infrared: 12 8 4
-- Vegetation analysis: 11 8 4
+1. Now the code has started to look a little bit messy. Imagine you coming back to this code after a year. Would you still be able to tell which line is doing what task? Hence, it is a good idea to always put comments to your code reminding you of what you did and why. We add comments with two forward slashes // :
 
-## 9. Computing spectral/vegetation indices
-A spectral index is a mathematical equation that is applied to the various spectral bands of an image per pixel. The vegetation index uses two or more bands designed to enhance the contribution of vegetation properties and allow reliable mapping of photosynthetic activity and canopy structural variations.
+```Javascript
+// Print data details to console
+print(theSRTM);
 
-NDVI is calculated from the visible and near-infrared light reflected by vegetation using the formula NDVI = (NIR — VIS)/(NIR + VIS). Healthy vegetation absorbs most of the visible light and reflects a large portion of the near-infrared light = larger NDVI value. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light = lower NDVI value.
+// Add the SRTM data to the interactive map
+Map.addLayer(theSRTM);
 
-1. Let's calculate the normalised-difference vegetation index (NDVI) for this image. NDVI is an index calculated from the RED and NIR bands, according to this equation:
-NDVI = (NIR - RED)/(NIR + RED)
+// Add the data again, but with restricted value ranges for better visualisation
+Map.addLayer(theSRTM, {min: 0, max: 300});
 
-2. Append the following lines to your script to compute the NDVI. 
+// Add the data again, with value ranges, and a useful title for the Layer tab
+Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
+```
+![Figure 9. Comment script](Prac02/commenting.png)
+
+2. Also remember to save the code by clicking "Save". It will be saved in your private repository, and will be accessible the next time you log in to Earth Engine.
+
+
+3. If you would like to experiment with different colour combinations, you can play with colour palettes as per the example below: Experiment with the different colour combinations.
+
+```Javascript
+// Adding colour scale to the elevation data
+Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
+```
+
+![Figure 10. Colour scale elevation](Prac02/colorelevation.png)
+
+## 4. Hillshade and slope
+
+1. For better visualisation we can create a hillshade view of the elevation data. 
 
 ```JavaScript
-// Define variable NDVI from equation
-var NDVIimage = anImage.expression(
-    "(NIR - RED) / (NIR + RED)",   // NDVI formaula
-    {
-      RED: anImage.select("B4"),    //  RED band is B4
-      NIR: anImage.select("B8"),    // NIR band is B8
-    });
+// Create hillshade and map it
+var hillshade = ee.Terrain.hillshade(theSRTM);
+Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
 ```
-3. When you hit run, the NDVI is computed, however, nothing is displayed or printed for us - thats because we have not asked to print/display the NDVI yet. To visualise the NDVI map, we need to use Map.addLayer command as before. Add the below lines and run your script. 
+
+![Figure 11. Hillshade view](Prac02/hillsrtm.png)
+
+2. Remember you can use the Layer transparency options to create draped images for colourised hillsides.
+
+![Figure 12. Transparency](Prac02/transparency.png)
+
+3. Pan over to the Kakadu National Park region, where there are some nice elevation differences. Play with the transparency of hillshade and slopes. Flick around with hillshade and/or slope on top of the coloured palette for optimal display.
+
+![Figure 13. Kakadu](Prac02/kakadu.png)
+
+4. You can also similarly compute the slope of the terrain.
+
+```javascript
+// Create terrain slope and map it
+var slope = ee.Terrain.slope(theSRTM);
+Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
+```
+
+![Figure 14. Slope map](Prac02/slope.png)
+
+5. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
+
+## 5. Applying a computation to an image
+1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
+
+```javascript
+// computation: Terrain that has elevation over 200 m
+var high = theSRTM.gt(200);
+Map.addLayer(high, {}, 'Above 200m');
+```
+![Figure 15. high land](Prac02/high.png)
+
+2. Pan over to the rapid creek river and play with the elevation threshold to see if you can approximately create the rapid creek flood extent (the flood plain maps of NT can be found [here](https://denr.nt.gov.au/water/water-resources/flooding-reports-maps/floodplain-maps)) 
+
+3. We will learn more about masking in upcoming labs. But here let's just quickly look into how you can use the binary image created above called “high” to mask out your original DEM. Use the script below which will mask the areas in DEM that are below 200 m and display the above 200 m data for you in a coloured palette. Explore around Kakadu national park on this “DEM>200” layer
 
 ```JavaScript
-// Add NDVI map to the mapping layer.
-Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
+// Masking out the terrains below 200m from the DEM
+var DEMover200 = theSRTM.updateMask(high);
+Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']}, 'DEM>200');
 ```
 
-![Figure 14. NDVI map](Prac01/ndvimap.PNG)
+![Figure 16. masked](Prac02/masked.png)
 
-4. Adapting the above script, you can modify the equation and compute 100s of indices from the Sentinel-2 images. Have a look at the indices that can be computed using the sentinel-2 satellite data here: (https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/indexdb/). You don’t need to know them, but a useful place to search for other indices that might be of interest.
+## 6. Applying a spatial reducer
+Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used the inspector tool to extract data from one pixel, think of a spatial reducer as a way to extract data from a polygon rather than a single pixel. 
+
+![Figure 17. reducer](Prac02/reducer.png)
+
+1. Select the polygon geometry tool and draw a rectangle (or more complex polygon) on the map. Rename the geometry polygon to roi (roi means the region of interest).
+
+![Figure 18. polygon](Prac02/polygon.png)
+
+2. Apply spatial reducer and print the mean elevation value for the region
+
+```JavaScript
+// Apply spatial reducer to compute mean elevation over the roi
+var meanElevation = theSRTM.reduceRegion({
+        reducer: 'mean',
+        geometry: roi,
+        scale: 90
+});
+// print the mean elevation
+print('Mean elevation', meanElevation.get('elevation'));
+```
+![Figure 18. polygon](Prac02/reducer2.png)
+
+3. Try modifying the above script to extract min and max elevation instead of mean.
 
 5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script. 
-
-![Figure 15. NDVI map](Prac01/save.PNG)
 
 ## 10. The complete script used in this Prac
 
