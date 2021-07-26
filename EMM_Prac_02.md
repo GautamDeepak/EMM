@@ -1,14 +1,12 @@
 # Environmental Monitoring and Modelling (ENV306/506)
-## Prac 2 - Getting deeper into Earth Engine
+## Prac 2 - Working with multi-band image (Sentinel-2 example)
 
 ### Acknowledgments 
 - Google Earth Engine Team
-- Geospatial Analysis Lab, University of San Francisco (especially Nicholas Clinton and David Saah)
-- [GEARS Lab](https://www.gears-lab.com/emm_lab_2/)
+- [GEARS Lab](https://www.gears-lab.com/emm_lab_1/)
 
 ### Objective
-In Prac 1 we learnt how to search an archive for a single cloud-free image, display it in the map environment, and compute indices. From an environmental monitoring perspective, we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. In this Prac, we will learn how to access, visualise and query digital elevation data for any study location.
- 
+In Prac 1 we had a brief overview of the GEE, JavaScript and learnt how to work with single-band elevation data. In this prac, we will work with multi-band image taking Sentinel-2 as an example. We will learn to display imagery as true colour and false colour composites, as well as to calculate indices (e.g. NDVI) from multi-spectral imagery. By the end of this exercise you will be able to search, find and visualize a broad range of remotely sensed datasets.
 ---------------------------------------------------
 ## 4. Searching and importing remote sensing images 
 
