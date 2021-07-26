@@ -9,13 +9,9 @@
 In Prac 1 we had a brief overview of the GEE, JavaScript and learnt how to work with single-band elevation data. In this prac, we will work with multi-band image taking Sentinel-2 as an example. We will learn to display imagery as true colour and false colour composites, as well as to calculate indices (e.g. NDVI) from multi-spectral imagery. By the end of this exercise you will be able to search, find and visualize a broad range of remotely sensed datasets.
 
 ---------------------------------------------------
-## 4. Searching and importing remote sensing images 
+## 1. Searching and importing the Sentinel-2 images 
 
-Now you are ready to get started with images and remote sensing. In this exercise, we will work with Sentinel-2 satellite data. 
-
-About Sentinel-2: Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission supporting Copernicus Land Monitoring studies, including the monitoring of vegetation, soil and water cover, as well as observation of inland waterways and coastal areas. Sentinel-2 was developed and operated by the European Space Agency and has been sending data back to Earth since 23 June 2015. The Sentinel-2 data contain 13 spectral bands representing TOA reflectance scaled by 10000.
-
-Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine to see what it looks like. Follow the commands below step-by-step - if you get stuck or can’t follow these instructions alone, then watch the accompanying video.
+In this exercise, we will work with Sentinel-2 satellite data. Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine to see what it looks like. Follow the commands below step-by-step - if you get stuck or can’t follow these instructions alone, then watch the accompanying video. About Sentinel-2: Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission supporting Copernicus Land Monitoring studies, including the monitoring of vegetation, soil and water cover, as well as observation of inland waterways and coastal areas. Sentinel-2 was developed and operated by the European Space Agency and has been sending data back to Earth since 23 June 2015. The Sentinel-2 data contain 13 spectral bands representing TOA reflectance scaled by 10000.
 
 
 1. Just above the Coding panel is the search bar. Search for ‘Darwin’ in this GEE search bar, and click the result to pan and zoom the map to Darwin (Figure 2). In this exercise, we will work on and around the Darwin region. 
@@ -29,7 +25,7 @@ Let us load a Sentinel-2 scene over Darwin, Australia, into Google Earth Engine 
 
 3. Rename the resulting point to ‘campus’ by clicking the import name (which is called ‘geometry’ by default).
 
-![Figure 4. Rename Geometry](Prac02/rename.PNG)
+![Figure 4. Rename Geometry](Prac02/rename.png)
 
 
 4. Now that we have decided the region where we want our remote sensing data from, Search for ‘Sentinel-2’ in the search bar. In the results section you will see ‘Sentinel-2: Multi-spectral Instrument (MSI), Level-1C’ - click on it o show the dataset description.
@@ -50,7 +46,7 @@ Self-assessment question: How many bands do this data have and whats the spatial
 
 ![Figure 8. Rename Sentinel](Prac02/rename2.PNG)
 
-## 6. Filtering through the image collection for a cloud-free image
+## 2. Filtering through the image collection for a cloud-free image
 It is important to understand that we have now added access to the full Sentinel-2 image collection (i.e. every image that has been collected to date) to our script. For this exercise we don't want to load all these images - we want a single cloud-free image over Charles Darwin University. As such, we can now filter the image collection with a few criteria, such as time of acquisition, spatial location and cloud cover.
 
 1. Copy or type the below code to the GEE and hit the run button. This piece of code will search the Sentinel-2 archive within defined dates, find images that are located over Darwin, sort them according to percentage cloud cover, and then return the most cloud-free image for us. 
@@ -97,7 +93,7 @@ print("A Sentinel-2 scene:", anImage);
 - *Where did we get the keyword "CLOUD_COVERAGE_ASSESSMENT" to sort the images.*
 - *What will happen if you remove the ".first()" command?*
 
-## 7. Adding images to the map view
+## 3. Adding images to the map view
 1. So far, we have filtered the image, and printed the information, but we don't know what the image looks like. To display the image, we need to use the "Map.addLayer" command. Append the below script to display the image to the mapping layer. 
 
 ```JavaScript
@@ -118,11 +114,11 @@ Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-co
 
 4. Now click on the inspector tab and click any location in the image. The band values at that point will be displayed in the Inspector window. Below is a screen capture of band values from sports field. 
 
-![Figure 12. inspector](Prac02/inspector.PNG)
+![Figure 12. inspector](Prac02/inspector.png)
 
 5. Now try click over different landcover such as "sports field", "beach", "ocean", "mangroves". Do you notice differences in the band values from the aforementioned landcover? 
 
-## 8. Exploring the band combination 
+## 4. Exploring the band combination 
 
 1. In the above display of the image, we have utilised 3 bands "red", "green", and "blue" to create a true-colour composite. However, sentinel-2 has 13 bands. We can utilise the different combination of the band to create a composite. Different band combination can be used to create a unique composite that could better highlight different features in the landscape.  
 
@@ -149,7 +145,7 @@ Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-co
 - Shortwave infrared: 12 8 4
 - Vegetation analysis: 11 8 4
 
-## 9. Computing spectral/vegetation indices
+## 5. Computing spectral/vegetation indices
 A spectral index is a mathematical equation that is applied to the various spectral bands of an image per pixel. The vegetation index uses two or more bands designed to enhance the contribution of vegetation properties and allow reliable mapping of photosynthetic activity and canopy structural variations.
 
 NDVI is calculated from the visible and near-infrared light reflected by vegetation using the formula NDVI = (NIR — VIS)/(NIR + VIS). Healthy vegetation absorbs most of the visible light and reflects a large portion of the near-infrared light = larger NDVI value. Unhealthy or sparse vegetation reflects more visible light and less near-infrared light = lower NDVI value.
@@ -187,8 +183,8 @@ Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']},
 
 *Note:* There are other digital elevation data available to you on the google earth engine. Try searching for them. One useful data for Australian application is called “Australian 5M DEM”. This data covers Australia's populated coastal zone; floodplain surveys within the Murray Darling Basin, and individual surveys of major and minor population centres. 
 
-## 7. Exercise
-Prac02 taught you how to visualise Sentinel-2 data and compute indices. Prac02 taught you how to visualise elevation data, apply computation, and reducer.  
+## 6. Exercise
+Prac01 taught you how to visualise elevation data, apply computation, and reducer. Prac02 taught you how to visualise Sentinel-2 data and compute indices. 
 
 - Locate a cloud-free Sentinel image over Greater Darwin region from before and after Cyclone Marcus (17 March 2018). 
 - Using the cloud-free Sentinel image, derive NDVI layers for before and after the Cyclone Marcus and visually compare the effects of the cyclone.
