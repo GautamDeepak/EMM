@@ -1,10 +1,10 @@
 # Environmental Monitoring and Modelling (ENV306/506)
-## Prac 1 - Introduction to Google Earth Engine and JavaScript
+## Prac 1 - Introduction to Google Earth Engine, JavaScript, and single-band image (SRTM example)
 
 ### Acknowledgments 
 - Google Earth Engine Team
 - [Google Earth Engine guide](https://developers.google.com/earth-engine/guides)
-- [GEARS Lab](https://www.gears-lab.com/emm_lab_1/)
+- [GEARS Lab](https://www.gears-lab.com/emm_lab_2/)
 
 ### Prerequisites
 - Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
@@ -12,8 +12,8 @@
 - Once registered you can access the Earth Engine environment at [https://code.earthengine.google.com](https://code.earthengine.google.com)
 
 ### Objective
-The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. By the end of this exercise, you will be able to search and visualize Sentinel-2 datasets, as well as compute indices.
- 
+The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. You will also gain a basic feel of remote sensing image by working on a single-band elevation image (SRTM). From an environmental monitoring perspective, we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. By the end of this exercise, you will be able to will learn how to access, visualise and query digital elevation data for any study location.
+
 ---------------------------------------------------
 ## 1. Signup for the GEE account
 1. If you have not done so already, sign up [here](https://code.earthengine.google.com/signup/)
