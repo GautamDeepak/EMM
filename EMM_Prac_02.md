@@ -196,46 +196,40 @@ Prac01 taught you how to visualise Sentinel-2 data and compute indices. Prac02 t
 ## The complete script
 
 ```JavaScript
-// Print data details to console
-print(theSRTM);
+// this is our first line of code. Let us define the image collection we are working with by writing this command
+var anImage = ee.Image(sent2
 
-// Add the SRTM data to the interactive map
-Map.addLayer(theSRTM);
+// we will then include a filter to get only images in the date range we are interested in
+.filterDate("2020-06-01", "2021-06-01")
 
-// Add the data again, but with restricted value ranges for better visualisation
-Map.addLayer(theSRTM, {min: 0, max: 300});
+// Next we include a geographic filter to narrow the search to images at the location of our point
+.filterBounds(campus)
 
-// Add the data again, with value ranges, and a useful title for the Layer tab
-Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
+// Next we will also sort the collection by a metadata property, in our case cloud cover is a very useful one
+.sort("CLOUD_COVERAGE_ASSESSMENT")
 
-// Adding colour scale to the elevation data
-Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'Elevation above sea level');
+// Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
+.first());
 
-// Create hillshade and map it
-var hillshade = ee.Terrain.hillshade(theSRTM);
-Map.addLayer(hillshade, {min: 150, max:255}, 'Hillshade');
+// and let's print the image to the console.
+print("A Sentinel-2 scene:", anImage);
 
-// Create terrain slope and map it
-var slope = ee.Terrain.slope(theSRTM);
-Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
+// Add the image to the map, using the visualization parameters.
+Map.addLayer(anImage, {bands: ["B4", "B3", "B2"], min: 0, max: 3000 } , "True-colour image");
 
-// computation: Terrain that has elevation over 200 m
-var high = theSRTM.gt(200);
-Map.addLayer(high, {}, 'Above 200m');
+// add the false color composite image to the mapping layer.
+Map.addLayer(anImage, {bands: ["B8", "B4", "B3"], min: 0, max: 3000 }, "False-colour composite");
 
-// Masking out the terrains below 200m from the DEM
-var DEMover200 = theSRTM.updateMask(high);
-Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']}, 'DEM>200');
-
-// Apply spatial reducer to compute mean elevation over the roi
-var meanElevation = theSRTM.reduceRegion({
-        reducer: 'mean',
-        geometry: roi,
-        scale: 90
-});
-
-// print the mean elevation
-print('Mean elevation', meanElevation.get('elevation'));
+// Define variable NDVI from equation
+var NDVIimage = anImage.expression(
+    "(NIR - RED) / (NIR + RED)",   // NDVI formaula
+    {
+      RED: anImage.select("B4"),    //  RED band is B4
+      NIR: anImage.select("B8"),    // NIR band is B8
+    });
+    
+// Add NDVI map to the mapping layer.
+Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
 
 -------
