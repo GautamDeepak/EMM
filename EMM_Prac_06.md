@@ -31,44 +31,44 @@ var gfc2020 = ee.Image("UMD/hansen/global_forest_change_2020_v1_8");
 print(gfc2019);
 Map.addLayer(gfc2019);
 ```
-![Figure 1. NT roi](Prac06/basicprint.png)
+![Figure 1. generic print](Prac06/basicprint.png)
 
 
 *Question:* Why do you think the map is overwhelmingly red (ignoring the black)?. 
 
-5. It is important to note that when a multi-band image is added to a map, by default the first three bands of the image are chosen as red, green, and blue, respectively, and stretched according to the data type of each band (e.g. floats are stretched in [0,1], 16-bit data are stretched to the full range of possible values). The first three bands, in this case, happen to be treecover2000, loss, and gain. Your image looks red because the first band (treecover2000) is expressed in range 0-100 while the next two bands (loss and gain) are expressed in range 0-1. Refer back to the data description under the "bands" tab.
+4. It is important to note that when a multi-band image is added to a map, by default the first three bands of the image are chosen as red, green, and blue, respectively, and stretched according to the data type of each band (e.g. floats are stretched in [0,1], 16-bit data are stretched to the full range of possible values). The first three bands, in this case, happen to be treecover2000, loss, and gain. Your image looks red because the first band (treecover2000) is expressed in range 0-100 while the next two bands (loss and gain) are expressed in range 0-1. Refer back to the data description under the "bands" tab.
 
-![Figure 1. NT roi](Prac06/bandsinfo.png)
+![Figure 2. band information](Prac06/bandsinfo.png)
 
-6. To display the forest cover in the year 2000 as a grayscale image, you can use the first band "treecover2000" as below. 
+5. To display the forest cover in the year 2000 as a grayscale image, you can use the first band "treecover2000" as below. 
 ```JavaScript
 // Add the tree cover in 2000 as a greyscale
 Map.addLayer(gfc2020, {bands: ['treecover2000']}, 'Tree cover 2000');
 ```
-![Figure 1. NT roi](Prac06/treecover2000.png)
+![Figure 3. Tree cover in 2000](Prac06/treecover2000.png)
 
-7. The forest cover of the latest year (2020 in this case) is not available. As a workaround, we can use a false colour composite (SWIR, NIR, R) i.e. bands 5, 4 and 3 which highlights forest cover in 2000 in green pixel.
+6. The forest cover of the latest year (2020 in this case) is not available. As a workaround, we can use a false colour composite (SWIR, NIR, R) i.e. bands 5, 4 and 3 which highlights forest cover in 2000 in green pixel.
 
 ```JavaScript
 // For 2020, add false colour composite SWIR, NIR, R
 Map.addLayer(gfc2020, {bands: ['last_b50', 'last_b40', 'last_b30']}, 'Tree cover 2020');
 ```
-![Figure 1. NT roi](Prac06/treecover2020.png)
+![Figure 4. Tree cover in 2020](Prac06/treecover2020.png)
 
-8. Navigate between the two layers "Tree cover 2000" and "Tree cover 2020" do you notice much difference. Is the difference clearly visible?
+7. Navigate between the two layers "Tree cover 2000" and "Tree cover 2020" do you notice much difference. Is the difference clearly visible?
 
-9.  One nice visualization of the Global Forest Change dataset could be by showing forest extent in 2000 as green, forest loss as red, and forest gain as blue. Let us, make “loss” the first band (red), treecover2000 the second band (green), and gain the third band (blue). Note the range of values (min, max) for loss gain and trecover2000 are not the same. Hence, we need to control the min/max values separately for each band.
+8. One nice visualization of the Global Forest Change dataset could be by showing forest extent in 2000 as green, forest loss as red, and forest gain as blue. Let us, make “loss” the first band (red), treecover2000 the second band (green), and gain the third band (blue). Note the range of values (min, max) for loss gain and trecover2000 are not the same. Hence, we need to control the min/max values separately for each band.
 
 ```JavaScript
 // scale the loss and gain for a balanced display
 Map.addLayer(gfc2020, {bands: ['loss', 'treecover2000', 'gain'], min: [0, 0, 0], max: [1, 100, 1]}, 'Forest cover, loss, gain');
 ```
-![Figure 1. NT roi](Prac06/covergainloss.png)
+![Figure 5. composite cover gain loss](Prac06/covergainloss.png)
 
 *Question* The result we are expecting is an image that is green where there is forest, red where there is forest loss, blue where there is forest gain. However, upon closer inspection, we can see the forest loss is represented in shades of yellow (see image below). Why? 
-![Figure 1. NT roi](Prac06/whyyellow.png)
+![Figure 6. Why yellow?](Prac06/whyyellow.png)
 
-10. The yellow colour in the area of forest loss is actually due to the mix of green and red colours. The bright red pixels (forest loss) mix with the underlying green pixels (forest cover in 2000) producing yellow pixels. Similarly, you can see pink colour where there was both “loss” and “gain” during 2000-2020. How do we display the image we want: forest in green, loss in red and gain in blue? Think about it. 
+9. The yellow colour in the area of forest loss is actually due to the mix of green and red colours. The bright red pixels (forest loss) mix with the underlying green pixels (forest cover in 2000) producing yellow pixels. Similarly, you can see pink colour where there was both “loss” and “gain” during 2000-2020. How do we display the image we want: forest in green, loss in red and gain in blue? Think about it. 
 
 ## 2. Palette and masking
 
@@ -80,7 +80,7 @@ var treeCover = gfc2020.select(["treecover2000"]);
 var maskedTreeCover = treeCover.mask(treeCover);
 Map.addLayer(maskedTreeCover, {bands: ["treecover2000"], palette: ["lightgreen", "darkgreen"], max: 100}, "tree cover");
 ```
-![Figure 1. NT roi](Prac06/treecover1band.png)
+![Figure 7. isolated tree cover](Prac06/treecover1band.png)
 
 2. Now isolate the loss band, apply the mask, and then add to the mapping layer with a red palette. 
 
@@ -100,7 +100,7 @@ var maskedGainImage = GainImage.mask(GainImage);
 Map.addLayer(maskedGainImage, {bands :["gain"], palette: ["blue"], max: 1}, "GainImage");
 ```
 
-![Figure 1. NT roi](Prac06/coverlossgain.png)
+![Figure 8. Stacked 3 bands](Prac06/coverlossgain.png)
 
 4. The display now looks similar to what we imagined. We have green pixel representing the tree cover in 2000, red pixel representing forest loss and blue the forest gain. 
 
@@ -129,7 +129,7 @@ var roi = countries.filter(ee.Filter.eq('country_co', 'AS'));
 // View the roi in the mapping pane
 Map.addLayer(roi,{palette:[]},'the roi');
 ```
-![Figure 1. NT roi](Prac06/roi.png)
+![Figure 9. Country scale roi](Prac06/roi.png)
 
 4. Now, before calculating the yearly forest loss, let's do some computation. Currently, Hansen “loss” band contains the pixels (0 and 1) representing the loss. However, from an application point of view, we want to know the loss area. In the below script, we create a new image that contains two bands: the lossArea and the lossYear. These two bands will suffice our computation of yearly loss. 
 
@@ -157,7 +157,7 @@ var lossByYear = newImage.reduceRegion({
 // print the computed yearly loss
 print("loss by Year (unformatted):", lossByYear);
 ```
-![Figure 1. NT roi](Prac06/unformattedloss.png)
+![Figure 10. forest loss - unformatted](Prac06/unformattedloss.png)
 
 6. From the printed information in the console, you will see the yearly forest loss area is printed out in a nested list called groups. Years are represented by values 1 to 20, 1 representing 2001 and 20 representing the year 2020. You can copy the data across to excel/CSV and start charting the yearly forest loss in excel if you prefer that way. You can also do the charting in GEE. However, GEE likes input in a dictionary format. Our yearly loss is in nested loop format. Let's write a function that converts nested loop to the dictionary. 
 
@@ -177,7 +177,7 @@ var statsDictionary = ee.Dictionary(ee.List(lossByYear.get('groups'))
   .map(nested2Dict).flatten()); // .flatten() is necessary to make 1 dictionary from the resulting 20 dictionaries.
 print ("Forest loss by year: ",statsDictionary);
 ```
-![Figure 1. NT roi](Prac06/formatteddict.png)
+![Figure 11. forest loss - formatted](Prac06/formatteddict.png)
 
 8. What we have above is a clear way of showing the yearly forest loss and it's easy to comprehend. With the dictionary ready, we can create a chart. We will use the ui.Chart.array.values() method. This method takes an array (or list) of input values and an array (or list) of labels for the X-axis.
 
@@ -202,19 +202,19 @@ var lossChart = ui.Chart.array.values({
 // Print the chart.
 print(lossChart);
 ```
-![Figure 1. NT roi](Prac06/chart.png)
+![Figure 12. forest loss chart](Prac06/chart.png)
 
 10. Explore the chart and the associated maps. The maps showed where the loss/gain has occurred. The chart showed when the loss has occurred. It seems there has been a disproportionate amount of forest loss (almost 6 times the average) in the last two years. Can you speculate why that could be? Have we been chopping down more forest recently? 
 
-![Figure 1. NT roi](Prac06/chart1.png)
+![Figure 13. chart zoomed](Prac06/chart1.png)
 
 11. Now that we have a working function, it is very simple to inspect the yearly forest loss in any other region. For example, you can check the forest loss happening in Brazil by changing the country code to "BR" and modifying the chart title from "Australia" to "Brazil". How does the forest loss in the two countries compare?
 
-![Figure 1. NT roi](Prac06/chart2.png)
+![Figure 14. Forest loss Brazil](Prac06/chart2.png)
 
-11. Explore any other parts of the world. Don't forget to save the script before you exit. 
+12. Explore any other parts of the world. Don't forget to save the script before you exit. 
 
-## 5. Ungraded exercise
+## 4. Ungraded exercise
 Today we don't have any exercise. Please use this opportunity to carefully go through today's content and revisit previous days content if need be. 
 
 ## The complete script
