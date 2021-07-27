@@ -78,7 +78,7 @@ Map.addLayer(gfc2020, {bands: ['loss', 'treecover2000', 'gain'], min: [0, 0, 0],
 // Isolate the tree cover and add it as green band and masked
 var treeCover = gfc2020.select(["treecover2000"]);
 var maskedTreeCover = treeCover.mask(treeCover);
-Map.addLayer(maskedTreeCover,{bands:["treecover2000"],palette:["lightgreen","darkgreen"],max:100},"tree cover");
+Map.addLayer(maskedTreeCover, {bands: ["treecover2000"], palette: ["lightgreen", "darkgreen"], max: 100}, "tree cover");
 ```
 ![Figure 1. NT roi](Prac06/treecover1band.png)
 
@@ -88,7 +88,7 @@ Map.addLayer(maskedTreeCover,{bands:["treecover2000"],palette:["lightgreen","dar
 // Isolate the tree loss and add it as red band and masked
 var lossImage = gfc2020.select(["loss"]);
 var maskedLossImage = lossImage.mask(lossImage);
-Map.addLayer(maskedLossImage,{bands:["loss"],palette:["red"],max:1},"LossImage");
+Map.addLayer(maskedLossImage, {bands: ["loss"], palette: ["red"], max: 1}, "LossImage");
 ```
 
 3. Similarly isolate the gain band, apply the mask, and then add to mapping layer with a blue palette.
@@ -97,7 +97,7 @@ Map.addLayer(maskedLossImage,{bands:["loss"],palette:["red"],max:1},"LossImage")
 // Isolate the tree gain and add it as blue band and masked
 var GainImage = gfc2020.select(["gain"]);
 var maskedGainImage = GainImage.mask(GainImage);
-Map.addLayer(maskedGainImage,{bands:["gain"],palette:["blue"],max:1},"GainImage");
+Map.addLayer(maskedGainImage, {bands :["gain"], palette: ["blue"], max: 1}, "GainImage");
 ```
 
 ![Figure 1. NT roi](Prac06/coverlossgain.png)
@@ -239,17 +239,17 @@ Map.addLayer(gfc2020, {bands: ['loss', 'treecover2000', 'gain'], min: [0, 0, 0],
 // Isolate the tree cover and add it as green band and masked
 var treeCover = gfc2020.select(["treecover2000"]);
 var maskedTreeCover = treeCover.mask(treeCover);
-Map.addLayer(maskedTreeCover,{bands:["treecover2000"],palette:["lightgreen","darkgreen"],max:100},"tree cover");
+Map.addLayer(maskedTreeCover, {bands: ["treecover2000"], palette: ["lightgreen", "darkgreen"], max: 100}, "tree cover");
 
 // Isolate the tree loss and add it as red band and masked
 var lossImage = gfc2020.select(["loss"]);
 var maskedLossImage = lossImage.mask(lossImage);
-Map.addLayer(maskedLossImage,{bands:["loss"],palette:["red"],max:1},"LossImage");
+Map.addLayer(maskedLossImage, {bands: ["loss"], palette: ["red"], max:1}, "LossImage");
 
 // Isolate the tree gain and add it as blue band and masked
 var GainImage = gfc2020.select(["gain"]);
 var maskedGainImage = GainImage.mask(GainImage);
-Map.addLayer(maskedGainImage,{bands:["gain"],palette:["blue"],max:1},"GainImage");
+Map.addLayer(maskedGainImage, {bands: ["gain"], palette: ["blue"], max:1}, "GainImage");
 
 // Load country boundaries from LSIB.
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
