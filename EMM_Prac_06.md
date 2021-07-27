@@ -17,14 +17,14 @@ The objective of this tutorial is to develop an important skill of environmental
 
 1. Open the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
-2. Search for and import the "Hansen Forest" dataset and rename the image to "gfc2020" or copy the following script to the code editor. The script will improt the Hansen dataset. The Hansen et al. (2013) published Global Forest Change dataset in Earth Engine providing forest change, at 30 meters resolution, globally, between 2000 and 2014. Since then, the product is updated annually. 
+2. Search for and import the "Hansen Forest" dataset and rename the image to "gfc2020" or copy the following script to the code editor. The script will import the Hansen dataset. Hansen et al. (2013) published the Global Forest Change dataset in Earth Engine providing forest change, at 30 meters resolution, globally, between 2000 and 2014. Since then, the product is updated annually. 
 
 ```JavaScript
 // import the recent Hansen dataset
 var gfc2020 = ee.Image("UMD/hansen/global_forest_change_2020_v1_8");
 ```
 
-3. As always, I recommend you read through the description of the dataset, do a generic print and Map.addLayer to get a feeling for the dataset. Explore the printed infomration and explore the map. 
+3. As always, I recommend you read through the description of the dataset, do a generic print and Map.addLayer to get a feeling for the dataset. Explore the printed information and explore the map. 
 
 ```JavaScript
 // do a generic print and display of the data in the mapping panel
@@ -34,9 +34,9 @@ Map.addLayer(gfc2019);
 ![Figure 1. NT roi](Prac06/basicprint.png)
 
 
-*Question:* Why do you think the map is overwhelmingly red in color (ignoring the black). 
+*Question:* Why do you think the map is overwhelmingly red (ignoring the black)?. 
 
-5. It is important to note that when a multi-band image is added to a map, by default the first three bands of the image are chosen as red, green, and blue, respectively, and stretched according to the data type of each band (e.g. floats are stretched in [0,1], 16-bit data are stretched to the full range of possible values). The first three bands in this case happens to be treecover2000, loss, and gain. Your image looks red because the first band (treecover2000) is expressed in range 0-100 while the next two bands (loss and gain) are expressed in range 0-1. Refer back to the data description under the "bands" tab.
+5. It is important to note that when a multi-band image is added to a map, by default the first three bands of the image are chosen as red, green, and blue, respectively, and stretched according to the data type of each band (e.g. floats are stretched in [0,1], 16-bit data are stretched to the full range of possible values). The first three bands, in this case, happen to be treecover2000, loss, and gain. Your image looks red because the first band (treecover2000) is expressed in range 0-100 while the next two bands (loss and gain) are expressed in range 0-1. Refer back to the data description under the "bands" tab.
 
 ![Figure 1. NT roi](Prac06/bandsinfo.png)
 
@@ -57,7 +57,7 @@ Map.addLayer(gfc2020, {bands: ['last_b50', 'last_b40', 'last_b30']}, 'Tree cover
 
 8. Navigate between the two layers "Tree cover 2000" and "Tree cover 2020" do you notice much difference. Is the difference clearly visible?
 
-9.  One nice visualization of the Global Forest Change dataset could be by showing forest extent in 2000 as green, forest loss as red, and forest gain as blue. Let us, make loss the first band (red), treecover2000 the second band (green), and gain the third band (blue). Note the range of values (min, max) for loss gain and trecover2000 are not the same. Hence, we need to control the min/max values separately for each band.
+9.  One nice visualization of the Global Forest Change dataset could be by showing forest extent in 2000 as green, forest loss as red, and forest gain as blue. Let us, make “loss” the first band (red), treecover2000 the second band (green), and gain the third band (blue). Note the range of values (min, max) for loss gain and trecover2000 are not the same. Hence, we need to control the min/max values separately for each band.
 
 ```JavaScript
 // scale the loss and gain for a balanced display
@@ -65,21 +65,20 @@ Map.addLayer(gfc2020, {bands: ['loss', 'treecover2000', 'gain'], min: [0, 0, 0],
 ```
 ![Figure 1. NT roi](Prac06/covergainloss.png)
 
-*Question* The result we are expecting is an image that is green where there is forest, red where there is forest loss, blue where there is forest gain. However, upon closer inspection we can see the forest loss is actually represented in shades of yellow (see image belwo). Why? 
+*Question* The result we are expecting is an image that is green where there is forest, red where there is forest loss, blue where there is forest gain. However, upon closer inspection, we can see the forest loss is represented in shades of yellow (see image below). Why? 
 ![Figure 1. NT roi](Prac06/whyyellow.png)
 
-
-10. The yellow color in the area of forest loss is actually due to the mix of colors green and red color. The bright red pixels (forest loss) mix with the underlying green pixels (forest cover in 2000) producing yellow pixels. Similarly you can see pink color where there was both loss and gain during the 2000-2020. How do we display the image we want: forest in green, loss in red and gain in blue? Have a think about it. 
+10. The yellow colour in the area of forest loss is actually due to the mix of green and red colours. The bright red pixels (forest loss) mix with the underlying green pixels (forest cover in 2000) producing yellow pixels. Similarly, you can see pink colour where there was both “loss” and “gain” during 2000-2020. How do we display the image we want: forest in green, loss in red and gain in blue? Think about it. 
 
 ## 2. Palette and masking
 
-1. Let us try to use the masking to get to our desired display. All of the images shown so far have had big black areas were there the data is zero. For example, there are no trees in the ocean. To make these areas transparent, you can mask their values. Every pixel in Earth Engine has both a value and a mask. The image is rendered with transparency set by the mask, with zero being completely transparent and one being completely opaque. Lets isolate the treecover2000 band, mask it, and then add to mapping layer in green color.
+1. Let us try to use masking to get to our desired display. All of the images shown so far have had big black areas where the data is zero. For example, there are no trees in the ocean. To make these areas transparent, you can mask their values. Every pixel in Earth Engine has both a value and a mask. The image is rendered with transparency set by the mask, with zero being completely transparent and one being completely opaque. Let's isolate the treecover2000 band, mask it, and then add it to the mapping layer in green colour.
 
 ```JavaScript
 // Isolate the tree cover and add it as green band and masked
 var treeCover = gfc2020.select(["treecover2000"]);
 var maskedTreeCover = treeCover.mask(treeCover);
-Map.addLayer(maskedTreeCover,{bands:["treecover2000"],palette:["black","red"],max:100},"tree cover");
+Map.addLayer(maskedTreeCover,{bands:["treecover2000"],palette:["lightgreen","darkgreen"],max:100},"tree cover");
 ```
 ![Figure 1. NT roi](Prac06/treecover1band.png)
 
@@ -103,28 +102,28 @@ Map.addLayer(maskedGainImage,{bands:["gain"],palette:["blue"],max:1},"GainImage"
 
 ![Figure 1. NT roi](Prac06/coverlossgain.png)
 
-4. The display now looks similar to what we imagined. We have green pixel representing the tree cover in 2000, red pixel representing forest loss and blue the forest gain. Have a think about what this represent. 
+4. The display now looks similar to what we imagined. We have green pixel representing the tree cover in 2000, red pixel representing forest loss and blue the forest gain. 
 
-*Question:* Imagine you are looking at an area/pixel representing commercial pine plantation. The plants are planted, grown, and then harvested every 15-20 years. The area/pixel had lush pine forest back in 2000. The stock was harvested in 2010 and planted with new batch in 2012 resulting in again lush pine forest last year. Have a careful think about what that pixel/area would look like in above image? Why? 
+*Question:* Imagine you are looking at an area/pixel representing a commercial pine plantation. The plants are planted, grown, and then harvested every 15-20 years. The area/pixel had lush pine forest back in 2000. The stock was harvested in 2010 and planted with a new batch in 2012 resulting in again lush pine forest last year. Have a careful think about what that pixel/area would look like in the above image? Why? 
 
 ## 3. Charting the yearly forest loss
-An important thing about the Hansen dataset is that for each loss pixel, the dataset also records when the loss has happened. This means, although this dataset is not an “imagecollection”, we can chart the yearly loss particularly due to the record of loss year. Each pixel in the lossYear band contains values from 1 to 20 indicating the year in which the loss has occured: 1=2001, 20=2020. How would you know this? - read the description under the bands.  
+An important thing about the Hansen dataset is that for each loss pixel, the dataset also records when the loss has happened. This means, although this dataset is not an “imageCollection”, we can chart the yearly loss particularly due to the record of loss year. Each pixel in the “lossyear” band contains values from 1 to 20 indicating the year in which the loss has occurred: 1=2001, 20=2020. How would you know this? - read the description under the bands.  
  
-1. To chart the yearly forest loss, let us first start by defining our region of interest (roi). So far, we used a point or a polygon tool to draw simpler rois. Here we will use roi from existing country dataset LSIB (large-scale international boundary polygons, simplified). Created in 2017, the LSIB dataset basically stores the simplified boundary of all the countries in the world. Search for and import the "LSIB 2017: Large Scale International Boundary Polygons, Simplified" and rename the default "table" to "countries". Or alternatively, use the script below to import the dataset. 
+1. To chart the yearly forest loss, let us first start by defining our region of interest (roi). So far, we have used a point or a polygon tool to draw simpler rois. Here we will use roi from the existing country dataset LSIB (large-scale international boundary polygons, simplified). Created in 2017, the LSIB dataset stores the simplified boundary of all the countries in the world. Search for and import the "LSIB 2017: Large Scale International Boundary Polygons, Simplified" and rename the default "table" to "countries". Alternatively, use the script below to import the dataset. 
 
 ```JavaScript
 // Load country boundaries from LSIB.
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 ```
 
-2. Have a read the description of the dataset. From the "table scheme" tab you will note that every country is coded using "Two-letter FIPS country code" - complete list of codes found [here](https://en.wikipedia.org/wiki/List_of_FIPS_country_codes). What is the code used to represent Australia? Use the code to filter and extract the boundary of Australia - or any other countries.
+2. Have a read the description of the dataset. From the "table scheme" tab you will note that every country is coded using "Two-letter FIPS country code" - a complete list of codes found [here](https://en.wikipedia.org/wiki/List_of_FIPS_country_codes). What is the code used to represent Australia? Use the code to filter and extract the boundary of Australia - or any other country.
 
 ```JavaScript
 // Get a feature collection with just the Australia feature. Country codes here: https://en.wikipedia.org/wiki/List_of_FIPS_country_codes
 var roi = countries.filter(ee.Filter.eq('country_co', 'AS'));
 ```
 
-3. Great. You have obtained the simplified boundary roi representig whole australia. You can simply view the roi by using Map.addLayer command. 
+3. Great. You have obtained the simplified boundary roi representing the whole of Australia. You can simply view the roi by using Map.addLayer command. 
 
 ```JavaScript
 // View the roi in the mapping pane
@@ -132,7 +131,7 @@ Map.addLayer(roi,{palette:[]},'the roi');
 ```
 ![Figure 1. NT roi](Prac06/roi.png)
 
-4. Now, before calculating the yearly forest loss, lets do some computation. Currently, Hansen band loss contains the pixels (0 and 1) representing the loss. However, from an application point of view, we want to know the loss area. In below script, we create a new image which contains two bands: the loss area and the loss year. These two bands will suffice our computation of yearly loss. 
+4. Now, before calculating the yearly forest loss, let's do some computation. Currently, Hansen “loss” band contains the pixels (0 and 1) representing the loss. However, from an application point of view, we want to know the loss area. In the below script, we create a new image that contains two bands: the lossArea and the lossYear. These two bands will suffice our computation of yearly loss. 
 
 ```JavaScript
 // Compute lossArea as a single band image
@@ -145,7 +144,7 @@ newImage = newImage.select(
 	['lossArea', 'lossYear']); // New band names
 ```
 
-5. Note that we used reduceRegion in Prac01 to calculate the mean, median, max, or total elevation. We could use similar method here to compute the mean, median,max, or total forest loss. However the issue is that the computation will be an aggregate of 20 years. However, we are interested in yearly forest loss. Which is the reason for the extra bit of work we did in previous step. Now we can use a grouped reducerto get the loss area summed and grouped according to the value in the lossYear band.
+5. Note that we used reduceRegion in Prac01 to calculate the mean, median, max, or total elevation. We could have used a similar method here to compute the mean, median, max, or total forest loss. However, the issue is that the computation will be an aggregate of 20 years. However, we are interested in yearly forest loss. Which is the reason for the extra bit of work we did in the previous step. Now we can use a grouped reducer to get the “lossArea” summed and grouped according to the value in the “lossYear” band.
 
 ```JavaScript
 // Apply grouped reducer in the new image.
@@ -160,7 +159,7 @@ print("loss by Year (unformatted):", lossByYear);
 ```
 ![Figure 1. NT roi](Prac06/unformattedloss.png)
 
-6. From the printed information in the console, you will see the yearly forest loss area is printed out in a nested list called groups. Years are represented by value 1 to 20, 1 representing 2001 and 20 representing the year 2020. You can copy the data across to excel/csv and start charting the yearly forest loss there if you feel more comfortable there. You can also do the charting in GEE. However, GEE likes input in dictonary format. Our yearly loss is in nested loop format. Lets write a function that converts nested loop to dictionary. 
+6. From the printed information in the console, you will see the yearly forest loss area is printed out in a nested list called groups. Years are represented by values 1 to 20, 1 representing 2001 and 20 representing the year 2020. You can copy the data across to excel/CSV and start charting the yearly forest loss in excel if you prefer that way. You can also do the charting in GEE. However, GEE likes input in a dictionary format. Our yearly loss is in nested loop format. Let's write a function that converts nested loop to the dictionary. 
 
 ```JavaScript
 // Function to convert the nested loop to dictionary. 
@@ -170,7 +169,7 @@ function nested2Dict (nList) { // takes the nested list as input
     return dict;} // returns the converted dictornary
 ```
 
-7. Now lets map our nested loop to the above fucntion to convert to a dictionary. 
+7. Now let's map our nested loop to the above function to convert to a dictionary. 
 
 ```JavaScript
 // now lets map the nested loop to the function to get the dictionary. 
@@ -180,7 +179,7 @@ print ("Forest loss by year: ",statsDictionary);
 ```
 ![Figure 1. NT roi](Prac06/formatteddict.png)
 
-8. What we have aboe is a clear way of showing the yearly forest loss and its easy to comprehend. With the dictionary ready, we are ready to create a chart. We will use the ui.Chart.array.values() method. This method takes an array (or list) of input values and an array (or list) of labels for the X-axis.
+8. What we have above is a clear way of showing the yearly forest loss and it's easy to comprehend. With the dictionary ready, we can create a chart. We will use the ui.Chart.array.values() method. This method takes an array (or list) of input values and an array (or list) of labels for the X-axis.
 
 ```JavaScript
 // Lets now chart the loss dictionary to a graph
@@ -197,7 +196,7 @@ var lossChart = ui.Chart.array.values({
   });
 ```
 
-9. Always, after you creat a chart, you will need to print it to the console to visualise the chart. 
+9. Always, after you create a chart, you will need to print it to the console to visualise the chart. 
 
 ```JavaScript
 // Print the chart.
@@ -205,19 +204,18 @@ print(lossChart);
 ```
 ![Figure 1. NT roi](Prac06/chart.png)
 
-10. Explore the chart and the associated maps. The maps showed where the loss/gain has occured. The chart showed when the loss has occured. It seems there has been disporportionate amount of forest loss (almost 6 times the average) in the last two years. Can you speculate what that is? 
+10. Explore the chart and the associated maps. The maps showed where the loss/gain has occurred. The chart showed when the loss has occurred. It seems there has been a disproportionate amount of forest loss (almost 6 times the average) in the last two years. Can you speculate why that could be? Have we been chopping down more forest recently? 
 
 ![Figure 1. NT roi](Prac06/chart1.png)
 
+11. Now that we have a working function, it is very simple to inspect the yearly forest loss in any other region. For example, you can check the forest loss happening in Brazil by changing the country code to "BR" and modifying the chart title from "Australia" to "Brazil". How does the forest loss in the two countries compare?
 
-11. Now that we have a working function, it is very simple to inspect the yearly forest loss in any other region. For exmaple, you can check the forest loss happening in the Brazil by changing the country code to "BR" and modifying the chart title from "Australia" to "Brazil". 
+![Figure 1. NT roi](Prac06/chart2.png)
 
-11. Don't forget to save the script before you exit. 
+11. Explore any other parts of the world. Don't forget to save the script before you exit. 
 
 ## 5. Ungraded exercise
-
-In today's prac we worked with 5-year rainfall data and looked into the techniques of mapping the spatial pattern and charting the temporal trend. We used a 5-year window and a 1-year window to look into the rainfall pattern and trend. The 5-year window is a short period in the context of ecological changes. Compare the rainfall pattern of the recent 5 years using pre-2000 as a baseline over the greater Broken Hill region of NSW. Plot the rainfall trend for the past 40 years. Does the rainfall trend reveal drought in the Broken Hill region?
-
+Today we don't have any exercise. Please use this opportunity to carefully go through today's content and revisit previous days content if need be. 
 
 ## The complete script
 
