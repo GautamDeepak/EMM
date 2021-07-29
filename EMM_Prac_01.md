@@ -50,7 +50,7 @@ print("Hello World!");
 
 2. The line above is a JavaScript statement. JavaScript statements end in a semicolon. Earth Engine programs are made up of a set of statements like this one. You can think of these statements as a set of tasks you want the earth engine to perform. Using the "print" command, you can print any text you want. Note that JavaScript and any other programming are quite restrictive in their syntax. The barebone structure "print(" ")" cannot be changed. Any text that is placed within the quotation gets printed.
 
-- ** Self-assessment question:** *Modify the above script to print your name in the console.*
+**Question:** *Modify the above script to print your name in the console.*
 
 3.When writing a rather long JavaScript program, it is a good practice to put lots of comments in your code- the comments are not executed but describes what you're trying to do. To comment, use "//" before the comment. for example: 
 
@@ -83,7 +83,7 @@ print('My height is:', height);
 
 9. Try modifying the variable name "height" as well as the variable value to print your height.
 
-Self-assessment question: Write a script that prints a person’s age. Use two variables to store the person name and age. 
+**Question:** *Write a script that prints a person’s age. Use two variables to store the person name and age.* 
 
 10. The best way to learn Scripting is to modify the script and make many mistakes - many many mistakes. If you are new to scripting and JavaScript, try to change and run the script and see what happens.
 
@@ -103,7 +103,7 @@ Self-assessment question: Write a script that prints a person’s age. Use two v
 
 ![Figure 3. View elevation data source and import](Prac01/viewinfo.png)
 
-*Question:* How many bands do this data have and what is the spatial resolution?
+**Question:** *How many bands do this data have and what is the spatial resolution?*
 
 4. Rename the default variable name "image" to anything you like. I will rename it to "theSRTM".
 
