@@ -208,7 +208,7 @@ Map.addLayer(frequency.mask(frequency),
 
 1. Move your region of interest (roi) around different parts of Australia and explore how current drought conditions are affecting dam levels in different parts of the country. Can you query the water dam from your region? Generate the max innundation for each year since 2013.
 
-2. Think about how you might go about expanding the time series and going further back in time to look at longer-term inundation trends e.g. since the start of this century.
+2. Map the water availability and innundation frequency over the same region using Sentinel-2 images. Landsat-8 and Sentinel-2 differ in spatial resolution, temporal resolution, and band position. Do you see similar/different results when using Landsat vs Sentinel? Think about how you might go about expanding the time series and going further back in time to look at longer-term inundation trends e.g. since the start of this century.
 
 ## The complete script
 
