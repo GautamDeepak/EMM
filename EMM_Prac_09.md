@@ -36,11 +36,11 @@ Map.addLayer(ecoregions, {}, 'default display');
 
 ```
 
-![Figure 1. Reference EVI Northern Australia](Prac08/default.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/default.png)
 
 6. What you see is global ecoregions displayed with solid black lines and semi-opaque black fill. Zoom in, have a look around and explore. You can use the inspector tab to click and explore on different ecoregions.
 
-![Figure 1. Reference EVI Northern Australia](Prac08/inspector.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/inspector.png)
 
 7. You can control the color by defining the color. Note that in the raster display we used "palette"
 
@@ -48,7 +48,7 @@ Map.addLayer(ecoregions, {}, 'default display');
 // add a custom color
 Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac08/redcolor.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/redcolor.png)
 
 
 ## 2. Controlling the boundary lines
@@ -59,7 +59,7 @@ Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
 // Use featureCollection.draw() to display in custom colours and linewidth 
 Map.addLayer(ecoregions.draw({color: 'green', strokeWidth: 5}), {}, 'drawn display');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac08/drawdisplay.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/drawdisplay.png)
 
 2. Note that although you have control the boundary lines of the features, the features are also filled with the same colour.  For more control over how a FetureCollection is displayed, you will need to use ".paint()" command. The above ".draw()" outputs a three-band 8-bit display image, the ".paint()" outputs an image with a specif numeric value painted into it. To paint, you will first need to create an empty image - kind of like grabbing a empty sheet of paper to paint on it. 
 
@@ -70,7 +70,7 @@ var emptyImage = ee.Image().byte();
 Map.addLayer(emptyImage,{},'empty image');
 ```
 
-![Figure 1. Reference EVI Northern Australia](Prac08/drawdisplay.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/drawdisplay.png)
 
 3. Now, on the empty image, you can paint all the polygon edges with ths same color and width.
 
@@ -88,7 +88,7 @@ var outlineImage = emptyImage.paint({
 // add the above outline image to the mapping layer
 Map.addLayer(outlineImage, {palette: 'red'}, 'edges only');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac08/outlineonly.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/outlineonly.png)
 
 8. There you have it the outline of the ecoregions that you can control the color and the width of the boundary line. However, the edges of the above image shows all the ecoregions and biomes with same color. Now there are lots of ecoregion to assign a unique color. But, what we can do is color the different biome with unique color. Under the "Table Schema" of the dataset tells you that each biome has a unique "BIOME_NUM". We can assign unique color based on the stored "BIOME_NUM" - there are 14 biomes in total, so, 14 colours sounds okay. Similarly, you could also make the width of the boundary edge variable showing for example the "NNH" category. 
 
@@ -103,7 +103,7 @@ var uniqueOutlineImage = emptyImage.paint({
 // add the unique outline to the mapping layer
 Map.addLayer(uniqueOutlineImage, {palette: ['red', 'green', 'blue'], max: 14}, 'unique colour edges');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac08/uniqueoutline.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/uniqueoutline.png)
 
 *Question:* This dataset is quite heavy in information. For example, how did I know that BIOME_NUM 4 represents "Temperate broadleaf and mixed forests"? Do your researh and can you find out what does BIOME_NUM 5 represent? -- hint hint dataset description window. 
 
@@ -121,7 +121,7 @@ var fillImage = emptyImage.paint({
 //Add the interior paint to mapping layer
 Map.addLayer(fillImage, {palette: ['red', 'green', 'blue'], max: 14}, 'fills only');
 ``` 
-![Figure 1. Reference EVI Northern Australia](Prac08/fillonly.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/fillonly.png)
 
 2. To render both the interior and edges of the features, you will need to paint the empty image twice: First paint the interior and on top of that, paint the edges. Note below I painted the interior using “BIOME_NUM” and edges using black color. If you paint both the interior and edges using "BIOME_NUM", you cannot distinguish between two adjacent features with same “BIOME_NUM”.
 
@@ -132,22 +132,167 @@ var doublePaintedImage = emptyImage.paint(ecoregions, 'BIOME_NUM').paint(ecoregi
 // add the interior/exterior painted image to mapping layer
 Map.addLayer(doublePaintedImage, {palette: ['black','red', 'green', 'blue'], max: 14}, 'edges and fills');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac08/fillandedge.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/fillandedge.png)
 
 ## 4. Filtering a FeatureCollection
+Filtering a feature collection is quite similar to filtering the image collection. Lets start filtering the feature collection but lets use a different feature collection for this purpose. We will use a feature collection called HUC06. This feature collection contains watershed boundaries of the United States. 
 
-7. Don't forget to save the script before you exit. 
+1. Lets import the "HUC06: USGS Watershed Boundary Dataset of Basins" dataset. 
+
+```JavaScript
+// Load watersheds from a data table.
+var sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06');
+```
+2. Have a detailed read about the dataset at your own time. Use the geometry tool to defin roughly covering eastern part of the United States and call it roi. 
+
+![Figure 1. Reference EVI Northern Australia](Prac09/roi.png)
+
+3. Similar to ImageCollection, there are the featureCollection.filterDate(),  featureCollection.filterBounds(), and the featureCollection.filter() method for use with any applicable ee.Filter including the featureCollection. Here, lets filter the "shed" featureCollection by the "roi".
+
+```JavaScript
+// Filter the table geographically: only watersheds within the defined roi.
+var shedsFiltered = sheds.filterBounds(roi);
+```
+4. Now check the number of watersheds in the whole United States vs the eastern United States. Has the filtering worked?
+
+```JavaScript
+// Check the number of watersheds before and after filtering for location.
+print('Watersheds in the entire US:', sheds.size());
+print('Watersheds in the eastern US:', shedsFiltered.size());
+```
+
+5. Filter further to get only the larger watersheds. To do that you will need to filter the dataset by ‘areasqkm’ - have a read at the Table Schema under the dataset description. However, the area values are currently stored as strings not numbers. So, first we need to convert the strings to numbers and then we can filter. Write a function that converts the ‘areasqkm’ strings to numbers and apply that function to featureCollection. 
+
+```JavaScript
+// Function to convert 'areasqkm' property from string to number.
+function str2Num(aFeature){
+  // use feature.get grabs the string - ee.Number converts that string to number
+  var num = ee.Number.parse(aFeature.get('areasqkm'));
+  // the numerical value is returned under the same property
+  return aFeature.set('areasqkm', num);}
+
+// Map the str2Num function over the shedsFiltered featureCollection
+var shedsFilteredNum = shedsFiltered.map(str2Num);
+```
+
+6. Now you are ready to filter the sheds using their size. Lets filter the sheds with an area larger than a numerical value e.g. 25000 square km.
+
+```JavaScript
+// Map the str2Num function over the shedsFiltered featureCollection
+var shedsFilteredNum = shedsFiltered.map(str2Num);
+
+// Filter to get only larger eastern US watersheds.
+var largeSheds = shedsFilteredNum.filter(ee.Filter.gt('areasqkm', 25000));
+
+// Check the number of watersheds after filtering for size and location.
+print('Count after filtering by size:', largeSheds.size());
+```
+![Figure 1. Reference EVI Northern Australia](Prac09/filtered.png)
+
+7. Has the filtering by size worked? Why not double-check by mapping the filtered large sheds. Below is a simple mapping script, you can paly with the details following the techniques learnt just before. 
+
+```JavaScript
+// Map the large watershed filtered over the eastern US
+Map.addLayer(largeSheds,{} , 'HUC06- eastern US - large sheds');
+```
+![Figure 1. Reference EVI Northern Australia](Prac09/filteredmap.png)
+
 
 ## 5. Ungraded exercise
+Repeat the steps above, using the hydrosheds database for Australia. Clicking this link will take you to the dataset in the Earth Engine. 
+Alternatively, you can import the data as below
 
-1. Explore one of the category 5 cyclones in the Australian region [wikipedia link](https://en.wikipedia.org/wiki/List_of_Category_5_Australian_region_severe_tropical_cyclones). What effect would you expect the cyclone to have on the long term EVI trend? For example, I explored the Shoalwater Bay region which was affected by the cyclone Marcia. I saw a sharp drop in the EVI anomaly following the cyclone which also seems to have reversed the previous upward trend in the EVI anomaly. 
-2. Think about how you can adapt this approach to other types of data, such as Land Surface Temperature or rainfall for example.
-
+```JavaScript
+// Import the australian basin feature collection
+var AUSbasin = ee.FeatureCollection('users/shaun/share/aus_basins_2019');
+// Map the Australian basin
+Map.addLayer(AUSbasin,{} , 'Australian basin');
+```
 
 ## The complete script
 
 ```JavaScript
+// Load a FeatureCollection from a table dataset: 'RESOLVE' ecoregions.
+var ecoregions = ee.FeatureCollection('RESOLVE/ECOREGIONS/2017');
 
+// Try the default display
+Map.addLayer(ecoregions, {}, 'default display');
+
+// add a custom color
+Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
+
+// Use featureCollection.draw() to display in custom colours and linewidth 
+Map.addLayer(ecoregions.draw({color: 'green', strokeWidth: 5}), {}, 'drawn display');
+
+// create an empty image into which to paint the features, cast to a byte.
+var emptyImage = ee.Image().byte();
+// you can add the empty image to your mapping layer - its just empty
+Map.addLayer(emptyImage,{},'empty image');
+
+// Paint the polygon edges onto the empty image
+var outlineImage = emptyImage.paint({
+  featureCollection: ecoregions, // which feature collection you want to be painted
+  width: 3 // width of the polygon boundary line
+});
+
+// add the above outline image to the mapping layer
+Map.addLayer(outlineImage, {palette: 'red'}, 'edges only');
+
+// Repeat the edge painting on the empty image
+var uniqueOutlineImage = emptyImage.paint({
+  featureCollection: ecoregions, // feature collection to paint
+  color: 'BIOME_NUM', // color assigned based on Biome Number
+  width: 'NNH' // width assigned based on NNH value
+});
+// add the unique outline to the mapping layer
+Map.addLayer(uniqueOutlineImage, {palette: ['red', 'green', 'blue'], max: 14}, 'unique colour edges');
+
+// Paint the interior of the polygons with different colours.
+var fillImage = emptyImage.paint({
+  featureCollection: ecoregions, // feature collection to paint
+  color: 'BIOME_NUM', // color assigned based on Biome Number
+}); // no width means paint the interior
+
+//Add the interior paint to mapping layer
+Map.addLayer(fillImage, {palette: ['red', 'green', 'blue'], max: 14}, 'fills only');
+
+// Paint both the interior and the edges. First paint the interior using biome number. Then paint the edges using
+var doublePaintedImage = emptyImage.paint(ecoregions, 'BIOME_NUM').paint(ecoregions, 0, 1);
+
+// add the interior/exterior painted image to mapping layer
+Map.addLayer(doublePaintedImage, {palette: ['black','red', 'green', 'blue'], max: 14}, 'edges and fills');
+
+//----------------------
+
+// Load watersheds from a data table.
+var sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06');
+
+// Filter the table geographically: only watersheds within the defined roi.
+var shedsFiltered = sheds.filterBounds(roi);
+
+// Check the number of watersheds before and after filtering for location.
+print('Watersheds in the entire US:', sheds.size());
+print('Watersheds in the eastern US:', shedsFiltered.size());
+
+// Function to convert 'areasqkm' property from string to number.
+function str2Num(aFeature){
+  // use feature.get grabs the string - ee.Number converts that string to number
+  var num = ee.Number.parse(aFeature.get('areasqkm'));
+  // the numerical value is returned under the same property
+  return aFeature.set('areasqkm', num);}
+
+// Map the str2Num function over the shedsFiltered featureCollection
+var shedsFilteredNum = shedsFiltered.map(str2Num);
+
+// Filter to get only larger eastern US watersheds.
+var largeSheds = shedsFilteredNum.filter(ee.Filter.gt('areasqkm',
+25000));
+
+// Check the number of watersheds after filtering for size and location.
+print('Count after filtering by size:', largeSheds.size());
+
+// Map the large watershed filtered over the eastern US
+Map.addLayer(largeSheds,{} , 'HUC06- eastern US - large sheds');
   
 ```
 
