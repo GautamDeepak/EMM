@@ -167,10 +167,35 @@ Map.add(legend);
 ![Figure 1. Reference EVI Northern Australia](Prac10/modify2.png)
 
 ## 2. Charting
-We have also explored a number of different charting options in previous lab, but once you become more familiar with JavaScript you will find that you have huge flexibility in the way you present data in graphs.
+We have already explored a number of different charting options in previous lab, but once you become more familiar with JavaScript you will find that you have huge flexibility in the way you present data in graphs.
 
-The Google Earth Engine Developer Guide covers and provides a nice set of examples explore at your own time here: GEE 
+The Google Earth Engine Developer Guide provides a nice set of charting examples - please explore at your own time at the link below
 
+- [Charts by reducing image](https://developers.google.com/earth-engine/guides/charts_image)
+- [Charts by reducing imageCollection](https://developers.google.com/earth-engine/guides/charts_image_collection): also explored in Prac03, Prac05, Prac07 and Prac08
+- [Chart from array and list](https://developers.google.com/earth-engine/guides/charts_array): also explored in Prac06
+- [Data table chart](https://developers.google.com/earth-engine/guides/charts_datatable)
+- [How to control the elements of chart](https://developers.google.com/earth-engine/guides/charts_style): explored in all the charting exercise
+
+## 3. TIme-lapse animations
+Google Earth Engine provides capability to create some time-lapse. These are very powerful tool to communicate changes in landscapes. You can develop you own time-lapses using and modifying the example below.
+
+1. On above script, first comment out all the Map.addLayer and Map.add commands. 
+
+2. Now run the the script below to see the location of the Landsat tile in your map view, and then draw in a geometry polygon (roi) within that area to clip your video area.
+
+```JavaScript
+// Load a Landsat 8 image collection using a defined WRS path and row.
+var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+  // Northern Territory.
+  .filter(ee.Filter.eq('WRS_PATH', 105))
+  .filter(ee.Filter.eq('WRS_ROW', 69))
+  // Filter cloudy scenes.
+  .filter(ee.Filter.lt('CLOUD_COVER', 5))
+
+  // Need to have 3-band imagery for the video.
+  .select(['B4', 'B3', 'B2']);
+```
 
 ## 5. Ungraded exercise
 Repeat the steps above, using the hydrosheds database for Australia. Clicking this link will take you to the dataset in the Earth Engine. 
