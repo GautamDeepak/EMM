@@ -253,9 +253,10 @@ Export.video.toDrive({
 
 9. Don't forget to save your precious script.
 
-## 5. Ungraded exercise
+## 4. Ungraded exercise
 Export a Sentinel-2 false-colour composite timelapse from the Gulf of Carpentaria. See the image below for the location of the Gulf of Carpentaria. 
 ![Figure 1. Reference EVI Northern Australia](Prac10/gulfofcarpentaria.png)
+
 ## The complete script
 
 ```JavaScript
