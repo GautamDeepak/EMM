@@ -10,11 +10,11 @@
 
 ### Objective
 
-The goal of this Prac is to gain an understanding of different ways of communicating discoveries you make in Google Earth Engine - including the publishing of maps, charts and animated time-lapse videos. .
+The goal of this Prac is to gain an understanding of different ways of communicating discoveries you make in Google Earth Engine - including the publishing of maps, charts and animated time-lapse videos.
 
 ---------------------------------------------------
 ## 1. Adding legend to maps.
-We have used the mapping feature of Earth Engine in all of the previous labs (Map.addLayer). One aspect we have not covered so far is how to add a legend to a map. I have provided two examples below that you can modify for categorical or continuous data. You do not need to be able to replicate the script. However, general understanding of the script is expected such that you can modify the legends, etc. as required.
+We have used the mapping feature of Earth Engine in all of the previous labs (Map.addLayer). One aspect we have not covered so far is how to add a legend to a map. I have provided two examples below that you can modify for categorical or continuous data. You do not need to be able to replicate the script. However, a general understanding of the script is expected such that you can modify the legends, etc. as required.
 
 1. Run the below script to run the categorical legend. I will encourage you to change the parameters - most of them are super intuitive and create the legend you want. 
 
@@ -140,7 +140,7 @@ params: {bbox:'0,0,10,100', dimensions:'10x200'},
 style: {padding: '1px', position: 'bottom-center'}
 });
 
-// Step 5: Add the elements in order - Title first, followed by the max value, color thumbnail next and the min value last.  
+// Step 5: Add the elements in order - Title first, followed by the max value, colour thumbnail next and the min value last.  
 
 // add the title to the panel
 legend.add(legendTitle);
@@ -162,12 +162,12 @@ Map.add(legend);
 ```
 ![Figure 1. Reference EVI Northern Australia](Prac10/continuous.png)
 
-*Exercise*: Pan over to Indonesia and run the script. Modify where necessary to get to below image. If you can do that, you have mastered the necessary skills to modify the script.
+*Exercise*: Pan over to Indonesia and run the script. Modify where necessary to get to the below image. If you can do that, you have mastered the necessary skills to modify the script.
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/modify2.png)
 
 ## 2. Charting
-We have already explored a number of different charting options in previous lab, but once you become more familiar with JavaScript you will find that you have huge flexibility in the way you present data in graphs.
+We have already explored several different charting options in the previous lab, but once you become more familiar with JavaScript you will find that you have huge flexibility in the way you present data in graphs.
 
 The Google Earth Engine Developer Guide provides a nice set of charting examples - please explore at your own time at the link below
 
@@ -178,11 +178,11 @@ The Google Earth Engine Developer Guide provides a nice set of charting examples
 - [How to control the elements of chart](https://developers.google.com/earth-engine/guides/charts_style): explored in all the charting exercise
 
 ## 3. TIme-lapse animations
-Google Earth Engine provides capability to create some time-lapse. These are very powerful tool to communicate changes in landscapes. You can develop you own time-lapses using and modifying the example below.
+Google Earth Engine provides the capability to create some time-lapse. These are very powerful tools to communicate changes in landscapes. You can develop your time-lapses using and modifying the example below.
 
-1. On above script, first comment out all the Map.addLayer and Map.add commands. 
+1. On the above script, first comment out all the Map.addLayer and Map.add commands. 
 
-2. Now run the the script below to see the location of the Landsat tile in your map view. 
+2. Now run the script below to see the location of the Landsat tile in your map view. 
 
 ```JavaScript
 // Load a Landsat 8 image collection using a defined WRS path and row.
@@ -201,15 +201,15 @@ Map.addLayer(collection.median(), {min:0,max:0.3}, 'Median');
 ```
 ![Figure 1. Reference EVI Northern Australia](Prac10/l8scene.png)
 
-3. You might be wondering what WRS_PATH and WRS_ROW are. Well, each Landsat scene has a path and row number determining where the scene was collected from. Each scan from north to south gets a path number and within a path there are multiple images numbered sequentially in rows. This filtering approach is just another way of filtering images. Our traditional approach of filtering is as good as this one so dont stress if you dont understand this approach. Attach image belwo to demonstrate the path row and go to this link to learn more. 
+3. You might be wondering what WRS_PATH and WRS_ROW are. Well, each Landsat scene has a path and row number determining where the scene was collected from. Each scan from north to the south gets a path number and within a path, there are multiple images numbered sequentially in rows. This filtering approach is just another way of filtering images. Our traditional approach of filtering is as good as this one so don't stress if you don't understand this approach. The image below nicely demonstrate the path row. 
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/pathrow.png)
 
-4. Use the geometry tool to draw a polygon within the displayed scene. Rename the geometry to roi. This is the area where we want to generate the timelaps video. 
+4. Use the geometry tool to draw a polygon within the displayed scene. Rename the geometry to roi. This is the area where we want to generate the timelapse video. 
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/roi.png)
 
-4. We are almost ready to export the timelaps video. However, before exporting, we need to convert the Landsat 8 images to 8-bit. What does 8-bit mean? Well in current form the Landsat data contains pixel values ranged between 0 and 1. However, our display monitor (after we download data) expects a 8-bit data (values between 0 and 255) for appropriate visualisation. Use the script belwo to convert the collection to 8-bit. 
+4. We are almost ready to export the timelapse video. However, before exporting, we need to convert the Landsat 8 images to 8-bit. What does 8-bit mean? Well in current form the Landsat data contains pixel values ranged between 0 and 1. However, our display monitor (after we download data) expects 8-bit data (values between 0 and 255) for appropriate visualisation. Use the script below to convert the collection to 8-bit. 
 
 ```JavaScript
 // Need to make the data 8-bit integer because the montior you are using displays images in 8bit
@@ -219,14 +219,14 @@ var collection8bit=collection.map(
   });
 ``` 
 
-5. You can also print information about the video to get an idea of how many images will be used to generate thsi video. 
+5. You can also print information about the video to get an idea of how many images will be used to generate this video. 
 
 ```JavaScript
 // print info about the video
 print ('Generating video from ',collection8bit.size(),'images');
 ```
 
-6. Now, run the script below to export the video. This will generate a new task under the task bar. 
+6. Now, run the script below to export the video. This will generate a new task under the tasks tab. 
 
 ```JavaScript
 // Export (change dimensions or scale for higher quality).
@@ -243,18 +243,18 @@ Export.video.toDrive({
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/task.png)
 
-7. Hit run on the task within tasks bar. This will popup a window with the detais that we just defined. Hit run again to start the exporting process.
+7. Hit run on the task within the tasks tab. This will pop up a window with the details that we just defined. Hit run again to start the exporting process.
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/run.png)
 
-8. Now stay back, relax, and grab a coffee. GEE will take few mins to complete the export process. After completion, the video will appear to your folder in google drive. 
+8. Now stay back, relax, and grab a coffee. GEE will take few mins to complete the export process. After completion, the video will appear in your folder on google drive. 
 
 ![Figure 1. Reference EVI Northern Australia](Prac10/video.png)
 
-9. Dont forget to save your precious script.
+9. Don't forget to save your precious script.
 
 ## 5. Ungraded exercise
-Export a Sentinel-2 false-color composite timeseries from the Gulf of Carpentaria. See image below for the location of Gulf of Carpentaria. 
+Export a Sentinel-2 false-colour composite timelapse from the Gulf of Carpentaria. See the image below for the location of the Gulf of Carpentaria. 
 ![Figure 1. Reference EVI Northern Australia](Prac10/gulfofcarpentaria.png)
 ## The complete script
 
