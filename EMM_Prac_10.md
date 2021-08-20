@@ -182,7 +182,7 @@ Google Earth Engine provides capability to create some time-lapse. These are ver
 
 1. On above script, first comment out all the Map.addLayer and Map.add commands. 
 
-2. Now run the the script below to see the location of the Landsat tile in your map view, and then draw in a geometry polygon (roi) within that area to clip your video area.
+2. Now run the the script below to see the location of the Landsat tile in your map view. 
 
 ```JavaScript
 // Load a Landsat 8 image collection using a defined WRS path and row.
@@ -195,103 +195,234 @@ var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
 
   // Need to have 3-band imagery for the video.
   .select(['B4', 'B3', 'B2']);
-```
 
-## 5. Ungraded exercise
-Repeat the steps above, using the hydrosheds database for Australia. Clicking this link will take you to the dataset in the Earth Engine. 
-Alternatively, you can import the data as below
+// map the mean pixel value.
+Map.addLayer(collection.median(), {min:0,max:0.3}, 'Median');  
+```
+![Figure 1. Reference EVI Northern Australia](Prac10/l8scene.png)
+
+3. You might be wondering what WRS_PATH and WRS_ROW are. Well, each Landsat scene has a path and row number determining where the scene was collected from. Each scan from north to south gets a path number and within a path there are multiple images numbered sequentially in rows. This filtering approach is just another way of filtering images. Our traditional approach of filtering is as good as this one so dont stress if you dont understand this approach. Attach image belwo to demonstrate the path row and go to this link to learn more. 
+
+![Figure 1. Reference EVI Northern Australia](Prac10/pathrow.png)
+
+4. Use the geometry tool to draw a polygon within the displayed scene. Rename the geometry to roi. This is the area where we want to generate the timelaps video. 
+
+![Figure 1. Reference EVI Northern Australia](Prac10/roi.png)
+
+4. We are almost ready to export the timelaps video. However, before exporting, we need to convert the Landsat 8 images to 8-bit. What does 8-bit mean? Well in current form the Landsat data contains pixel values ranged between 0 and 1. However, our display monitor (after we download data) expects a 8-bit data (values between 0 and 255) for appropriate visualisation. Use the script belwo to convert the collection to 8-bit. 
 
 ```JavaScript
-// Import the australian basin feature collection
-var AUSbasin = ee.FeatureCollection('users/shaun/share/aus_basins_2019');
-// Map the Australian basin
-Map.addLayer(AUSbasin,{} , 'Australian basin');
+// Need to make the data 8-bit integer because the montior you are using displays images in 8bit
+var collection8bit=collection.map(
+  function(anImage) {
+    return anImage.multiply(512).uint8();
+  });
+``` 
+
+5. You can also print information about the video to get an idea of how many images will be used to generate thsi video. 
+
+```JavaScript
+// print info about the video
+print ('Generating video from ',collection8bit.size(),'images');
 ```
 
+6. Now, run the script below to export the video. This will generate a new task under the task bar. 
+
+```JavaScript
+// Export (change dimensions or scale for higher quality).
+Export.video.toDrive({
+  collection: collection8bit, // the image collection you want to use
+  description: 'L8VideoExample', // description of this video export task
+  folder: 'EarthEngine', // name of folder in your google drive where you want to export the video
+  fileNamePrefix: 'ENV306506_Lab10_TimeLapse', // filename for your video
+  framesPerSecond: 5, // how many frames to use per second  
+  region: roi, // region to capture the video from
+  dimensions: 360 // dimension of the video screen in pixel
+});
+```
+
+![Figure 1. Reference EVI Northern Australia](Prac10/task.png)
+
+7. Hit run on the task within tasks bar. This will popup a window with the detais that we just defined. Hit run again to start the exporting process.
+
+![Figure 1. Reference EVI Northern Australia](Prac10/run.png)
+
+8. Now stay back, relax, and grab a coffee. GEE will take few mins to complete the export process. After completion, the video will appear to your folder in google drive. 
+
+![Figure 1. Reference EVI Northern Australia](Prac10/video.png)
+
+9. Dont forget to save your precious script.
+
+## 5. Ungraded exercise
+Export a Sentinel-2 false-color composite timeseries from the Gulf of Carpentaria. See image below for the location of Gulf of Carpentaria. 
+![Figure 1. Reference EVI Northern Australia](Prac10/gulfofcarpentaria.png)
 ## The complete script
 
 ```JavaScript
-// Load a FeatureCollection from a table dataset: 'RESOLVE' ecoregions.
-var ecoregions = ee.FeatureCollection('RESOLVE/ECOREGIONS/2017');
-
-// Try the default display
-Map.addLayer(ecoregions, {}, 'default display');
-
-// add a custom color
-Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
-
-// Use featureCollection.draw() to display in custom colours and linewidth 
-Map.addLayer(ecoregions.draw({color: 'green', strokeWidth: 5}), {}, 'drawn display');
-
-// create an empty image into which to paint the features, cast to a byte.
-var emptyImage = ee.Image().byte();
-// you can add the empty image to your mapping layer - its just empty
-Map.addLayer(emptyImage,{},'empty image');
-
-// Paint the polygon edges onto the empty image
-var outlineImage = emptyImage.paint({
-  featureCollection: ecoregions, // which feature collection you want to be painted
-  width: 3 // width of the polygon boundary line
+// Step 1: set position of panel
+var legend = ui.Panel({
+  style: {
+    position: 'bottom-left', // change the position as needed
+    padding: '8px 15px' // change the padding as needed
+  }
 });
 
-// add the above outline image to the mapping layer
-Map.addLayer(outlineImage, {palette: 'red'}, 'edges only');
-
-// Repeat the edge painting on the empty image
-var uniqueOutlineImage = emptyImage.paint({
-  featureCollection: ecoregions, // feature collection to paint
-  color: 'BIOME_NUM', // color assigned based on Biome Number
-  width: 'NNH' // width assigned based on NNH value
+// Step 2: Create legend title
+var legendTitle = ui.Label({
+  value: 'My Legend title',  // change legend title as required
+  style: {  // change the font style as needed
+    fontWeight: 'bold',
+    fontSize: '18px',
+    margin: '0 0 4px 0',
+    padding: '0'
+    }
 });
-// add the unique outline to the mapping layer
-Map.addLayer(uniqueOutlineImage, {palette: ['red', 'green', 'blue'], max: 14}, 'unique colour edges');
 
-// Paint the interior of the polygons with different colours.
-var fillImage = emptyImage.paint({
-  featureCollection: ecoregions, // feature collection to paint
-  color: 'BIOME_NUM', // color assigned based on Biome Number
-}); // no width means paint the interior
+// Step 3: Add the title to the panel
+legend.add(legendTitle);
 
-//Add the interior paint to mapping layer
-Map.addLayer(fillImage, {palette: ['red', 'green', 'blue'], max: 14}, 'fills only');
+// Step 4: Function to creates the legend items.
+var makeRow = function(color, name) {
 
-// Paint both the interior and the edges. First paint the interior using biome number. Then paint the edges using
-var doublePaintedImage = emptyImage.paint(ecoregions, 'BIOME_NUM').paint(ecoregions, 0, 1);
+      // Create the label that is actually the colored box.
+      var colorBox = ui.Label({
+        style: {
+          backgroundColor: color,
+          // Use padding to give the box height and width.
+          padding: '8px',
+          margin: '0 0 4px 0'
+        }
+      });
 
-// add the interior/exterior painted image to mapping layer
-Map.addLayer(doublePaintedImage, {palette: ['black','red', 'green', 'blue'], max: 14}, 'edges and fills');
+      // Create the label filled with the description text.
+      var description = ui.Label({
+        value: name,
+        style: {margin: '0 0 4px 6px'}
+      });
 
-//----------------------
+      // return the panel
+      return ui.Panel({
+        widgets: [colorBox, description],
+        layout: ui.Panel.Layout.Flow('horizontal')
+      });
+};
 
-// Load watersheds from a data table.
-var sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06');
+// Palette with the colours
+var palette =['red', 'green', 'blue']; // this is the actual color not text
 
-// Filter the table geographically: only watersheds within the defined roi.
-var shedsFiltered = sheds.filterBounds(roi);
+// name of the legend
+var names = ['text for red color','text for green color','text for blue color']; // thi sis the text next to the color
 
-// Check the number of watersheds before and after filtering for location.
-print('Watersheds in the entire US:', sheds.size());
-print('Watersheds in the eastern US:', shedsFiltered.size());
+// add colour and legend text
+for (var i = 0; i < 3; i++) {
+  legend.add(makeRow(palette[i], names[i]));
+  }  
 
-// Function to convert 'areasqkm' property from string to number.
-function str2Num(aFeature){
-  // use feature.get grabs the string - ee.Number converts that string to number
-  var num = ee.Number.parse(aFeature.get('areasqkm'));
-  // the numerical value is returned under the same property
-  return aFeature.set('areasqkm', num);}
+// Step 5: Always need to add the legend to map (alternatively you can also print the legend to the console)
+Map.add(legend);
 
-// Map the str2Num function over the shedsFiltered featureCollection
-var shedsFilteredNum = shedsFiltered.map(str2Num);
+//---------------------
+// First lets load a continuous data e.g. CHIRPS rainfall
+var chirps = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 
-// Filter to get only larger eastern US watersheds.
-var largeSheds = shedsFilteredNum.filter(ee.Filter.gt('areasqkm',
-25000));
+// calculate the total rainfall 2009
+var rainfall = chirps.select("precipitation").filterDate('2009-01-01', '2009-12-31').sum();
 
-// Check the number of watersheds after filtering for size and location.
-print('Count after filtering by size:', largeSheds.size());
+// create vizualization parameters - same visulisation aprameter will be used for mapping and legend
+var vizPara = {min:0, max:2000, palette:['white','lightgreen','green','yellow','lightblue','blue','darkblue']};
 
-// Map the large watershed filtered over the eastern US
-Map.addLayer(largeSheds,{} , 'HUC06- eastern US - large sheds');
+// Map the rainfall
+Map.addLayer(rainfall, vizPara);
+
+
+// Step 1: Set position of panel
+var legend = ui.Panel({
+style: {
+position: 'bottom-left', // modify the position as needed
+padding: '8px 15px'
+}
+});
+
+// Step 2: create legend title
+var legendTitle = ui.Label({
+value: 'Rainfall (mm)', // modify the title as needed
+style: {
+fontWeight: 'bold',
+fontSize: '18px',
+margin: '0 0 4px 0',
+padding: '0'
+}
+});
+
+
+// # 4 Create color bar
+// create the legend image - I wouldn't change this
+var lat = ee.Image.pixelLonLat().select('latitude');
+var gradient = lat.multiply((vizPara.max-vizPara.min)/100.0).add(vizPara.min);
+var legendImage = gradient.visualize(vizPara);
+
+// Squeeze the above legend image to the legend thumbnail
+var thumbnail = ui.Thumbnail({
+image: legendImage,
+params: {bbox:'0,0,10,100', dimensions:'10x200'},
+style: {padding: '1px', position: 'bottom-center'}
+});
+
+// Step 5: Add the elements in order - Title first, followed by the max value, color thumbnail next and the min value last.  
+
+// add the title to the panel
+legend.add(legendTitle);
+
+// Add the max value text above color bar
+var maxValue = ui.Panel({widgets: [ui.Label(vizPara.max)]});
+legend.add(maxValue);
+
+// The color bar goes belwo the max value
+legend.add(thumbnail);
+
+
+// Add the min value text on below the colro bar
+var minValue = ui.Panel({widgets: [ui.Label(vizPara.min)]});
+legend.add(minValue);
+
+//# Add the legend to the mapping layer
+Map.add(legend);
+
+//--------------------------
+// Load a Landsat 8 image collection and define path and row.
+var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+  // Northern Territory.
+  .filter(ee.Filter.eq('WRS_PATH', 105))
+  .filter(ee.Filter.eq('WRS_ROW', 69))
+  // Filter cloudy scenes.
+  .filter(ee.Filter.lt('CLOUD_COVER', 5))
+  // Need to have 3-band imagery for the video.
+  .select(['B4', 'B3', 'B2']);
+
+
+// map the mean pixel value. Note the unusual range of min and max for Landsat, this is because we have converted to 8-bit data.
+Map.addLayer(collection.median(), {min:0,max:0.3}, 'Median');
+
+// Need to make the data 8-bit integer because the montior you are using displays images in 8bit i.e. stretched between 0 and 255
+var collection8bit=collection.map(
+  function(anImage) {
+    return anImage.multiply(512).uint8();
+  });
+
+
+// print info about the video
+print ('Generating video from ',collection8bit.size(),'images');
+
+// Export (change dimensions or scale for higher quality).
+Export.video.toDrive({
+  collection: collection8bit, // the image collection you want to use
+  description: 'L8VideoExample', // description of this video export task
+  folder: 'EarthEngine', // name of folder in your google drive where you want to export the video
+  fileNamePrefix: 'ENV306506_Lab10_TimeLapse', // filename for your video
+  framesPerSecond: 5, // how many frames to use per second  
+  region: roi, // region to capture the video from
+  dimensions: 360 // dimension of the video screen in pixel
+});
   
 ```
 
