@@ -15,7 +15,7 @@ The objective of this lab is to broaden our horizons and explore different types
 ## 1. Load and study the CHIRPS rainfall dataset.
 1. Open the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
-2. Today we will use the Climate Hazards Group InfraRed Precipitation with Station (CHIRPS) dataset.  The CHIRPS data is a 30+ year quasi-global rainfall dataset, since 1981. CHIRPS incorporates 0.05° resolution satellite imagery (from MODIS) with in-situ rainfall weather station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. Load precipitation data from the CHIRPS data archive 
+2. Today we will use the Climate Hazards Group InfraRed Precipitation with Station (CHIRPS) dataset.  The CHIRPS data is a 40+ year quasi-global rainfall dataset, since 1981. CHIRPS incorporates 0.05° resolution satellite imagery (from MODIS) with in-situ rainfall weather station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. Load precipitation data from the CHIRPS data archive 
 
 ```JavaScript
 // Load the rainfall dataset 
