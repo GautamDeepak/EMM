@@ -61,7 +61,7 @@ Map.addLayer(meanReference, {min: 0, max: 4000, palette: ['brown','yellow','gree
 
 ```JavaScript
 //Create a collection of images that represent most recent conditions
-var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01').sort('system:time_start');
+var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01');
 ```
 2. Similar to the baseline, calculate the mean of the recent EVI time series and display it in the mapping layer.
 
@@ -118,7 +118,7 @@ Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yello
 
 ```JavaScript
 //Get timestamp of first image in the recent collection
-var time0 = recent.first().get('system:time_start');
+var time0 = recent.sort('system:time_start').first().get('system:time_start');
 ```
 
 2. Create a list that contains a single image of zeros, with the time of time0 (i.e. the first image in recent). Effectively this is just a holder of empty images where we can map the values of EVI anomaly into. Rename the list to 'EVI' to match the band name of the recent EVI image collection.
@@ -215,7 +215,7 @@ var meanReference = reference.mean();
 Map.addLayer(meanReference, {min: 0, max: 4000, palette: ['brown','yellow','green']}, 'Reference EVI');
 
 //Create a collection of images that represent most recent conditions
-var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01').sort('system:time_start');
+var recent = EVIcollection.filterDate('2010-01-01', '2020-01-01');
 
 // calculate recent mean
 var meanRecent = recent.mean();
@@ -241,7 +241,7 @@ var anomalies = recent.map(computeAnomalies);
 Map.addLayer(anomalies.sum(), {min: -30000, max: 30000, palette: ['brown','yellow','green']}, 'Cumulative anomaly');
 
 //Get timestamp of first image in the recent collection
-var time0 = recent.first().get('system:time_start');
+var time0 = recent.sort('system:time_start').first().get('system:time_start');
 
 // initialise a list (containing an empty image) to provide a structure into which the EVI anomalies can be mapped
 var first = ee.List([ ee.Image(0).set('system:time_start', time0).rename('EVI')]);
