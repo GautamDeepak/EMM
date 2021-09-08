@@ -34,7 +34,7 @@ var EVIcollection = modis.select("EVI");
 
 ```JavaScript
 // choose a reference period from 2000 to 2010 as baseline
-var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01').sort('system:time_start');
+var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01');
 ```
 
 5. Compute the mean of our reference baseline period
@@ -206,7 +206,7 @@ var modis = ee.ImageCollection('MODIS/006/MOD13A1');
 var EVIcollection = modis.select("EVI");
 
 // choose a reference period from 2000 to 2010 as baseline
-var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01').sort('system:time_start');
+var reference = EVIcollection.filterDate('2000-01-01', '2010-01-01');
 
 //compute the temporal mean of the EVI 
 var meanReference = reference.mean();
