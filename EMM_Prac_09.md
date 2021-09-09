@@ -48,7 +48,7 @@ Map.addLayer(ecoregions, {}, 'default display');
 // add a custom color
 Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac09/redcolor.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/outlineOnly.png)
 
 
 ## 2. Controlling the boundary lines
