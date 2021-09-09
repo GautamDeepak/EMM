@@ -70,7 +70,7 @@ var emptyImage = ee.Image().byte();
 Map.addLayer(emptyImage,{},'empty image');
 ```
 
-![Figure 1. Reference EVI Northern Australia](Prac09/drawdisplay.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/empty.png)
 
 3. Now, on the empty image, you can paint all the polygon edges with ths same color and width.
 
