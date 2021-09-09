@@ -78,7 +78,7 @@ Map.addLayer(emptyImage,{},'empty image');
 // Paint the polygon edges onto the empty image
 var outlineImage = emptyImage.paint({
   featureCollection: ecoregions, // which feature collection you want to be painted
-  strokeWidth: 3 // width of the polygon boundary line
+  width: 3 // width of the polygon boundary line
 });
 ```
 
@@ -199,8 +199,7 @@ Map.addLayer(largeSheds,{} , 'HUC06- eastern US - large sheds');
 
 
 ## 5. Ungraded exercise
-Repeat the steps above, using the hydrosheds database for Australia. Clicking this link will take you to the dataset in the Earth Engine. 
-Alternatively, you can import the data as below
+Repeat the steps above, using the hydrosheds database for Australia. You can import the data as below
 
 ```JavaScript
 // Import the australian basin feature collection
