@@ -88,7 +88,7 @@ var outlineImage = emptyImage.paint({
 // add the above outline image to the mapping layer
 Map.addLayer(outlineImage, {palette: 'red'}, 'edges only');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac09/outlineonly.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/outlineOnly.png)
 
 8. There you have it - the outline of the ecoregions that you can control the colour and the width of the boundary line. However, the edges of the above image show all the ecoregions and biomes with the same colour. Now there are lots of ecoregions to assign a unique colour. But, what we can do is colour the different biome with unique colours. Under the "Table Schema" of the dataset tells you that each biome has a unique "BIOME_NUM". We can assign unique colours based on the stored "BIOME_NUM" - there are 14 biomes in total, so, 14 colours sounds okay. Similarly, you could also make the width of the boundary edge variable showing for example the "NNH" category. 
 
