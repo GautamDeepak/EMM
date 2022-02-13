@@ -38,7 +38,7 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 
 ![Figure 1. The Google Earth Engine environment](Prac01/FeatureTour.PNG)   
 
-4. Check out all the buttons that are available to you and try to understand them. 
+4. Check out different buttons and tabs available to you, try them and do a google search to understand their functionality. In this unit, you will frequently use following buttons and tabs: "Run", "Save", "Inspector", "Console", "Tasks", "Scripts", "Docs", and "Assets".
 
 ## 4. A basic introduction to JavaScript
 
