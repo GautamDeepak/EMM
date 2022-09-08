@@ -1,5 +1,5 @@
 # Environmental Monitoring and Modelling (ENV306/506)
-## Prac 1 - Introduction to Google Earth Engine, JavaScript, and single-band image (SRTM example)
+## Prac 1 - Introduction to Google Earth Engine, JavaScript, and working with single-band image (SRTM example)
 
 ### Acknowledgments 
 - Google Earth Engine Team
@@ -7,23 +7,19 @@
 - [GEARS Lab](https://www.gears-lab.com/emm_lab_2/)
 
 ### Prerequisites
-- Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
+- Completion of this Prac exercise requires the use of the Google Chrome browser and a Google Earth Engine account. If you have not yet signed up for Google Earth Engine account - please do so now in a new tab: [Earth Engine account registration](https://signup.earthengine.google.com/)
 
 - Once registered you can access the Earth Engine environment at [https://code.earthengine.google.com](https://code.earthengine.google.com)
 
 ### Objective
-The objective of this lab is to give you an introduction to the Google Earth Engine processing environment and basic JavaScript. You will also gain a basic feel of remote sensing image by working on a single-band elevation image (SRTM). From an environmental monitoring perspective, we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. By the end of this exercise, you will be able to will learn how to access, visualise and query digital elevation data for any study location.
+The objective of this lab is to give you an introduction to the Earth Engine processing environment and basic JavaScript. You will also gain a basic feel of remote sensing image by working on a single-band elevation image (SRTM). From an environmental monitoring perspective, we will often be interested in how and where landscapes, and different components of that landscape, change over time. Understanding landscape context is very important, as ecological processes change with topographic position. By the end of this exercise, you will be able to will learn how to access, visualise and query digital elevation data for any study location.
 
 ---------------------------------------------------
 ## 1. Signup for the GEE account
-1. If you have not done so already, sign up [here](https://code.earthengine.google.com/signup/)
+1. If you have not done so already, sign up for Earth Engine account [here](https://code.earthengine.google.com/signup/)
 2. Follow the signup and activation process.
 
-## 2. Introduction to the GEE environment interface
-Google Earth Engine uses the JavaScript programming language. We will cover the very basics of this language during this course. Read the introduction provided in the GEE developers forum [here](https://developers.google.com/earth-engine/tutorials/tutorial_js_01)
-
-
-## 3. Navigate through the GEE environment interface.
+## 2. Navigate through the GEE environment interface.
 1. Open up the Google Earth Engine environment by going to this address in the Chrome browser: [https://code.earthengine.google.com](https://code.earthengine.google.com). You should see the GEE landing page as below.
 
 ![Figure 1. The Google Earth Engine environment](Prac01/LandingPage.PNG)
@@ -40,9 +36,9 @@ Google Earth Engine uses the JavaScript programming language. We will cover the 
 
 4. Check out different buttons and tabs available to you, try them and do a google search to understand their functionality. In this unit, you will frequently use following buttons and tabs: "Run", "Save", "Inspector", "Console", "Tasks", "Scripts", "Docs", and "Assets".
 
-## 4. A basic introduction to JavaScript
+## 3. A basic introduction to JavaScript
 
-1. Time to write your first JavaScript for Earth Engine! In the editor panel, paste the below script and hit run. "Hello World!" will be printed on the console tab. 
+1. Google Earth Engine uses the JavaScript programming language. We will cover the very basics of this language during this course. Time to write your first JavaScript for Earth Engine! In the editor panel, paste the below script and hit run. "Hello World!" will be printed on the console tab. 
  
 ```JavaScript
 print("Hello World!");
@@ -86,10 +82,11 @@ print('My height is:', height);
 **Question:** *Write a script that prints a person’s age. Use two variables to store the person name and age.* 
 
 10. The best way to learn Scripting is to modify the script and make many mistakes - many many mistakes. If you are new to scripting and JavaScript, try to change and run the script and see what happens.
+11. That’s all we have for the basic JavaScript. For a bit further details, read the introduction provided in the GEE developers forum [here](https://developers.google.com/earth-engine/tutorials/tutorial_js_01)
 
-11. Alright, now lets start looking into some remote sensing images. Before that, clear your scripting area by clicking on "Clear script" under the "Reset" button.
+12. Alright, now lets start looking into some remote sensing images. Before that, clear your scripting area by clicking on "Clear script" under the "Reset" button.
 
-## 5. Getting started with elevation data
+## 4. Getting started with elevation data
 
 1. Just above the Coding panel is the search bar. Search for ‘Darwin’ in this GEE search bar, and click the result to pan and zoom the map to Darwin (Figure 2). In this exercise, we will work on and around the Darwin region including Kakadu National Park. 
 
@@ -119,7 +116,7 @@ print(theSRTM);
 
 ![Figure 5. SRTM in console](Prac01/printrun.png)
 
-## 6. Adjusting visualisation parameters
+## 5. Adjusting visualisation parameters
 
 1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
 
@@ -150,7 +147,7 @@ Map.addLayer(theSRTM, {min: 0, max: 300}, 'Elevation above sea level');
 ```
 ![Figure 8. Rename title](Prac01/layername.png)
 
-## 7. Commenting and saving your scripts
+## 6. Commenting and saving your scripts
 
 1. Now the code has started to look a little bit messy. Imagine you coming back to this code after a year. Would you still be able to tell which line is doing what task? Hence, it is a good idea to always put comments to your code reminding you of what you did and why. We add comments with two forward slashes // :
 
@@ -181,7 +178,7 @@ Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'E
 
 ![Figure 10. Colour scale elevation](Prac01/colorelevation.png)
 
-## 8. Hillshade and slope
+## 7. Hillshade and slope
 
 1. For better visualisation we can create a hillshade view of the elevation data. 
 
@@ -213,7 +210,7 @@ Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 
 5. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
 
-## 9. Applying a computation to an image
+## 8. Applying a computation to an image
 1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
 
 ```javascript
@@ -235,7 +232,7 @@ Map.addLayer(DEMover200, {min: 200, max: 300, palette: ['blue', 'yellow', 'red']
 
 ![Figure 16. masked](Prac01/masked.png)
 
-## 10. Applying a spatial reducer
+## 9. Applying a spatial reducer
 Reducers are the way to aggregate data over time, space, bands, arrays and other data structures in Earth Engine. The spatial reducer aggregates the data over a certain space to give an output. E.g. mean elevation of a region. Recall how you used the inspector tool to extract data from one pixel, think of a spatial reducer as a way to extract data from a polygon rather than a single pixel. 
 
 ![Figure 17. reducer](Prac01/reducer.png)
@@ -262,7 +259,7 @@ print('Mean elevation', meanElevation.get('elevation'));
 
 5. DO NOT forget to save your script. Click on Save button and follow the prompt to save the script. 
 
-## 11. The complete script used in this Prac
+## 10. The complete script used in this Prac
 
 ```JavaScript
 // Print data details to console
@@ -310,7 +307,7 @@ print('Mean elevation', meanElevation.get('elevation'));
 -------
 ### Thank you
 
-I hope you found this prac useful. A recorded video of this prac can be found on your learnline.
+I hope you found this prac useful. A recorded video of this prac can be found on your learnline. Please get in touch if you have any questions.
 
 #### Kind regards, Deepak Gautam
 ------
