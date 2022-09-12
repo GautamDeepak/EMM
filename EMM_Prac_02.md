@@ -229,10 +229,11 @@ var NDVIimage = anImage.expression(
 Map.addLayer(NDVIimage, {min: 0, max: 1, palette: ['brown', 'yellow', 'green']}, "NDVI");
 ```
 
+
 -------
 ### Thank you
 
-I hope you found this prac useful. A recorded video of this prac can be found on your learnline.
+I hope you found this prac useful. A recorded video of this prac can be found on your learnline. Please get in touch if you have any questions.
 
 #### Kind regards, Deepak Gautam
 ------
