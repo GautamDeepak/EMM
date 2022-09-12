@@ -116,7 +116,7 @@ print(theSRTM);
 
 ![Figure 5. SRTM in console](Prac01/printrun.png)
 
-## 5. Adjusting visualisation parameters
+## 5. Visualising the single-band image
 
 1. Use the Map.addLayer() method to add/display the image to the interactive map. We will start simple, without using any of the optional parameters. After adding the script, hit "run" again. Every time you make changes to your script, you will need to run the script again.
 
@@ -178,9 +178,9 @@ Map.addLayer(theSRTM, {min: 0, max: 300, palette: ['blue', 'yellow', 'red']}, 'E
 
 ![Figure 10. Colour scale elevation](Prac01/colorelevation.png)
 
-## 7. Hillshade and slope
+## 7. Applying computation on elevation image - example of hillshade and slope
 
-1. For better visualisation we can create a hillshade view of the elevation data. 
+1. Sometimes our application requires computation of the terrain hillshade and slope. Do a google search to find out what is terrain hillshade and what is terrain slope. Sometimes, the hillshade provides a better visualisation of the elevation data. Use below script to visualise the hillsahde of the landscape. 
 
 ```JavaScript
 // Create hillshade and map it
@@ -210,7 +210,7 @@ Map.addLayer(slope, {min: 0, max: 20}, 'Slope');
 
 5. Also check out the docs section where you can find other computations that are available to you under the Google Earth Engine. Docs section is your help section, if you are stuck with scripting, make sure to look into the docs tab as well as google search.
 
-## 8. Applying a computation to an image
+## 8. Applying thresholding to the images
 1. Add a simple computation, for example, a threshold on elevation. This computation goes through every pixel to test if the elevation data on that pixel meets the defined threshold. In the below figure, the white pixel (True) is where the threshold is met and the dark pixel (False) is where the threshold is not meet.
 
 ```javascript
