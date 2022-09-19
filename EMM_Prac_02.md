@@ -53,7 +53,7 @@ It is important to understand that we have now added access to the full Sentinel
 
 ```JavaScript
 // this is our first line of code. Let us define the image collection we are working with by writing this command
-var anImage = ee.Image(sent2
+var anImage = sent2
 
 // we will then include a filter to get only images in the date range we are interested in
 .filterDate("2020-06-01", "2021-06-01")
@@ -65,7 +65,7 @@ var anImage = ee.Image(sent2
 .sort("CLOUD_COVERAGE_ASSESSMENT")
 
 // Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
-.first());
+.first();
 
 ```
 
@@ -194,7 +194,7 @@ Prac01 taught you how to visualise elevation data, apply computation, and reduce
 
 ```JavaScript
 // this is our first line of code. Let us define the image collection we are working with by writing this command
-var anImage = ee.Image(sent2
+var anImage = sent2
 
 // we will then include a filter to get only images in the date range we are interested in
 .filterDate("2020-06-01", "2021-06-01")
@@ -206,7 +206,7 @@ var anImage = ee.Image(sent2
 .sort("CLOUD_COVERAGE_ASSESSMENT")
 
 // Now let's select the first image out of this collection - i.e. the most cloud-free image in the date range
-.first());
+.first();
 
 // and let's print the image to the console.
 print("A Sentinel-2 scene:", anImage);
