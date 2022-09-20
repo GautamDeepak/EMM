@@ -28,8 +28,8 @@ var gfc2020 = ee.Image("UMD/hansen/global_forest_change_2020_v1_8");
 
 ```JavaScript
 // do a generic print and display of the data in the mapping panel
-print(gfc2019);
-Map.addLayer(gfc2019);
+print(gfc2020);
+Map.addLayer(gfc2020);
 ```
 ![Figure 1. generic print](Prac06/basicprint.png)
 
