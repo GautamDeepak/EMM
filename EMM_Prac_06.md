@@ -215,7 +215,12 @@ print(lossChart);
 12. Explore any other parts of the world. Don't forget to save the script before you exit. 
 
 ## 4. Ungraded exercise
-Today we don't have any exercise. Please use this opportunity to carefully go through today's content and revisit previous days content if need be. 
+During the southern hemisphere summer of 2015–16, one of the worst mangrove dieback events ever recorded impacted approximately 7400 hectares of mangrove forests along the Gulf of Carpentaria coastline. The dieback spanned 100s of Kms and affecting parts of NT and QLD. The affected region is very remote and there is no feasible way of monitoring the sites in person. During a site visit, researchers from CDU  and JCU setup several monitoring sites (based on the severity of dieback) to look into the potential cause of dieback and monitor the recovery process using remote sensing. Below are four sites 2 from QLD and 2 from NT. 
+- Site-Limmen: 135.78877, -15.14622
+- site-Mule: 136.43415, -15.64737
+- Site-Karumba: 140.85358, -17.42256
+- Site-Mitchell: 141.66542, -15.02732
+Please look into the historical temperature data (Prac07) and investigate the land surface temperature of the monitoring sites for the years leading up to the dieback. You can also look into the historical rainfall data (Prac05) to investigate the rainfall pattern for the years leading up to the dieback. 
 
 ## The complete script
 
