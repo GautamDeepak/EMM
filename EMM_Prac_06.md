@@ -220,6 +220,7 @@ During the southern hemisphere summer of 2015–16, one of the worst mangrove di
 - site-Mule: 136.43415, -15.64737
 - Site-Karumba: 140.85358, -17.42256
 - Site-Mitchell: 141.66542, -15.02732
+
 Please look into the historical temperature data (Prac07) and investigate the land surface temperature of the monitoring sites for the years leading up to the dieback. You can also look into the historical rainfall data (Prac05) to investigate the rainfall pattern for the years leading up to the dieback. 
 
 ## The complete script
