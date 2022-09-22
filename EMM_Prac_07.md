@@ -144,6 +144,13 @@ print(tempTrend);
 
 1. In the example above, we used daytime temperature, but the MODIS product also contains night temperatures. Modify the code above to plot charts and maps of night temperature and compare with the day results.
 2. Now try to modify the code further to plot NDVI as a time series and as a map for the same area of interest. Hint: have a look in the Earth Engine catalogue for the MOD13Q1.006 Terra Vegetation Indices 16-Day Global 250m collection.
+3. During the southern hemisphere summer of 2015–16, one of the worst mangrove dieback events ever recorded impacted approximately 7400 hectares of mangrove forests along the Gulf of Carpentaria coastline. The dieback spanned 100s of Kms and affecting parts of NT and QLD. The affected region is very remote and there is no feasible way of monitoring the sites in person. During a site visit, researchers from CDU  and JCU setup several monitoring sites (based on the severity of dieback) to look into the potential cause of dieback and monitor the recovery process using remote sensing. Below are four sites 2 from QLD and 2 from NT. 
+- Site-Limmen: 135.78877, -15.14622
+- site-Mule: 136.43415, -15.64737
+- Site-Karumba: 140.85358, -17.42256
+- Site-Mitchell: 141.66542, -15.02732
+
+Please look into the historical temperature data (Prac07) and investigate the land surface temperature of the monitoring sites for the years leading up to the dieback. You can also look into the historical rainfall data (Prac05) to investigate the rainfall pattern for the years leading up to the dieback. 
 
 
 ## The complete script
