@@ -17,7 +17,7 @@ One approach we have at our disposal is to compare attributes from recent years 
 ## 1. Getting to know MODIS and EVI.
 1. Open the Google Earth Engine environment by going to [https://code.earthengine.google.com] in the Chrome browser.
 
-2. Search for and import the MOD13A1.006 V6 or load the image collection using the script below. 
+2. Search for and import the MOD13A1.061 or load the image collection using the script below. 
 ```JavaScript
 //Import the MODIS image collection MOD13A1 V6
 var modis = ee.ImageCollection('MODIS/006/MOD13A1');
