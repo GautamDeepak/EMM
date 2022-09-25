@@ -48,7 +48,7 @@ Map.addLayer(ecoregions, {}, 'default display');
 // add a custom color
 Map.addLayer(ecoregions, {color: 'red'}, 'red colour display');
 ```
-![Figure 1. Reference EVI Northern Australia](Prac09/outlineOnly.png)
+![Figure 1. Reference EVI Northern Australia](Prac09/redcolor.png)
 
 
 ## 2. Controlling the boundary lines
@@ -178,8 +178,6 @@ var shedsFilteredNum = shedsFiltered.map(str2Num);
 6. Now you are ready to filter the sheds using their size. Let us filter the sheds with an area larger than a numerical value e.g. 25000 square km.
 
 ```JavaScript
-// Map the str2Num function over the shedsFiltered featureCollection
-var shedsFilteredNum = shedsFiltered.map(str2Num);
 
 // Filter to get only larger eastern US watersheds.
 var largeSheds = shedsFilteredNum.filter(ee.Filter.gt('areasqkm', 25000));
